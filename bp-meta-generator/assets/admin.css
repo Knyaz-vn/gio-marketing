@@ -1,0 +1,34 @@
+/* BP Meta Generator — адмінка */
+
+#bpmg-metabox textarea { resize: vertical; }
+#bpmg-metabox .bpmg-counter { margin: 4px 0 8px; color: #50575e; }
+#bpmg-count { font-weight: 600; }
+#bpmg-count.is-ok { color: #008a20; }
+#bpmg-count.is-warn { color: #b26200; }
+#bpmg-metabox .bpmg-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.bpmg-status { min-height: 1.4em; margin: 6px 0; }
+.bpmg-status.is-error,
+.bpmg-inline-status.is-error { color: #d63638; }
+.bpmg-inline-status { margin-left: 8px; }
+.bpmg-inline-status.is-ok { color: #008a20; }
+
+.bpmg-progress { max-width: 640px; margin-top: 12px; }
+.bpmg-progress__bar { height: 18px; background: #f0f0f1; border: 1px solid #c3c4c7; border-radius: 3px; overflow: hidden; }
+.bpmg-progress__fill { display: block; height: 100%; background: #2271b1; transition: width .4s ease; }
+.bpmg-progress[data-status="done"] .bpmg-progress__fill { background: #00a32a; }
+.bpmg-progress[data-status="cancelled"] .bpmg-progress__fill { background: #996800; }
+.bpmg-progress__text { margin: 6px 0 0; }
+
+.bpmg-log td { vertical-align: top; }
+.bpmg-log td:first-child { white-space: nowrap; }
+.bpmg-level { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; background: #f0f0f1; }
+.bpmg-level--error { background: #fcf0f1; color: #8a2424; }
+.bpmg-level--warning { background: #fcf9e8; color: #6e4b00; }
+.bpmg-level--info { background: #f0f6fc; color: #135e96; }
+
+.column-bpmg_meta { width: 28%; }
+.bpmg-col-text { font-size: 12px; line-height: 1.4; color: #50575e; }
+.bpmg-col-empty { color: #a7aaad; font-style: italic; }
+.bpmg-col-len { display: inline-block; margin-top: 3px; padding: 0 5px; border-radius: 3px; font-size: 11px; }
+.bpmg-col-len.is-ok { background: #edfaef; color: #008a20; }
+.bpmg-col-len.is-warn { background: #fcf9e8; color: #996800; }
