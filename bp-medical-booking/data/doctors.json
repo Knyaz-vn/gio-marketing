@@ -1,0 +1,756 @@
+[
+  {
+    "id": "gribanova",
+    "slug": "gribanova-anastasiya",
+    "full_name": "Грибанова Анастасія Сергіївна",
+    "surname": "Грибанова",
+    "aliases": [
+      "Грибанова",
+      "Грибанової",
+      "Грибановій",
+      "Грибанову",
+      "Грибановою"
+    ],
+    "specialties": [
+      "hirurg-onkolog",
+      "mamolog",
+      "onkolog-mamolog"
+    ],
+    "position": "онкохірург, мамолог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/gribanova-anastasiya/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "korol",
+    "slug": "korol-tetyana",
+    "full_name": "Король Тетяна Григорівна",
+    "surname": "Король",
+    "aliases": [
+      "Король"
+    ],
+    "specialties": [
+      "dityachij-gematolog"
+    ],
+    "position": "дитячий онкогематолог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/korol-tetyana/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "mashevska",
+    "slug": "mashevska-oksana",
+    "full_name": "Машевська Оксана Василівна",
+    "surname": "Машевська",
+    "aliases": [
+      "Машевська",
+      "Машевської",
+      "Машевській",
+      "Машевську",
+      "Машевською"
+    ],
+    "specialties": [
+      "onkolog",
+      "himioterapevt"
+    ],
+    "position": "онколог, хіміотерапевт",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/mashevska-oksana/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "biktimirov",
+    "slug": "biktimirov-oleksiy-volodymyrovych",
+    "full_name": "Біктіміров Олексій Вікторович",
+    "surname": "Біктіміров",
+    "aliases": [
+      "Біктіміров",
+      "Біктімірова",
+      "Біктімірову",
+      "Біктіміровим",
+      "Біктімірові",
+      "Биктимиров",
+      "Біктимиров"
+    ],
+    "specialties": [
+      "hirurg-onkolog",
+      "mamolog",
+      "onkolog-mamolog",
+      "plastichniy-hirurg"
+    ],
+    "position": "онкохірург вищої категорії, мамолог, пластичний хірург",
+    "profile_url": "https://bpmedical.com.ua/biktimirov-oleksiy-volodymyrovych/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "mashevskyi",
+    "slug": "mashevskij-ruslan",
+    "full_name": "Машевський Руслан Вікторович",
+    "surname": "Машевський",
+    "aliases": [
+      "Машевський",
+      "Машевського",
+      "Машевському",
+      "Машевським",
+      "Машевский"
+    ],
+    "specialties": [],
+    "position": "анестезіолог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/mashevskij-ruslan/",
+    "bookable": false,
+    "photo_url": "",
+    "schedule": [],
+    "schedule_overrides": [],
+    "default_service_ids": [],
+    "service_durations": {}
+  },
+  {
+    "id": "chernyavska",
+    "slug": "chernyavska",
+    "full_name": "Чернявська Вікторія Юріївна",
+    "surname": "Чернявська",
+    "aliases": [
+      "Чернявська",
+      "Чернявської",
+      "Чернявській",
+      "Чернявську",
+      "Чернявською"
+    ],
+    "specialties": [
+      "dermatovenerolog"
+    ],
+    "position": "дерматовенеролог, косметолог",
+    "profile_url": "https://bpmedical.com.ua/chernyavska/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "tsymbalyuk",
+    "slug": "natalia-tsymbalyuk",
+    "full_name": "Цимбалюк Наталія Вікторівна",
+    "surname": "Цимбалюк",
+    "aliases": [
+      "Цимбалюк"
+    ],
+    "specialties": [
+      "pulmonolog",
+      "terapevt"
+    ],
+    "position": "пульмонолог, терапевт",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/natalia-tsymbalyuk/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "mikhurinskyi",
+    "slug": "denys-mihurinskyj-likar-hirurg",
+    "full_name": "Міхурінський Денис Володимирович",
+    "surname": "Міхурінський",
+    "aliases": [
+      "Міхурінський",
+      "Міхурінського",
+      "Міхурінському",
+      "Міхурінським",
+      "Міхуринський",
+      "Михуринский"
+    ],
+    "specialties": [
+      "hirurg"
+    ],
+    "position": "хірург",
+    "profile_url": "https://bpmedical.com.ua/denys-mihurinskyj-likar-hirurg/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "duda",
+    "slug": "dyda",
+    "full_name": "Дуда Дмитро Анатолійович",
+    "surname": "Дуда",
+    "aliases": [
+      "Дуда",
+      "Дуди",
+      "Дуді",
+      "Дуду",
+      "Дудою"
+    ],
+    "specialties": [
+      "nevrolog"
+    ],
+    "position": "невролог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/dyda/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "gavrylets",
+    "slug": "gavrilets-kateryna",
+    "full_name": "Гаврилець Катерина Едуардівна",
+    "surname": "Гаврилець",
+    "aliases": [
+      "Гаврилець",
+      "Гаврилец"
+    ],
+    "specialties": [
+      "onkolog"
+    ],
+    "position": "онколог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/gavrilets-kateryna/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "musiienko",
+    "slug": "mysienko-olena",
+    "full_name": "Мусієнко Олена Сергіївна",
+    "surname": "Мусієнко",
+    "aliases": [
+      "Мусієнко",
+      "Мусиенко"
+    ],
+    "specialties": [
+      "ginekolog"
+    ],
+    "position": "гінеколог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/mysienko-olena/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "yaklich",
+    "slug": "yaklich-ludmila",
+    "full_name": "Якліч Людмила Віталіївна",
+    "surname": "Якліч",
+    "aliases": [
+      "Якліч",
+      "Яклич"
+    ],
+    "specialties": [],
+    "position": "анестезіолог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/yaklich-ludmila/",
+    "bookable": false,
+    "photo_url": "",
+    "schedule": [],
+    "schedule_overrides": [],
+    "default_service_ids": [],
+    "service_durations": {}
+  },
+  {
+    "id": "khrushchak",
+    "slug": "hrushchak-roman",
+    "full_name": "Хрущак Роман Олександрович",
+    "surname": "Хрущак",
+    "aliases": [
+      "Хрущак",
+      "Хрущака",
+      "Хрущаку",
+      "Хрущаком",
+      "Хрущакові"
+    ],
+    "specialties": [],
+    "position": "анестезіолог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/hrushchak-roman/",
+    "bookable": false,
+    "photo_url": "",
+    "schedule": [],
+    "schedule_overrides": [],
+    "default_service_ids": [],
+    "service_durations": {}
+  },
+  {
+    "id": "derevianko",
+    "slug": "derevianko-irina",
+    "full_name": "Дерев'янко Ірина Миколаївна",
+    "surname": "Дерев'янко",
+    "aliases": [
+      "Дерев'янко",
+      "Деревянко",
+      "Дерев янко"
+    ],
+    "specialties": [
+      "ginekolog"
+    ],
+    "position": "гінеколог",
+    "profile_url": "https://bpmedical.com.ua/doctors-2/derevianko-irina/",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "bazhenova",
+    "slug": "bazhenova-iryna",
+    "full_name": "Баженова Ірина Олексіївна",
+    "surname": "Баженова",
+    "aliases": [
+      "Баженова",
+      "Баженової",
+      "Баженовій",
+      "Баженову",
+      "Баженовою"
+    ],
+    "specialties": [
+      "dermatovenerolog"
+    ],
+    "position": "дерматовенеролог",
+    "profile_url": "",
+    "bookable": true,
+    "photo_url": "",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {},
+    "_todo": "profile_url і slug: звірити з https://bpmedical.com.ua/doctors-2/"
+  }
+]

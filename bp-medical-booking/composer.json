@@ -1,0 +1,28 @@
+{
+    "name": "bpmedical/bp-medical-booking",
+    "description": "Онлайн-запис до лікарів BP Medical на основі Google Calendar (WordPress-плагін)",
+    "type": "wordpress-plugin",
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": { "BPMedical\\Booking\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "BPMedical\\Booking\\Tests\\": "tests/" }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "widget-size": "php bin/widget-size.php"
+    },
+    "config": {
+        "platform": { "php": "7.4.33" }
+    }
+}

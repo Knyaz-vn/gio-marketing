@@ -1,0 +1,32 @@
+{
+  "calendars": [
+    {
+      "id": "mock-koriat",
+      "name": "Коріатовичів 168А (замініть на ID календаря)",
+      "location_id": "loc_koriat"
+    },
+    {
+      "id": "mock-strilets",
+      "name": "Стрілецька 7Д (замініть на ID календаря)",
+      "location_id": "loc_strilets"
+    }
+  ],
+  "match_mode": "anywhere",
+  "min_lead_minutes": 120,
+  "booking_horizon_days": 30,
+  "slot_step_min": 15,
+  "hold_minutes": 7,
+  "holidays": [],
+  "online_color_id": "9",
+  "cancel_mode": "mark",
+  "telegram_chat_id": "",
+  "notify_emails": [],
+  "retention_days": 365,
+  "rate_limit_per_hour": 5,
+  "cors_origins": [
+    "https://bpmedical.com.ua",
+    "https://www.bpmedical.com.ua",
+    "https://staging.bpmedical.com.ua"
+  ],
+  "calendar_mode": "auto"
+}

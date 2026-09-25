@@ -1,0 +1,20 @@
+[
+  {
+    "id": "consult_primary",
+    "name": "Первинна консультація",
+    "specialty_id": null,
+    "duration_min": 30,
+    "buffer_after_min": 0,
+    "price_from": null,
+    "prep_note_url": null
+  },
+  {
+    "id": "consult_repeat",
+    "name": "Повторна консультація",
+    "specialty_id": null,
+    "duration_min": 20,
+    "buffer_after_min": 0,
+    "price_from": null,
+    "prep_note_url": null
+  }
+]

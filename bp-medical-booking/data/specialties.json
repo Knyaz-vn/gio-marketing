@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ginekolog",
+    "name": "Гінеколог",
+    "slug": "ginekolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "mamolog",
+    "name": "Мамолог",
+    "slug": "mamolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "proktolog",
+    "name": "Проктолог",
+    "slug": "proktolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "onkolog",
+    "name": "Онколог",
+    "slug": "onkolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "himioterapevt",
+    "name": "Хіміотерапевт",
+    "slug": "himioterapevt",
+    "parent_id": "onkolog",
+    "is_child": false
+  },
+  {
+    "id": "hirurg-onkolog",
+    "name": "Хірург-онколог",
+    "slug": "hirurg-onkolog",
+    "parent_id": "onkolog",
+    "is_child": false
+  },
+  {
+    "id": "onkodermatolog",
+    "name": "Онкодерматолог",
+    "slug": "onkodermatolog",
+    "parent_id": "onkolog",
+    "is_child": false
+  },
+  {
+    "id": "onkolog-mamolog",
+    "name": "Онколог-мамолог",
+    "slug": "onkolog-mamolog",
+    "parent_id": "onkolog",
+    "is_child": false
+  },
+  {
+    "id": "onkourolog",
+    "name": "Онкоуролог",
+    "slug": "onkourolog",
+    "parent_id": "onkolog",
+    "is_child": false
+  },
+  {
+    "id": "gematolog",
+    "name": "Гематолог",
+    "slug": "gematolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "dityachij-gematolog",
+    "name": "Дитячий гематолог",
+    "slug": "dityachij-gematolog",
+    "parent_id": "gematolog",
+    "is_child": true
+  },
+  {
+    "id": "endokrinolog",
+    "name": "Ендокринолог",
+    "slug": "endokrinolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "dityachij-dermatolog",
+    "name": "Дитячий дерматолог",
+    "slug": "dermatolog",
+    "parent_id": null,
+    "is_child": true
+  },
+  {
+    "id": "dermatovenerolog",
+    "name": "Дерматолог",
+    "slug": "dermatovenerolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "tryholog",
+    "name": "Трихолог",
+    "slug": "dermatovenerolog/tryholog",
+    "parent_id": "dermatovenerolog",
+    "is_child": false
+  },
+  {
+    "id": "imunolog",
+    "name": "Імунолог",
+    "slug": "imunolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "hirurg",
+    "name": "Хірург",
+    "slug": "hirurg",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "plastichniy-hirurg",
+    "name": "Пластичний хірург",
+    "slug": "plastichniy-hirurg",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "urolog",
+    "name": "Уролог",
+    "slug": "urolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "travmatolog-ortoped",
+    "name": "Ортопед-травматолог",
+    "slug": "travmatolog-ortoped",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "nevrolog",
+    "name": "Невролог",
+    "slug": "nevrolog",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "simejnij-likar",
+    "name": "Сімейний лікар",
+    "slug": "simejnij-likar",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "terapevt",
+    "name": "Терапевт",
+    "slug": "terapevt",
+    "parent_id": null,
+    "is_child": false
+  },
+  {
+    "id": "pulmonolog",
+    "name": "Пульмонолог",
+    "slug": "pulmonolog",
+    "parent_id": null,
+    "is_child": false
+  }
+]
