@@ -3,278 +3,471 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="only light">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#07090F">
 <title>Ігор — performance-маркетолог з AI-стеком | Google Ads, Meta, аналітика</title>
 <meta name="description" content="Реклама, яка окупається. Google Ads, Meta Ads, наскрізна аналітика та AI-контроль відділу продажів. Медицина, будівництво, B2B. Безкоштовний аудит реклами.">
 <meta property="og:title" content="Ігор — performance-маркетолог з AI-стеком">
 <meta property="og:description" content="Трафік → аналітика → AI-контроль продажів. Звіти з ROMI, зрозумілі власнику.">
 <meta property="og:type" content="website">
-
-
+<meta property="og:locale" content="uk_UA">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233B5BFF'/%3E%3Cpath d='M16 44 28 30l8 8 12-16' stroke='%23fff' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"ihor.marketing",
+  "description":"Performance-маркетинг: Google Ads, Meta Ads, наскрізна аналітика, AI-аналіз дзвінків відділу продажів.",
+  "telephone":"+380631087185",
+  "email":"ihor.hryhorenko92@gmail.com",
+  "address":{"@type":"PostalAddress","addressLocality":"Вінниця","addressCountry":"UA"},
+  "areaServed":"UA",
+  "sameAs":["https://t.me/igor_vn"]
+}
+</script>
 
 <style>
 :root{
-  color-scheme:only light;
-  --bg:#F4F6F9;
-  --ink:#0C1222;
-  --ink-soft:#465063;
-  --card:#FFFFFF;
-  --line:#DEE3EC;
-  --cobalt:#2742F5;
-  --cobalt-deep:#1B2FB8;
+  color-scheme:dark;
+  --bg:#07090F;
+  --bg-2:#0C1020;
+  --surface:rgba(255,255,255,.035);
+  --surface-2:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.09);
+  --line-2:rgba(255,255,255,.16);
+  --ink:#F2F4FA;
+  --ink-soft:#A3ABC2;
+  --ink-mute:#6D7590;
+  --blue:#3B5BFF;
+  --blue-2:#6F8BFF;
+  --violet:#8B5CF6;
   --amber:#FFB224;
-  --green:#0FA968;
-  --radius:18px;
-  --display:'Unbounded',sans-serif;
-  --body:'Golos Text',sans-serif;
-  --mono:'JetBrains Mono',monospace;
+  --green:#22D38A;
+  --grad:linear-gradient(120deg,#6F8BFF 0%,#A78BFA 50%,#FFB224 100%);
+  --radius:22px;
+  --display:'Unbounded',system-ui,sans-serif;
+  --body:'Onest',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;background:#F4F6F9}
+html{scroll-behavior:smooth;background:var(--bg);scroll-padding-top:96px}
 body{
   font-family:var(--body);
-  background:var(--bg) !important;
+  background:var(--bg);
   color:var(--ink);
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
-img{max-width:100%}
+img,svg{max-width:100%}
 a{color:inherit}
-.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+::selection{background:var(--blue);color:#fff}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+@media(max-width:560px){.wrap{padding:0 16px}}
 
-/* ===== mono-теги секцій ===== */
-.tag{
-  font-family:var(--mono);
-  font-size:12px;
-  color:var(--cobalt);
-  background:#E8ECFE;
-  border:1px solid #C9D2FC;
-  padding:4px 10px;
-  border-radius:6px;
-  display:inline-block;
-  letter-spacing:.02em;
+/* фон: сітка + світіння */
+.bg-fx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bg-fx::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
 }
+.glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+.glow.g1{width:560px;height:560px;background:#2C45FF;top:-220px;left:-120px;opacity:.35}
+.glow.g2{width:460px;height:460px;background:#7C3AED;top:-120px;right:-160px;opacity:.28}
+
+/* ===== теги ===== */
+.tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--blue-2);
+  background:rgba(59,91,255,.1);
+  border:1px solid rgba(111,139,255,.25);
+  padding:6px 12px;border-radius:999px;
+}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor}
+
+/* ===== кнопки ===== */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  background:var(--blue);color:#fff;
+  font-family:var(--body);font-weight:600;font-size:15.5px;
+  padding:15px 26px;border-radius:14px;text-decoration:none;
+  border:none;cursor:pointer;
+  box-shadow:0 10px 30px -10px rgba(59,91,255,.8),inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .2s var(--ease),box-shadow .2s,background .2s;
+}
+.btn:hover{background:#4A68FF;transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(59,91,255,.9),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn .arr{transition:transform .2s var(--ease)}
+.btn:hover .arr{transform:translateX(3px)}
+.btn-sm{padding:10px 18px;font-size:14px;border-radius:12px}
+.btn-ghost{background:var(--surface-2);color:var(--ink);border:1px solid var(--line-2);box-shadow:none}
+.btn-ghost:hover{background:rgba(255,255,255,.1);box-shadow:none}
 
 /* ===== header ===== */
-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(244,246,249,.85);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
+header{position:fixed;top:14px;left:0;right:0;z-index:50;padding:0 12px}
+.nav{
+  max-width:1180px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  height:62px;padding:0 10px 0 22px;
+  background:rgba(12,16,32,.6);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  transition:background .3s,border-color .3s;
 }
-.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{font-family:var(--display);font-weight:700;font-size:16px;text-decoration:none}
-.logo span{color:var(--cobalt)}
-.nav-links{display:flex;gap:26px;align-items:center}
-.nav-links a{font-size:14px;font-weight:500;text-decoration:none;color:var(--ink-soft);transition:color .2s}
-.nav-links a:hover{color:var(--ink)}
-.nav-links a.btn{color:#fff}
-.nav-links a.btn:hover{color:#fff}
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--cobalt);color:#fff;
-  font-family:var(--body);font-weight:600;font-size:15px;
-  padding:13px 24px;border-radius:12px;text-decoration:none;
-  transition:background .2s, transform .15s;
-  border:none;cursor:pointer;
+header.scrolled .nav{background:rgba(12,16,32,.85);border-color:var(--line-2)}
+.logo{font-family:var(--display);font-weight:700;font-size:16px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:26px;height:26px;border-radius:8px;background:var(--grad);display:inline-block;flex-shrink:0}
+.logo span{color:var(--blue-2)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a:not(.btn){font-size:14.5px;font-weight:500;text-decoration:none;color:var(--ink-soft);padding:8px 14px;border-radius:10px;transition:color .2s,background .2s}
+.nav-links a:not(.btn):hover{color:var(--ink);background:var(--surface-2)}
+.nav-links .btn{margin-left:8px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink);cursor:pointer;align-items:center;justify-content:center}
+.burger svg{width:20px;height:20px}
+@media(max-width:820px){
+  .burger{display:inline-flex}
+  .nav{padding:0 8px 0 16px}
+  .nav-links{
+    position:absolute;top:70px;left:12px;right:12px;
+    flex-direction:column;align-items:stretch;gap:2px;
+    padding:10px;border-radius:18px;
+    background:rgba(12,16,32,.96);border:1px solid var(--line-2);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    opacity:0;transform:translateY(-8px);pointer-events:none;
+    transition:opacity .2s,transform .2s var(--ease);
+  }
+  .nav-links.open{opacity:1;transform:none;pointer-events:auto}
+  .nav-links a:not(.btn){padding:14px 16px;font-size:16px}
+  .nav-links .btn{margin:6px 0 0}
 }
-.btn:hover{background:var(--cobalt-deep);transform:translateY(-1px)}
-.btn-sm{padding:9px 16px;font-size:14px;border-radius:10px}
-.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.btn-ghost:hover{background:#fff;border-color:var(--ink)}
-.nav .btn-sm{display:inline-flex}
-@media(max-width:760px){.nav-links a:not(.btn){display:none}}
 
 /* ===== hero ===== */
-.hero{padding:72px 0 56px}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+.hero{padding:150px 0 70px;position:relative}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center}
+@media(max-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr);gap:48px}.hero{padding-top:120px}}
 .hero h1{
-  font-family:var(--display);
-  font-weight:700;
-  font-size:clamp(28px,4.4vw,46px);
-  line-height:1.18;
-  letter-spacing:-.01em;
-  margin:18px 0 16px;
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(32px,5.2vw,62px);
+  line-height:1.08;letter-spacing:-.025em;
+  margin:22px 0 22px;
 }
-.hero h1 em{font-style:normal;color:var(--cobalt)}
-.hero p.lead{font-size:17px;color:var(--ink-soft);max-width:480px;margin-bottom:28px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .dim{color:var(--ink-soft)}
+.hero p.lead{font-size:18px;color:var(--ink-soft);max-width:540px;margin-bottom:34px}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
-.hero-note{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:16px}
+@media(max-width:480px){.hero-cta .btn{width:100%}}
+.hero-stats{display:flex;gap:30px;flex-wrap:wrap;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+.hero-stats div{display:flex;flex-direction:column}
+.hero-stats b{font-family:var(--display);font-weight:600;font-size:24px}
+.hero-stats span{font-family:var(--mono);font-size:12px;color:var(--ink-mute);margin-top:2px}
 
-/* ===== картка звіту ===== */
+/* ===== дашборд ===== */
 .report{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:0 18px 50px -18px rgba(12,18,34,.18);
-  overflow:hidden;
   position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid var(--line-2);
+  border-radius:24px;
+  box-shadow:0 40px 100px -30px rgba(44,69,255,.55),0 0 0 1px rgba(255,255,255,.02) inset;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  overflow:hidden;
+}
+.report::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+  background:linear-gradient(140deg,rgba(111,139,255,.7),transparent 40%,transparent 60%,rgba(255,178,36,.5));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
 }
 .report-head{
-  display:flex;justify-content:space-between;align-items:center;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
   padding:14px 20px;border-bottom:1px solid var(--line);
   font-family:var(--mono);font-size:12px;color:var(--ink-soft);
 }
-.report-head .dot{color:var(--green)}
-.report-body{padding:22px 20px 20px;display:grid;gap:14px}
-.metric{
-  display:flex;justify-content:space-between;align-items:baseline;
-  padding:12px 14px;border:1px solid var(--line);border-radius:12px;
-  background:#FAFBFD;
+.report-head .dots{display:flex;gap:6px}
+.report-head .dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15)}
+.live{display:inline-flex;align-items:center;gap:6px;color:var(--green)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(34,211,138,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(34,211,138,0)}100%{box-shadow:0 0 0 0 rgba(34,211,138,0)}}
+.report-body{padding:20px;display:grid;gap:12px}
+.chart{
+  border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;
+  background:rgba(0,0,0,.2);
 }
-.metric .m-label{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
-.metric .m-value{font-family:var(--display);font-weight:500;font-size:24px}
-.metric .m-delta{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--green);margin-left:8px}
-.metric.hl{border-color:#FFD98A;background:#FFF8EA}
-.metric.hl .m-value{color:#B27200}
+.chart-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.chart-top .m-label{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}
+.chart-top .m-value{font-family:var(--display);font-weight:600;font-size:30px;color:var(--amber)}
+.chart svg{display:block;width:100%;height:90px}
+.chart .line{stroke-dasharray:600;stroke-dashoffset:600}
+.report.in .chart .line{animation:draw 1.8s var(--ease) .2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
+.metric .m-label{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);display:block}
+.metric .m-value{font-family:var(--display);font-weight:600;font-size:24px;display:block;margin:6px 0 2px}
+.metric .m-delta{font-family:var(--mono);font-size:11.5px;color:var(--green)}
 .report-foot{
-  padding:12px 20px;border-top:1px dashed var(--line);
-  font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+  padding:13px 20px;border-top:1px dashed var(--line);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-mute);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.report-foot b{color:var(--cobalt);font-weight:500}
-
-/* ===== стрічка інструментів ===== */
-.tools{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
-.tools-inner{
-  display:flex;gap:34px;align-items:center;justify-content:center;flex-wrap:wrap;
-  padding:16px 20px;
-  font-family:var(--mono);font-size:13px;color:var(--ink-soft);
+.report-foot b{color:var(--blue-2);font-weight:500}
+.float-chip{
+  position:absolute;z-index:2;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:14px;
+  background:rgba(12,16,32,.9);border:1px solid var(--line-2);
+  font-size:13px;font-weight:500;
+  box-shadow:0 20px 40px -20px rgba(0,0,0,.8);
+  animation:bob 5s ease-in-out infinite;
 }
-.tools-inner span::before{content:"▸ ";color:var(--cobalt)}
+.float-chip .ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:14px}
+.float-chip small{display:block;font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);font-weight:400}
+.chip-a{left:-34px;bottom:-26px}
+.chip-a .ic{background:rgba(34,211,138,.15);color:var(--green)}
+.chip-b{right:-22px;top:-20px;animation-delay:-2.5s}
+.chip-b .ic{background:rgba(255,178,36,.15);color:var(--amber)}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.report-wrap{position:relative}
+@media(max-width:1100px){.chip-a{left:-10px}.chip-b{right:-6px}}
+@media(max-width:560px){.float-chip{display:none}}
+
+/* ===== бігуча стрічка ===== */
+.marquee{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.015);
+  overflow:hidden;padding:20px 0;
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+}
+.marquee-track{display:flex;gap:48px;width:max-content;animation:scroll 32s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:var(--mono);font-size:14px;color:var(--ink-soft);white-space:nowrap;display:flex;align-items:center;gap:12px}
+.marquee span::before{content:"✦";color:var(--blue-2);font-size:12px}
+@keyframes scroll{to{transform:translateX(-50%)}}
 
 /* ===== секції ===== */
-section{padding:76px 0}
-.sec-head{margin-bottom:40px;max-width:640px}
+section{padding:110px 0}
+@media(max-width:680px){section{padding:80px 0}}
+.sec-head{margin-bottom:48px;max-width:700px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
 .sec-head h2{
-  font-family:var(--display);font-weight:500;
-  font-size:clamp(22px,3vw,32px);line-height:1.25;margin-top:14px;
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(26px,3.6vw,44px);line-height:1.12;letter-spacing:-.02em;margin-top:18px;
 }
-.sec-head p{color:var(--ink-soft);margin-top:10px}
+.sec-head p{color:var(--ink-soft);margin-top:14px;font-size:17px}
 
-/* послуги */
-.grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-@media(max-width:680px){.grid-4{grid-template-columns:1fr}}
+/* картки */
 .card{
-  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:26px 24px;transition:transform .2s, box-shadow .2s;
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:30px 28px;
+  overflow:hidden;
+  transition:border-color .3s,transform .3s var(--ease),background .3s;
 }
-.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px -16px rgba(12,18,34,.16)}
-.card .c-tag{font-family:var(--mono);font-size:11px;color:var(--cobalt);margin-bottom:14px;display:block}
-.card h3{font-family:var(--display);font-weight:500;font-size:17px;margin-bottom:10px;line-height:1.35}
-.card p{font-size:15px;color:var(--ink-soft)}
-.card.ai{border-color:#C9D2FC;background:linear-gradient(180deg,#FBFCFF 0%,#F0F3FE 100%)}
+.card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(400px circle at var(--mx,50%) var(--my,0%),rgba(111,139,255,.14),transparent 45%);
+}
+.card:hover{border-color:var(--line-2);transform:translateY(-4px)}
+.card:hover::after{opacity:1}
+.card .c-ic{
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;margin-bottom:22px;
+  background:rgba(59,91,255,.12);border:1px solid rgba(111,139,255,.25);color:var(--blue-2);
+}
+.card .c-ic svg{width:22px;height:22px}
+.card .c-tag{font-family:var(--mono);font-size:11.5px;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:10px}
+.card h3{font-family:var(--display);font-weight:500;font-size:19px;margin-bottom:12px;line-height:1.3;letter-spacing:-.01em}
+.card p{font-size:15.5px;color:var(--ink-soft)}
+
+/* бенто послуг */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.bento .ai{grid-column:span 2;grid-row:span 2;display:flex;flex-direction:column}
+@media(max-width:960px){.bento{grid-template-columns:1fr 1fr}.bento .ai{grid-column:span 2;grid-row:auto}}
+@media(max-width:640px){.bento{grid-template-columns:1fr}.bento .ai{grid-column:auto}}
+.card.ai{
+  background:
+    radial-gradient(600px circle at 100% 0%,rgba(139,92,246,.22),transparent 55%),
+    radial-gradient(500px circle at 0% 100%,rgba(59,91,255,.18),transparent 55%),
+    var(--surface);
+  border-color:rgba(139,92,246,.35);
+}
+.card.ai h3{font-size:clamp(20px,2.4vw,28px)}
+.card.ai p{max-width:520px;font-size:16.5px}
+.badge-new{
+  position:absolute;top:26px;right:26px;
+  font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+  padding:5px 10px;border-radius:999px;background:rgba(255,178,36,.12);color:var(--amber);border:1px solid rgba(255,178,36,.3);
+}
+.calls{margin-top:auto;padding-top:28px;display:grid;gap:10px}
+.call{
+  display:grid;grid-template-columns:110px 1fr 44px;gap:14px;align-items:center;
+  padding:12px 14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--line);
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+}
+.call .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.call .bar i{display:block;height:100%;width:0;border-radius:inherit;transition:width 1.4s var(--ease)}
+.card.in .call .bar i{width:var(--w)}
+.call b{text-align:right;font-weight:500}
+.call.ok i{background:linear-gradient(90deg,#22D38A,#6EE7B7)}.call.ok b{color:var(--green)}
+.call.mid i{background:linear-gradient(90deg,#FFB224,#FFD27A)}.call.mid b{color:var(--amber)}
+.call.bad i{background:linear-gradient(90deg,#F43F5E,#FB7185)}.call.bad b{color:#FB7185}
+@media(max-width:420px){.call{grid-template-columns:84px 1fr 36px;gap:10px}}
 
 /* кейси */
-.cases{background:var(--ink);color:#EDF0F6;border-radius:28px;margin:0 12px}
-@media(max-width:680px){.cases{margin:0;border-radius:0}}
-.cases .tag{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#9FB0FF}
-.cases h2{color:#fff}
-.cases .sec-head p{color:#9AA4BC}
 .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media(max-width:860px){.case-grid{grid-template-columns:1fr}}
-.case{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:var(--radius);padding:26px 24px;
-}
-.case .niche{font-family:var(--mono);font-size:11px;color:#9FB0FF;display:block;margin-bottom:18px}
+@media(max-width:900px){.case-grid{grid-template-columns:1fr}}
+.case{display:flex;flex-direction:column;padding:32px 28px}
+.case .niche{font-family:var(--mono);font-size:12px;color:var(--ink-soft);display:inline-flex;align-self:flex-start;padding:5px 10px;border:1px solid var(--line);border-radius:999px;margin-bottom:34px}
 .case .big{
-  font-family:var(--display);font-weight:700;
-  font-size:40px;line-height:1;color:var(--amber);
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(44px,5vw,60px);line-height:1;letter-spacing:-.03em;
+  background:linear-gradient(120deg,#FFD27A,#FFB224 60%,#FF8A3D);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.case .big-label{font-family:var(--mono);font-size:12px;color:#9AA4BC;display:block;margin:8px 0 16px}
-.case p{font-size:14.5px;color:#C4CBDC}
+.case .big-label{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute);display:block;margin:12px 0 20px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.case p{font-size:15px}
 
 /* процес */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:step}
-@media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:step;position:relative}
+.steps::before{
+  content:"";position:absolute;top:47px;left:40px;right:40px;height:1px;
+  background:linear-gradient(90deg,var(--blue),var(--violet),var(--amber));opacity:.5;
+}
+@media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}.steps::before{display:none}}
 @media(max-width:560px){.steps{grid-template-columns:1fr}}
-.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px;position:relative}
+.step{padding:28px 24px;background:var(--bg-2)}
 .step::before{
   counter-increment:step;content:"0" counter(step);
-  font-family:var(--mono);font-size:12px;color:var(--cobalt);
-  display:block;margin-bottom:14px;
+  font-family:var(--mono);font-size:13px;font-weight:500;color:#fff;
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;margin-bottom:22px;
+  background:linear-gradient(140deg,var(--blue),var(--violet));
+  box-shadow:0 8px 24px -8px rgba(59,91,255,.8);
+  position:relative;z-index:1;
 }
-.step h3{font-family:var(--display);font-weight:500;font-size:15px;margin-bottom:8px}
-.step p{font-size:14px;color:var(--ink-soft)}
+.step h3{font-size:17px}
+.step p{font-size:14.5px}
 
 /* чому я */
 .why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-@media(max-width:860px){.why{grid-template-columns:1fr}}
-.why .card h3{font-size:16px}
+@media(max-width:900px){.why{grid-template-columns:1fr}}
 
 /* FAQ */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+@media(max-width:900px){.faq-grid{grid-template-columns:1fr;gap:8px}}
+.faq-grid .sec-head{position:sticky;top:110px}
+@media(max-width:900px){.faq-grid .sec-head{position:static}}
 details{
-  background:var(--card);border:1px solid var(--line);border-radius:14px;
-  margin-bottom:10px;overflow:hidden;
+  border:1px solid var(--line);border-radius:18px;background:var(--surface);
+  margin-bottom:10px;overflow:hidden;transition:border-color .3s,background .3s;
 }
+details[open]{border-color:rgba(111,139,255,.35);background:rgba(59,91,255,.05)}
 summary{
-  cursor:pointer;padding:18px 20px;font-weight:600;font-size:15.5px;
-  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  cursor:pointer;padding:22px 24px;font-weight:600;font-size:16.5px;
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;
 }
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-family:var(--mono);color:var(--cobalt);font-size:18px;flex-shrink:0}
-details[open] summary::after{content:"–"}
-details .a{padding:0 20px 18px;color:var(--ink-soft);font-size:15px}
-
-/* CTA фінал */
-.final{
-  background:var(--cobalt);color:#fff;border-radius:28px;margin:0 12px;
-  text-align:center;padding:70px 24px;
+summary .pm{
+  width:30px;height:30px;border-radius:10px;flex-shrink:0;position:relative;
+  background:var(--surface-2);border:1px solid var(--line);transition:transform .3s var(--ease),background .3s;
 }
-@media(max-width:680px){.final{margin:0;border-radius:0}}
-.final h2{font-family:var(--display);font-weight:700;font-size:clamp(22px,3.4vw,34px);line-height:1.25;max-width:620px;margin:0 auto 14px}
-.final p{color:#CBD3FF;max-width:480px;margin:0 auto 28px}
-.final .btn{background:#fff;color:var(--cobalt)}
-.final .btn:hover{background:#EDEFFD}
-.final .mono-line{font-family:var(--mono);font-size:12px;color:#9FB0FF;margin-top:18px}
+summary .pm::before,summary .pm::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:var(--ink);transform:translate(-50%,-50%)}
+summary .pm::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .3s var(--ease)}
+details[open] summary .pm{background:var(--blue);border-color:var(--blue)}
+details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(0)}
+details .a{padding:0 24px 22px;color:var(--ink-soft);font-size:15.5px}
+
+/* фінальний CTA */
+.final{
+  position:relative;overflow:hidden;
+  border-radius:32px;text-align:center;padding:90px 24px;
+  background:
+    radial-gradient(700px circle at 20% 0%,rgba(59,91,255,.55),transparent 60%),
+    radial-gradient(600px circle at 90% 100%,rgba(139,92,246,.45),transparent 60%),
+    var(--bg-2);
+  border:1px solid var(--line-2);
+}
+.final::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse at center,#000,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at center,#000,transparent 70%);
+}
+.final > *{position:relative}
+.final h2{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,46px);line-height:1.12;letter-spacing:-.02em;max-width:760px;margin:0 auto 18px}
+.final p{color:#C8CEE6;max-width:520px;margin:0 auto 34px;font-size:17px}
+.final .btn{background:#fff;color:#0C1020;box-shadow:0 16px 40px -12px rgba(255,255,255,.35)}
+.final .btn:hover{background:#EEF1FF}
+.final-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.final .btn-ghost{background:rgba(255,255,255,.08);color:#fff;box-shadow:none}
+.final .btn-ghost:hover{background:rgba(255,255,255,.14)}
+.final .mono-line{font-family:var(--mono);font-size:12.5px;color:#A9B6FF;margin-top:22px;display:inline-flex;align-items:center;gap:8px}
+@media(max-width:680px){.final{border-radius:24px;padding:70px 20px}}
 
 /* footer */
-footer{padding:36px 0 110px;color:var(--ink-soft);font-size:14px}
-.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
-.foot a{text-decoration:none;font-weight:500;color:var(--ink)}
-.foot a:hover{color:var(--cobalt)}
-.foot .mono{font-family:var(--mono);font-size:12px}
+footer{padding:48px 0 120px;color:var(--ink-soft);font-size:14.5px;border-top:1px solid var(--line);margin-top:30px}
+.foot{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:center}
+.foot a{text-decoration:none;font-weight:500;color:var(--ink);transition:color .2s}
+.foot a:hover{color:var(--blue-2)}
+.foot .mono{font-family:var(--mono);font-size:12px;color:var(--ink-mute)}
+.foot-links{display:flex;gap:24px;flex-wrap:wrap}
 
 /* плаваюча кнопка Telegram */
 .tg-float{
   position:fixed;right:18px;bottom:18px;z-index:60;
   display:flex;align-items:center;gap:10px;
-  background:var(--ink);color:#fff;text-decoration:none;
-  padding:13px 20px;border-radius:999px;font-weight:600;font-size:14.5px;
-  box-shadow:0 12px 30px -8px rgba(12,18,34,.4);
-  transition:transform .15s;
+  background:linear-gradient(140deg,#2AABEE,#229ED9);color:#fff;text-decoration:none;
+  padding:14px 22px;border-radius:999px;font-weight:600;font-size:15px;
+  box-shadow:0 14px 34px -10px rgba(34,158,217,.8);
+  transition:transform .2s var(--ease),opacity .3s;
 }
-.tg-float:hover{transform:translateY(-2px)}
-.tg-float svg{width:18px;height:18px;flex-shrink:0}
+.tg-float:hover{transform:translateY(-3px)}
+.tg-float svg{width:19px;height:19px;flex-shrink:0}
 
 /* анімації появи */
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none !important}
   .reveal{opacity:1;transform:none;transition:none}
+  .chart .line{stroke-dashoffset:0}
+  .card.in .call .bar i,.call .bar i{width:var(--w);transition:none}
   .card:hover,.btn:hover,.tg-float:hover{transform:none}
 }
-:focus-visible{outline:2.5px solid var(--cobalt);outline-offset:3px;border-radius:6px}
+:focus-visible{outline:2.5px solid var(--blue-2);outline-offset:3px;border-radius:8px}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap nav">
-    <a class="logo" data-target="#top" tabindex="0" role="link">ihor<span>.marketing</span></a>
-    <nav class="nav-links">
-      <a data-target="#services" tabindex="0" role="link">Послуги</a>
-      <a data-target="#cases" tabindex="0" role="link">Кейси</a>
-      <a data-target="#process" tabindex="0" role="link">Як працюю</a>
-      <a data-target="#faq" tabindex="0" role="link">FAQ</a>
+<div class="bg-fx" aria-hidden="true"><div class="glow g1"></div><div class="glow g2"></div></div>
+
+<header id="hdr">
+  <div class="nav">
+    <a class="logo" href="#top"><i aria-hidden="true"></i>ihor<span>.marketing</span></a>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links" id="menu">
+      <a href="#services">Послуги</a>
+      <a href="#cases">Кейси</a>
+      <a href="#process">Як працюю</a>
+      <a href="#faq">FAQ</a>
       <a class="btn btn-sm" href="https://t.me/igor_vn">Аудит безкоштовно</a>
     </nav>
   </div>
@@ -286,43 +479,68 @@ footer{padding:36px 0 110px;color:var(--ink-soft);font-size:14px}
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <h1>Реклама, яка <em>окупається</em>.<br>Аналітика, яка це доводить.</h1>
-      <p class="lead">Я будую систему, а не просто запускаю оголошення: трафік з Google і Meta → наскрізна аналітика → AI-контроль вашого відділу продажів. Кожна гривня бюджету видна у звіті.</p>
-      <div class="hero-cta">
-        <a class="btn" href="https://t.me/igor_vn">Отримати безкоштовний аудит</a>
-        <a class="btn btn-ghost" data-target="#cases" tabindex="0" role="link">Подивитись кейси</a>
+      <span class="tag reveal">Performance-маркетинг + AI</span>
+      <h1 class="reveal d1">Реклама, яка <em>окупається</em>.<br><span class="dim">Аналітика, яка це доводить.</span></h1>
+      <p class="lead reveal d2">Я будую систему, а не просто запускаю оголошення: трафік з Google і Meta → наскрізна аналітика → AI-контроль вашого відділу продажів. Кожна гривня бюджету видна у звіті.</p>
+      <div class="hero-cta reveal d3">
+        <a class="btn" href="https://t.me/igor_vn">Отримати безкоштовний аудит <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="#cases">Подивитись кейси</a>
       </div>
-      <p class="hero-note">7+ років у performance · медицина / будівництво / B2B</p>
+      <div class="hero-stats reveal d3">
+        <div><b>7+ років</b><span>у performance</span></div>
+        <div><b>3 ніші</b><span>медицина / будівництво / B2B</span></div>
+        <div><b>1 звіт</b><span>з ROMI щомісяця</span></div>
+      </div>
     </div>
 
-    <div class="report reveal" aria-label="Приклад щомісячного звіту клієнта">
-      <div class="report-head">
-        <span>звіт_клієнта_травень.xlsx</span>
-        <span><span class="dot">●</span> оновлено</span>
+    <div class="report-wrap reveal d2">
+      <div class="float-chip chip-b"><span class="ic">★</span><div>AI-оцінка дзвінка<small>15 критеріїв</small></div></div>
+      <div class="report" id="report" aria-label="Приклад щомісячного звіту клієнта">
+        <div class="report-head">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>звіт_клієнта_травень.xlsx</span>
+          <span class="live">live</span>
+        </div>
+        <div class="report-body">
+          <div class="chart">
+            <div class="chart-top">
+              <span class="m-label">ROMI</span>
+              <span class="m-value" data-count="340" data-suffix="%">0%</span>
+            </div>
+            <svg viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#6F8BFF"/><stop offset=".6" stop-color="#A78BFA"/><stop offset="1" stop-color="#FFB224"/></linearGradient>
+                <linearGradient id="fg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#6F8BFF" stop-opacity=".3"/><stop offset="1" stop-color="#6F8BFF" stop-opacity="0"/></linearGradient>
+              </defs>
+              <path d="M0 78 C30 74 45 70 70 64 S110 66 135 52 S175 44 200 34 S250 22 300 8 L300 90 L0 90Z" fill="url(#fg)"/>
+              <path class="line" d="M0 78 C30 74 45 70 70 64 S110 66 135 52 S175 44 200 34 S250 22 300 8" fill="none" stroke="url(#lg)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span class="m-label">вартість ліда (CPL)</span>
+              <span class="m-value" data-count="-38" data-suffix="%">0%</span>
+              <span class="m-delta">▼ дешевше</span>
+            </div>
+            <div class="metric">
+              <span class="m-label">якість дзвінків</span>
+              <span class="m-value" data-count="87" data-suffix="/100">0</span>
+              <span class="m-delta">▲ AI-контроль</span>
+            </div>
+          </div>
+        </div>
+        <div class="report-foot">нові пацієнти · чесний розподіл витрат · <b>AI-оцінка дзвінків</b></div>
       </div>
-      <div class="report-body">
-        <div class="metric hl">
-          <span class="m-label">ROMI</span>
-          <span><span class="m-value" data-count="340" data-suffix="%">0%</span><span class="m-delta">▲ зростання</span></span>
-        </div>
-        <div class="metric">
-          <span class="m-label">вартість ліда (CPL)</span>
-          <span><span class="m-value" data-count="-38" data-suffix="%">0%</span><span class="m-delta">дешевше</span></span>
-        </div>
-        <div class="metric">
-          <span class="m-label">якість дзвінків (AI-оцінка)</span>
-          <span><span class="m-value" data-count="87" data-suffix="/100">0</span><span class="m-delta">▲ контроль</span></span>
-        </div>
-      </div>
-      <div class="report-foot">нові пацієнти · чесний розподіл витрат · <b>AI-оцінка дзвінків</b></div>
+      <div class="float-chip chip-a"><span class="ic">▲</span><div>Новий лід з Google Ads<small>щойно</small></div></div>
     </div>
   </div>
 </section>
 
 <!-- ===== інструменти ===== -->
-<div class="tools">
-  <div class="wrap tools-inner">
+<div class="marquee" aria-label="Інструменти">
+  <div class="marquee-track">
     <span>Google Ads</span><span>Meta Ads</span><span>GA4</span><span>Google Tag Manager</span><span>Make / n8n</span><span>Claude API</span><span>Ringostat / Binotel</span>
+    <span aria-hidden="true">Google Ads</span><span aria-hidden="true">Meta Ads</span><span aria-hidden="true">GA4</span><span aria-hidden="true">Google Tag Manager</span><span aria-hidden="true">Make / n8n</span><span aria-hidden="true">Claude API</span><span aria-hidden="true">Ringostat / Binotel</span>
   </div>
 </div>
 
@@ -334,76 +552,84 @@ footer{padding:36px 0 110px;color:var(--ink-soft);font-size:14px}
       <h2>Чотири рівні однієї системи</h2>
       <p>Можна замовити окремо, але максимальний результат — коли все працює разом.</p>
     </div>
-    <div class="grid-4">
-      <div class="card reveal">
+    <div class="bento">
+      <div class="card ai reveal">
+        <span class="badge-new">немає в агентств</span>
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></svg></div>
+        <span class="c-tag">AI-продажі</span>
+        <h3>AI-аналіз дзвінків відділу продажів</h3>
+        <p>Кожен дзвінок ваших менеджерів автоматично оцінюється штучним інтелектом за 15 критеріями. Ви бачите, де втрачаються ліди, за які вже заплачено. Послуга, якої немає в агентств.</p>
+        <div class="calls" aria-hidden="true">
+          <div class="call ok"><span>менеджер_01</span><span class="bar"><i style="--w:92%"></i></span><b>92</b></div>
+          <div class="call mid"><span>менеджер_02</span><span class="bar"><i style="--w:68%"></i></span><b>68</b></div>
+          <div class="call bad"><span>менеджер_03</span><span class="bar"><i style="--w:41%"></i></span><b>41</b></div>
+        </div>
+      </div>
+      <div class="card reveal d1">
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
         <span class="c-tag">Google Ads</span>
         <h3>Google Ads</h3>
         <p>Пошук, Performance Max, ремаркетинг. Семантика, оголошення, розширення, UTM-розмітка — і щотижнева оптимізація за реальними зверненнями, а не кліками.</p>
       </div>
-      <div class="card reveal">
+      <div class="card reveal d2">
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></div>
         <span class="c-tag">Meta Ads</span>
         <h3>Meta Ads</h3>
         <p>Facebook та Instagram: стратегія, креативи, аудиторії, A/B-тести. Працюю в зв'язці з відеографом — креативи не доведеться шукати окремо.</p>
       </div>
-      <div class="card reveal">
+      <div class="card reveal" style="grid-column:1/-1">
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
         <span class="c-tag">Аналітика</span>
         <h3>Веб-аналітика</h3>
         <p>GA4, Tag Manager, колтрекінг, наскрізна аналітика до угоди. Ви бачите, який канал приносить гроші, а який лише витрачає бюджет.</p>
-      </div>
-      <div class="card ai reveal">
-        <span class="c-tag">AI-продажі</span>
-        <h3>AI-аналіз дзвінків відділу продажів</h3>
-        <p>Кожен дзвінок ваших менеджерів автоматично оцінюється штучним інтелектом за 15 критеріями. Ви бачите, де втрачаються ліди, за які вже заплачено. Послуга, якої немає в агентств.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===== КЕЙСИ ===== -->
-<section id="cases" style="padding:0">
-  <div class="cases">
-    <div class="wrap" style="padding-top:76px;padding-bottom:76px">
-      <div class="sec-head reveal">
-        <span class="tag">Кейси</span>
-        <h2>Цифри замість обіцянок</h2>
-        <p>Назви клієнтів — під NDA. Результати — у щомісячних звітах, які бачить власник.</p>
-      </div>
-      <div class="case-grid">
-        <article class="case reveal">
-          <span class="niche">медицина · приватна клініка</span>
-          <span class="big" data-count="340" data-suffix="%">0%</span>
-          <span class="big-label">ROMI за напрямками</span>
-          <p>Google Ads для медичних послуг: від дерматоскопії до мамології. Щомісячний звіт ROMI по кожному напрямку — лише нові пацієнти, чесний розподіл витрат.</p>
-        </article>
-        <article class="case reveal">
-          <span class="niche">рітейл · будівельні матеріали</span>
-          <span class="big" data-count="6" data-suffix=" відділів">0</span>
-          <span class="big-label">під AI-контролем якості</span>
-          <p>Побудував систему: телефонія → AI-оцінка кожного дзвінка → звіт у Google Sheets і Telegram. Керівник бачить слабкі місця продажів щодня, а не раз на квартал.</p>
-        </article>
-        <article class="case reveal">
-          <span class="niche">B2B · виробник дверей</span>
-          <span class="big" data-count="100" data-suffix="+">0</span>
-          <span class="big-label">дилерів охоплено промо</span>
-          <p>Дистрибуційна B2B-кампанія: механіка акції, правила, креативи, комунікація з дилерською мережею — під ключ, з урахуванням рекламних обмежень.</p>
-        </article>
-      </div>
+<section id="cases" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag">Кейси</span>
+      <h2>Цифри замість обіцянок</h2>
+      <p>Назви клієнтів — під NDA. Результати — у щомісячних звітах, які бачить власник.</p>
+    </div>
+    <div class="case-grid">
+      <article class="card case reveal">
+        <span class="niche">медицина · приватна клініка</span>
+        <span class="big" data-count="340" data-suffix="%">0%</span>
+        <span class="big-label">ROMI за напрямками</span>
+        <p>Google Ads для медичних послуг: від дерматоскопії до мамології. Щомісячний звіт ROMI по кожному напрямку — лише нові пацієнти, чесний розподіл витрат.</p>
+      </article>
+      <article class="card case reveal d1">
+        <span class="niche">рітейл · будівельні матеріали</span>
+        <span class="big" data-count="6" data-suffix=" відділів">0</span>
+        <span class="big-label">під AI-контролем якості</span>
+        <p>Побудував систему: телефонія → AI-оцінка кожного дзвінка → звіт у Google Sheets і Telegram. Керівник бачить слабкі місця продажів щодня, а не раз на квартал.</p>
+      </article>
+      <article class="card case reveal d2">
+        <span class="niche">B2B · виробник дверей</span>
+        <span class="big" data-count="100" data-suffix="+">0</span>
+        <span class="big-label">дилерів охоплено промо</span>
+        <p>Дистрибуційна B2B-кампанія: механіка акції, правила, креативи, комунікація з дилерською мережею — під ключ, з урахуванням рекламних обмежень.</p>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- ===== ПРОЦЕС ===== -->
-<section id="process">
+<section id="process" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="tag">Процес</span>
       <h2>Як ми працюємо</h2>
     </div>
     <div class="steps">
-      <div class="step reveal"><h3>Аудит</h3><p>Безкоштовно дивлюся ваші кампанії й аналітику. Кажу чесно: що зламано, що працює, скільки грошей витікає.</p></div>
-      <div class="step reveal"><h3>Стратегія</h3><p>План на 3 місяці: канали, бюджети, прогноз вартості ліда. Без обіцянок "перше місце в Google за тиждень".</p></div>
-      <div class="step reveal"><h3>Запуск</h3><p>Кампанії, аналітика, колтрекінг, UTM. Перші ліди — зазвичай у перші 1–2 тижні після запуску.</p></div>
-      <div class="step reveal"><h3>Звітність</h3><p>Щомісяця — звіт з ROMI, зрозумілий власнику бізнесу, а не лише маркетологу. Цифри, висновки, наступні кроки.</p></div>
+      <div class="card step reveal"><h3>Аудит</h3><p>Безкоштовно дивлюся ваші кампанії й аналітику. Кажу чесно: що зламано, що працює, скільки грошей витікає.</p></div>
+      <div class="card step reveal d1"><h3>Стратегія</h3><p>План на 3 місяці: канали, бюджети, прогноз вартості ліда. Без обіцянок "перше місце в Google за тиждень".</p></div>
+      <div class="card step reveal d2"><h3>Запуск</h3><p>Кампанії, аналітика, колтрекінг, UTM. Перші ліди — зазвичай у перші 1–2 тижні після запуску.</p></div>
+      <div class="card step reveal d3"><h3>Звітність</h3><p>Щомісяця — звіт з ROMI, зрозумілий власнику бізнесу, а не лише маркетологу. Цифри, висновки, наступні кроки.</p></div>
     </div>
   </div>
 </section>
@@ -416,35 +642,53 @@ footer{padding:36px 0 110px;color:var(--ink-soft);font-size:14px}
       <h2>Чому не агентство</h2>
     </div>
     <div class="why">
-      <div class="card reveal"><h3>Без агентських націнок</h3><p>Ви працюєте напряму зі спеціалістом, який веде ваш проєкт — а не з акаунт-менеджером, який передає задачі стажеру.</p></div>
-      <div class="card reveal"><h3>Звіти для власника</h3><p>ROMI, вартість звернення, окупність по напрямках. Жодних "охоплень" і "показів" замість грошей.</p></div>
-      <div class="card reveal"><h3>AI-інструменти</h3><p>Автоматизація на Make, аналіз дзвінків через Claude API, контроль якості продажів. Технології, до яких більшість агентств ще не дійшла.</p></div>
+      <div class="card reveal">
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+        <h3>Без агентських націнок</h3><p>Ви працюєте напряму зі спеціалістом, який веде ваш проєкт — а не з акаунт-менеджером, який передає задачі стажеру.</p>
+      </div>
+      <div class="card reveal d1">
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 17v-3M12 17v-6M16 17v-2"/></svg></div>
+        <h3>Звіти для власника</h3><p>ROMI, вартість звернення, окупність по напрямках. Жодних "охоплень" і "показів" замість грошей.</p>
+      </div>
+      <div class="card reveal d2">
+        <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17l.7 1.8 1.8.7-1.8.7L19 22l-.7-1.8-1.8-.7 1.8-.7z"/></svg></div>
+        <h3>AI-інструменти</h3><p>Автоматизація на Make, аналіз дзвінків через Claude API, контроль якості продажів. Технології, до яких більшість агентств ще не дійшла.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===== FAQ ===== -->
 <section id="faq" style="padding-top:0">
-  <div class="wrap" style="max-width:760px">
+  <div class="wrap faq-grid">
     <div class="sec-head reveal">
       <span class="tag">FAQ</span>
       <h2>Часті запитання</h2>
+      <p>Не знайшли відповіді? Напишіть у Telegram — відповім протягом робочого дня.</p>
     </div>
-    <details class="reveal"><summary>Який мінімальний рекламний бюджет потрібен?</summary><div class="a">Залежить від ніші та регіону. Для локального бізнесу старт зазвичай від 15–20 тис. грн/міс на рекламу. На безкоштовному аудиті порахуємо саме під вашу нішу — і чесно скажу, якщо з меншим бюджетом заходити не варто.</div></details>
-    <details class="reveal"><summary>Коли будуть перші результати?</summary><div class="a">Перші звернення — зазвичай протягом 1–2 тижнів після запуску. Стабільна вартість ліда та оптимізація — 1–2 місяці. Все, що обіцяє "вибух продажів за 3 дні", — маркетинг продавця, а не ваш.</div></details>
-    <details class="reveal"><summary>Який формат співпраці?</summary><div class="a">Щомісячний супровід (ретейнер): ведення кампаній, аналітика, звітність. Працюю офіційно як ФОП — договір, рахунки, акти.</div></details>
-    <details class="reveal"><summary>Як виглядає звітність?</summary><div class="a">Щомісячний звіт: витрати, звернення, вартість ліда, ROMI по напрямках. Плюс короткі висновки людською мовою — що зробили, що змінюємо далі. За потреби — дзвінок з розбором.</div></details>
-    <details class="reveal"><summary>Що таке AI-аналіз дзвінків і навіщо він мені?</summary><div class="a">Реклама приводить дзвінки, але якщо менеджер відповідає погано — гроші втрачено. Система автоматично прослуховує й оцінює кожен дзвінок за 15 критеріями, а ви отримуєте звіт: хто з менеджерів зливає ліди і чому. Це закриває розрив між маркетингом і продажами.</div></details>
+    <div>
+      <details class="reveal"><summary>Який мінімальний рекламний бюджет потрібен?<span class="pm" aria-hidden="true"></span></summary><div class="a">Залежить від ніші та регіону. Для локального бізнесу старт зазвичай від 15–20 тис. грн/міс на рекламу. На безкоштовному аудиті порахуємо саме під вашу нішу — і чесно скажу, якщо з меншим бюджетом заходити не варто.</div></details>
+      <details class="reveal"><summary>Коли будуть перші результати?<span class="pm" aria-hidden="true"></span></summary><div class="a">Перші звернення — зазвичай протягом 1–2 тижнів після запуску. Стабільна вартість ліда та оптимізація — 1–2 місяці. Все, що обіцяє "вибух продажів за 3 дні", — маркетинг продавця, а не ваш.</div></details>
+      <details class="reveal"><summary>Який формат співпраці?<span class="pm" aria-hidden="true"></span></summary><div class="a">Щомісячний супровід (ретейнер): ведення кампаній, аналітика, звітність. Працюю офіційно як ФОП — договір, рахунки, акти.</div></details>
+      <details class="reveal"><summary>Як виглядає звітність?<span class="pm" aria-hidden="true"></span></summary><div class="a">Щомісячний звіт: витрати, звернення, вартість ліда, ROMI по напрямках. Плюс короткі висновки людською мовою — що зробили, що змінюємо далі. За потреби — дзвінок з розбором.</div></details>
+      <details class="reveal"><summary>Що таке AI-аналіз дзвінків і навіщо він мені?<span class="pm" aria-hidden="true"></span></summary><div class="a">Реклама приводить дзвінки, але якщо менеджер відповідає погано — гроші втрачено. Система автоматично прослуховує й оцінює кожен дзвінок за 15 критеріями, а ви отримуєте звіт: хто з менеджерів зливає ліди і чому. Це закриває розрив між маркетингом і продажами.</div></details>
+    </div>
   </div>
 </section>
 
 <!-- ===== ФІНАЛЬНИЙ CTA ===== -->
-<section style="padding-top:0">
-  <div class="final reveal">
-    <h2>Дізнайтесь, скільки грошей зараз витікає з вашої реклами</h2>
-    <p>Безкоштовний аудит: розбір ваших кампаній, аналітики й перших точок зростання. Без зобов'язань.</p>
-    <a class="btn" href="https://t.me/igor_vn">Написати в Telegram</a>
-    <div class="mono-line">Відповідаю протягом робочого дня</div>
+<section style="padding-top:0;padding-bottom:40px">
+  <div class="wrap">
+    <div class="final reveal">
+      <span class="tag" style="margin-bottom:24px;color:#C8D2FF">Безкоштовний аудит</span>
+      <h2>Дізнайтесь, скільки грошей зараз витікає з вашої реклами</h2>
+      <p>Безкоштовний аудит: розбір ваших кампаній, аналітики й перших точок зростання. Без зобов'язань.</p>
+      <div class="final-cta">
+        <a class="btn" href="https://t.me/igor_vn">Написати в Telegram <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="tel:+380631087185">+380 63 108 71 85</a>
+      </div>
+      <div class="mono-line"><span class="live"></span>Відповідаю протягом робочого дня</div>
+    </div>
   </div>
 </section>
 
@@ -453,10 +697,10 @@ footer{padding:36px 0 110px;color:var(--ink-soft);font-size:14px}
 <footer>
   <div class="wrap foot">
     <div>
-      <a data-target="#top" tabindex="0" role="link" style="font-family:var(--display);font-weight:700">ihor<span style="color:var(--cobalt)">.marketing</span></a>
-      <div class="mono" style="margin-top:6px">ФОП · Вінниця, Україна</div>
+      <a class="logo" href="#top"><i aria-hidden="true"></i>ihor<span>.marketing</span></a>
+      <div class="mono" style="margin-top:8px">ФОП · Вінниця, Україна · © <span id="yr">2026</span></div>
     </div>
-    <div style="display:flex;gap:22px;flex-wrap:wrap">
+    <div class="foot-links">
       <a href="https://t.me/igor_vn">Telegram</a>
       <a href="tel:+380631087185">+380 63 108 71 85</a>
       <a href="mailto:ihor.hryhorenko92@gmail.com">ihor.hryhorenko92@gmail.com</a>
@@ -470,55 +714,81 @@ footer{padding:36px 0 110px;color:var(--ink-soft);font-size:14px}
 </a>
 
 <script>
-// Плавний скрол по внутрішніх посиланнях (без href — щоб пісочниці прев'ю не перехоплювали клік)
-document.querySelectorAll('[data-target]').forEach(function(a){
-  a.style.cursor = 'pointer';
-  function go(e){
-    var target = document.querySelector(a.getAttribute('data-target'));
-    if(target){
-      e.preventDefault();
-      target.scrollIntoView({behavior:'smooth', block:'start'});
-    }
-  }
-  a.addEventListener('click', go);
-  a.addEventListener('keydown', function(e){ if(e.key==='Enter') go(e); });
-});
-
-// Поява блоків при скролі + лічильники в метриках
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hdr = document.getElementById('hdr');
+  var menu = document.getElementById('menu');
+  var burger = document.getElementById('burger');
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
+  // Мобільне меню
+  function setMenu(open){
+    menu.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  burger.addEventListener('click', function(){ setMenu(!menu.classList.contains('open')); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setMenu(false); });
+
+  // Плавний скрол по якорях (JS, щоб пісочниці прев'ю не перехоплювали клік)
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var target = document.querySelector(a.getAttribute('href'));
+      if(!target) return;
+      e.preventDefault();
+      setMenu(false);
+      target.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', block:'start'});
+    });
+  });
+
+  // Хедер при скролі
+  function onScroll(){ hdr.classList.toggle('scrolled', window.scrollY > 20); }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Підсвітка карток за курсором
+  document.querySelectorAll('.card').forEach(function(c){
+    c.addEventListener('pointermove', function(e){
+      var r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // Лічильники
   function countUp(el){
-    var target = parseInt(el.dataset.count,10);
+    var target = parseInt(el.dataset.count, 10);
     var suffix = el.dataset.suffix || '';
     if(reduced){ el.textContent = target + suffix; return; }
-    var start = null, dur = 1200;
+    var start = null, dur = 1400;
     function frame(ts){
       if(!start) start = ts;
-      var p = Math.min((ts-start)/dur,1);
-      var eased = 1-Math.pow(1-p,3);
-      el.textContent = Math.round(target*eased) + suffix;
-      if(p<1) requestAnimationFrame(frame);
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if(p < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }
 
+  // Поява блоків при скролі
   var counted = new WeakSet();
+  function reveal(el){
+    el.classList.add('in');
+    var inner = el.querySelector('.report');
+    if(inner) inner.classList.add('in');
+    el.querySelectorAll('[data-count]').forEach(function(c){
+      if(!counted.has(c)){ counted.add(c); countUp(c); }
+    });
+  }
+  if(!('IntersectionObserver' in window)){
+    document.querySelectorAll('.reveal').forEach(reveal);
+    return;
+  }
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(e.isIntersecting){
-        e.target.classList.add('in');
-        e.target.querySelectorAll('[data-count]').forEach(function(c){
-          if(!counted.has(c)){ counted.add(c); countUp(c); }
-        });
-        if(e.target.hasAttribute('data-count') && !counted.has(e.target)){
-          counted.add(e.target); countUp(e.target);
-        }
-        io.unobserve(e.target);
-      }
+      if(e.isIntersecting){ reveal(e.target); io.unobserve(e.target); }
     });
-  },{threshold:.2});
-
+  }, {threshold:.15, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 })();
 </script>
