@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Як підготуватися до аналізів — BP Medical, Вінниця</title>
+<meta name="description" content="Інтерактивний гід з підготовки до аналізів і обстежень у клініці BP Medical: оберіть процедури — отримайте персональний чек-лист.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F4F7FA}
+</style>
+</head>
+<body>
+
+<!-- ===================== BP MEDICAL · ГІД З ПІДГОТОВКИ — ПОЧАТОК МОДУЛЯ ===================== -->
+<style>
+#bpg{
+  --bpg-brand:#0E7C86;
+  --bpg-brand-2:#0A5E66;
+  --bpg-brand-soft:#E3F3F4;
+  --bpg-accent:#E4572E;
+  --bpg-ink:#15222B;
+  --bpg-ink-soft:#4A5A66;
+  --bpg-ink-mute:#7C8B96;
+  --bpg-bg:#FFFFFF;
+  --bpg-bg-2:#F4F7FA;
+  --bpg-line:#DCE4EA;
+  --bpg-warn-bg:#FFF4E5;
+  --bpg-warn-ink:#8A4B00;
+  --bpg-radius:18px;
+  font-family:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color:var(--bpg-ink);
+  background:var(--bpg-bg-2);
+  padding:48px 16px 56px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+#bpg *,#bpg *::before,#bpg *::after{box-sizing:border-box}
+#bpg h2,#bpg h3,#bpg h4,#bpg p,#bpg ul,#bpg ol{margin:0;padding:0}
+#bpg ul,#bpg ol{list-style:none}
+#bpg button{font:inherit;color:inherit;cursor:pointer}
+#bpg .bpg-wrap{max-width:1160px;margin:0 auto}
+
+/* header */
+#bpg .bpg-head{text-align:center;max-width:720px;margin:0 auto 28px}
+#bpg .bpg-kicker{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--bpg-brand);background:var(--bpg-brand-soft);padding:6px 12px;border-radius:999px;margin-bottom:14px}
+#bpg h2.bpg-title{font-size:clamp(26px,4vw,38px);line-height:1.15;font-weight:700;letter-spacing:-.01em}
+#bpg .bpg-lead{margin-top:12px;color:var(--bpg-ink-soft);font-size:17px}
+#bpg .bpg-steps{display:flex;justify-content:center;gap:8px 20px;flex-wrap:wrap;margin-top:18px;font-size:14px;color:var(--bpg-ink-soft)}
+#bpg .bpg-steps b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--bpg-brand);color:#fff;font-size:12px;margin-right:6px}
+
+/* layout */
+#bpg .bpg-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+#bpg .bpg-card{min-width:0;background:var(--bpg-bg);border:1px solid var(--bpg-line);border-radius:var(--bpg-radius);padding:20px}
+
+/* picker */
+#bpg .bpg-search{position:relative;margin-bottom:14px}
+#bpg .bpg-search input{width:100%;font:inherit;font-size:16px;padding:12px 14px 12px 42px;border:1px solid var(--bpg-line);border-radius:12px;background:var(--bpg-bg-2);color:var(--bpg-ink);outline:none;transition:border-color .15s,box-shadow .15s}
+#bpg .bpg-search input:focus{border-color:var(--bpg-brand);box-shadow:0 0 0 3px var(--bpg-brand-soft);background:#fff}
+#bpg .bpg-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--bpg-ink-mute)}
+#bpg .bpg-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:thin}
+#bpg .bpg-tab{flex:none;border:1px solid var(--bpg-line);background:#fff;border-radius:999px;padding:7px 13px;font-size:14px;white-space:nowrap;transition:all .15s}
+#bpg .bpg-tab:hover{border-color:var(--bpg-brand)}
+#bpg .bpg-tab[aria-pressed="true"]{background:var(--bpg-brand);border-color:var(--bpg-brand);color:#fff}
+#bpg .bpg-group{margin-top:14px}
+#bpg .bpg-group h3{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--bpg-ink-mute);margin-bottom:8px}
+#bpg .bpg-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#bpg .bpg-item{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;background:#fff;border:1px solid var(--bpg-line);border-radius:12px;padding:11px 12px;transition:border-color .15s,background .15s,transform .1s}
+#bpg .bpg-item:hover{border-color:var(--bpg-brand)}
+#bpg .bpg-item:active{transform:scale(.99)}
+#bpg .bpg-item[aria-pressed="true"]{border-color:var(--bpg-brand);background:var(--bpg-brand-soft)}
+#bpg .bpg-check{flex:none;width:20px;height:20px;border-radius:6px;border:2px solid var(--bpg-line);display:grid;place-items:center;margin-top:1px;transition:all .15s}
+#bpg .bpg-item[aria-pressed="true"] .bpg-check{background:var(--bpg-brand);border-color:var(--bpg-brand)}
+#bpg .bpg-check svg{width:12px;height:12px;color:#fff;opacity:0}
+#bpg .bpg-item[aria-pressed="true"] .bpg-check svg{opacity:1}
+#bpg .bpg-item-name{font-weight:600;font-size:15px;line-height:1.3}
+#bpg .bpg-item-meta{display:block;font-size:13px;color:var(--bpg-ink-mute);margin-top:3px}
+#bpg .bpg-empty{padding:24px 8px;text-align:center;color:var(--bpg-ink-mute)}
+
+/* result */
+#bpg .bpg-result{position:sticky;top:16px}
+#bpg .bpg-result-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+#bpg .bpg-result-head h3{font-size:19px;font-weight:700}
+#bpg .bpg-count{font-size:13px;font-weight:600;background:var(--bpg-brand-soft);color:var(--bpg-brand-2);padding:4px 10px;border-radius:999px}
+#bpg .bpg-placeholder{text-align:center;padding:28px 10px;color:var(--bpg-ink-mute)}
+#bpg .bpg-placeholder svg{width:48px;height:48px;color:var(--bpg-brand);opacity:.6;margin-bottom:10px}
+#bpg .bpg-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+#bpg .bpg-chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;background:var(--bpg-bg-2);border:1px solid var(--bpg-line);border-radius:999px;padding:4px 6px 4px 10px}
+#bpg .bpg-chip button{border:0;background:transparent;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:var(--bpg-ink-mute)}
+#bpg .bpg-chip button:hover{background:var(--bpg-line);color:var(--bpg-ink)}
+
+#bpg .bpg-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:14px}
+#bpg .bpg-stat{background:var(--bpg-bg-2);border-radius:12px;padding:10px 12px}
+#bpg .bpg-stat small{display:block;font-size:12px;color:var(--bpg-ink-mute)}
+#bpg .bpg-stat strong{font-size:16px}
+#bpg .bpg-time{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--bpg-brand-soft);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:14px}
+#bpg .bpg-time input{font:inherit;font-size:15px;border:1px solid var(--bpg-line);border-radius:8px;padding:5px 8px;background:#fff;color:var(--bpg-ink)}
+#bpg .bpg-time output{font-weight:600;color:var(--bpg-brand-2)}
+
+#bpg .bpg-warn{background:var(--bpg-warn-bg);color:var(--bpg-warn-ink);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+#bpg .bpg-warn li{padding-left:18px;position:relative}
+#bpg .bpg-warn li+li{margin-top:6px}
+#bpg .bpg-warn li::before{content:"!";position:absolute;left:0;top:0;font-weight:700}
+
+#bpg .bpg-tl{position:relative;margin:4px 0 6px}
+#bpg .bpg-phase{position:relative;padding:0 0 14px 26px}
+#bpg .bpg-phase::before{content:"";position:absolute;left:7px;top:18px;bottom:0;width:2px;background:var(--bpg-line)}
+#bpg .bpg-phase:last-child::before{display:none}
+#bpg .bpg-dot{position:absolute;left:0;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--bpg-brand)}
+#bpg .bpg-phase h4{font-size:15px;font-weight:700;margin-bottom:6px}
+#bpg .bpg-phase li{font-size:14px;color:var(--bpg-ink-soft);padding-left:14px;position:relative}
+#bpg .bpg-phase li+li{margin-top:5px}
+#bpg .bpg-phase li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--bpg-brand)}
+#bpg .bpg-phase li em{font-style:normal;color:var(--bpg-ink-mute);font-size:12px}
+
+#bpg .bpg-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+#bpg .bpg-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:11px 16px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid var(--bpg-line);background:#fff;color:var(--bpg-ink);transition:all .15s}
+#bpg .bpg-btn:hover{border-color:var(--bpg-brand);color:var(--bpg-brand-2)}
+#bpg .bpg-btn-primary{background:var(--bpg-accent);border-color:var(--bpg-accent);color:#fff;flex:1 1 100%}
+#bpg .bpg-btn-primary:hover{background:#C9451F;border-color:#C9451F;color:#fff}
+#bpg .bpg-btn svg{width:18px;height:18px}
+#bpg .bpg-btn.bpg-small{flex:1 1 0;padding:9px 10px;font-size:14px}
+#bpg .bpg-toast{font-size:13px;color:var(--bpg-brand-2);min-height:18px;margin-top:6px;text-align:center}
+
+#bpg .bpg-rules{margin-top:20px}
+#bpg .bpg-rules summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+#bpg .bpg-rules summary::-webkit-details-marker{display:none}
+#bpg .bpg-rules summary::after{content:"+";font-size:22px;color:var(--bpg-brand);transition:transform .2s}
+#bpg .bpg-rules[open] summary::after{transform:rotate(45deg)}
+#bpg .bpg-rules ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px;margin-top:14px;counter-reset:r}
+#bpg .bpg-rules ol li{counter-increment:r;position:relative;padding-left:34px;font-size:15px;color:var(--bpg-ink-soft)}
+#bpg .bpg-rules ol li::before{content:counter(r);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--bpg-brand-soft);color:var(--bpg-brand-2);font-weight:700;font-size:13px;display:grid;place-items:center}
+#bpg .bpg-foot{margin-top:18px;font-size:13px;color:var(--bpg-ink-mute);text-align:center;max-width:760px;margin-left:auto;margin-right:auto}
+#bpg .bpg-foot a{color:var(--bpg-brand-2)}
+#bpg .bpg-link{font-size:13px;color:var(--bpg-brand-2);text-decoration:none}
+#bpg .bpg-link:hover{text-decoration:underline}
+#bpg :focus-visible{outline:3px solid var(--bpg-brand);outline-offset:2px}
+#bpg .bpg-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (max-width:900px){
+  #bpg .bpg-grid{grid-template-columns:minmax(0,1fr)}
+  #bpg .bpg-result{position:static}
+}
+@media (max-width:560px){
+  #bpg{padding:32px 16px 40px}
+  #bpg .bpg-list,#bpg .bpg-rules ol{grid-template-columns:1fr}
+  #bpg .bpg-card{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){#bpg *{transition:none!important}}
+@media print{
+  body *{visibility:hidden}
+  #bpg-print,#bpg-print *{visibility:visible}
+  #bpg-print{position:absolute;left:0;top:0;width:100%;border:0!important}
+  #bpg .bpg-actions,#bpg .bpg-chip button,#bpg .bpg-time input,#bpg .bpg-toast{display:none!important}
+}
+</style>
+
+<section id="bpg" aria-labelledby="bpg-title">
+  <div class="bpg-wrap">
+    <header class="bpg-head">
+      <span class="bpg-kicker">Гід для пацієнта</span>
+      <h2 class="bpg-title" id="bpg-title">Як підготуватися до аналізів і обстежень</h2>
+      <p class="bpg-lead">Оберіть процедури, на які ви записані, і отримайте персональний чек-лист: коли востаннє їсти, що скасувати заздалегідь і що взяти з собою в клініку.</p>
+      <div class="bpg-steps" aria-hidden="true"><span><b>1</b>Оберіть процедури</span><span><b>2</b>Вкажіть час запису</span><span><b>3</b>Збережіть чек-лист</span></div>
+    </header>
+
+    <div class="bpg-grid">
+      <!-- ліва колонка: вибір процедур -->
+      <div class="bpg-card" aria-label="Перелік аналізів і обстежень">
+        <label class="bpg-search">
+          <span class="bpg-sr">Пошук процедури</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+          <input type="search" id="bpg-q" placeholder="Пошук: феритин, УЗД, колоноскопія…" autocomplete="off">
+        </label>
+        <div class="bpg-tabs" id="bpg-tabs" role="toolbar" aria-label="Категорії"></div>
+        <div id="bpg-groups"></div>
+      </div>
+
+      <!-- права колонка: персональний чек-лист -->
+      <aside class="bpg-card bpg-result" id="bpg-print" aria-live="polite">
+        <div class="bpg-result-head">
+          <h3>Ваш чек-лист підготовки</h3>
+          <span class="bpg-count" id="bpg-count">0</span>
+        </div>
+        <div id="bpg-out"></div>
+      </aside>
+    </div>
+
+    <details class="bpg-card bpg-rules">
+      <summary>8 правил перед будь-яким аналізом крові</summary>
+      <ol>
+        <li>Кров здають зранку, з 8:00 до 11:00, — так результати можна порівнювати з референсними значеннями.</li>
+        <li>Не їжте 8–12 годин. Пити можна тільки чисту негазовану воду.</li>
+        <li>За добу відмовтеся від алкоголю, жирної та смаженої їжі.</li>
+        <li>За добу не робіть інтенсивних тренувань, не ходіть у сауну.</li>
+        <li>Не куріть щонайменше за 1 годину до забору крові.</li>
+        <li>Ліки — зранку <b>після</b> забору крові, якщо лікар не сказав інакше. Скасовувати постійну терапію самостійно не можна.</li>
+        <li>Прийдіть на 10–15 хвилин раніше, щоб перед забором посидіти й відпочити.</li>
+        <li>Ліки, вітаміни та БАДи, які ви приймаєте, назвіть медсестрі: деякі з них впливають на результат.</li>
+      </ol>
+    </details>
+
+    <p class="bpg-foot">Гід містить загальні рекомендації й не замінює консультацію лікаря. Якщо лікар дав вам іншу схему підготовки, дотримуйтеся її. Приймаєте антикоагулянти, інсулін чи іншу постійну терапію? Перед записом обов'язково порадьтеся з лікарем. Питання: <a href="tel:+380800337617">0 800 337 617</a> (безкоштовно) · BP Medical, Вінниця, вул. Стрілецька, 7Д.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.getElementById("bpg");
+  if(!root) return;
+
+  /* ---------- Налаштування клініки ---------- */
+  var CLINIC = {
+    name: "BP Medical",
+    phone: "+380800337617",
+    phoneLabel: "0 800 337 617",
+    bookUrl: "https://bpmedical.com.ua/czini-na-poslugi/",
+    address: "м. Вінниця, вул. Стрілецька, 7Д (4–5 поверх)"
+  };
+  var SITE = "https://bpmedical.com.ua";
+
+  /* ---------- Етапи підготовки (порядок таймлайну) ---------- */
+  var PHASES = [
+    ["d7",   "За 5–7 днів"],
+    ["d3",   "За 2–3 дні"],
+    ["d1",   "Напередодні"],
+    ["eve",  "Увечері перед процедурою"],
+    ["day",  "У день процедури"],
+    ["bring","Візьміть із собою"],
+    ["after","Після процедури"]
+  ];
+
+  var CATS = [
+    ["lab",   "Аналізи крові та сечі"],
+    ["uzd",   "УЗД"],
+    ["func",  "ЕКГ"],
+    ["endo",  "Ендоскопія"],
+    ["gyn",   "Гінекологія"],
+    ["punct", "Пункції та біопсії"],
+    ["derm",  "Шкіра та волосся"],
+    ["onco",  "КТ / МРТ / ПЕТ-КТ"]
+  ];
+
+  /*
+    Процедури, які надає BP Medical (за сайтом bpmedical.com.ua).
+    fast  — скільки годин не їсти перед процедурою (0 — без обмежень)
+    water — за скільки годин припинити пити воду (0 — пити можна)
+    order — порядок проходження, якщо процедури в один день (менше = раніше)
+    sex   — "f" лише для жінок, "m" лише для чоловіків
+  */
+  var TESTS = [
+    /* ---- Лабораторія ---- */
+    {id:"zak", cat:"lab", name:"Загальний (клінічний) аналіз крові", kw:"зак кров гемоглобін лейкоцити тромбоцити соє", fast:8, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d1:["Відмовтеся від жирної їжі, алкоголю та інтенсивних тренувань"],
+             day:["Здавайте натщесерце, з 8:00 до 11:00. Можна чисту воду","Не куріть щонайменше 1 годину до забору"]}},
+    {id:"bio", cat:"lab", name:"Біохімічний аналіз крові", kw:"біохімія глюкоза холестерин креатинін сечовина білок", fast:12, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d3:["Не вживайте алкоголь 48 годин до аналізу"],
+             d1:["Звичайний раціон без жирного, смаженого й солодощів у великій кількості","Без сауни й важких тренувань"],
+             eve:["Легка вечеря не пізніше ніж за 12 годин до забору"],
+             day:["Строго натщесерце: без кави, чаю, соку, жувальної гумки. Можна чисту воду"]}},
+    {id:"liver", cat:"lab", name:"Печінкові проби (АЛТ, АСТ, білірубін, ГГТ)", kw:"печінка алт аст білірубін ггт лужна фосфатаза", fast:12, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d3:["Не вживайте алкоголь 72 години до аналізу"],
+             d1:["Уникайте жирної, гострої та смаженої їжі","Без інтенсивних фізичних навантажень: вони підвищують АСТ"],
+             day:["Натщесерце: після останнього прийому їжі мають минути 12 годин"]},
+      warn:"Жарознижувальні, протизапальні ліки та антибіотики можуть змінювати печінкові показники. Скажіть медсестрі, що ви приймаєте."},
+    {id:"iron", cat:"lab", name:"Обмін заліза (залізо, феритин, трансферин)", kw:"залізо феритин трансферин ожзсс анемія", fast:12, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d7:["Погодьте з лікарем паузу в прийомі препаратів заліза на 5–7 днів"],
+             d1:["Не їжте печінку, червоне м'ясо та гранатовий сік"],
+             day:["Строго зранку, до 10:00: рівень заліза змінюється протягом дня","Натщесерце, пити можна лише воду"]}},
+    {id:"b12", cat:"lab", name:"Вітамін B12", kw:"б12 b12 кобаламін ціанокобаламін", fast:8, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d3:["Погодьте з лікарем паузу в прийомі вітамінів групи B, щонайменше на 2–3 дні"],
+             day:["Натщесерце, пити можна лише воду"]}},
+    {id:"d3", cat:"lab", name:"Вітамін D (25-OH)", kw:"вітамін д d3 25-oh холекальциферол", fast:6, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d1:["Якщо приймаєте вітамін D, не пийте його в день аналізу й напередодні ввечері"],
+             day:["Не їжте щонайменше 6 годин, найкраще прийти натщесерце"]}},
+    {id:"ecp", cat:"lab", name:"Еозинофільний катіонний білок (ECP)", kw:"ecp еозинофільний катіонний білок алергія астма імунолог", fast:6, water:0, order:2, dur:"5 хв",
+      url:SITE+"/departments-2/imunolog/",
+      steps:{d7:["Скажіть лікареві-імунологу про антигістамінні та гормональні препарати: він вирішить, чи потрібна пауза"],
+             d1:["Не займайтеся спортом і не куріть напередодні"],
+             day:["Не їжте 4–6 годин, найкраще прийти натщесерце","Перед забором посидьте в спокої 15 хвилин"]}},
+    {id:"thyroid", cat:"lab", name:"Гормони щитоподібної залози (ТТГ, вільний Т4, АТ-ТПО)", kw:"ттг т4 т3 атпо щитовидка тиреоїдні гормони ендокринолог", fast:8, water:0, order:2, dur:"5 хв",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d3:["За 48 годин припиніть приймати біотин (вітамін B7) та комплекси для волосся й нігтів: вони спотворюють результат"],
+             day:["Зранку, до 10:00, натщесерце","L-тироксин та інші гормони — після забору крові, якщо лікар не сказав інакше"]}},
+    {id:"onco", cat:"lab", name:"Онкомаркери (ПСА, СА-125, СА 15-3, РЕА та ін.)", kw:"онкомаркер пса psa са-125 ca125 са 15-3 рea cea рак", fast:8, water:0, order:1, dur:"5 хв",
+      url:SITE+"/departments-2/himioterapevt/diagnostika-raku/",
+      steps:{d7:["ПСА: здавайте ДО або через 2 тижні після масажу простати, ТРУЗД, біопсії чи цистоскопії","СА-125 (жінки): найкраще здавати через 2–3 дні після закінчення менструації"],
+             d3:["ПСА: 48 годин утримуйтеся від статевих контактів, їзди на велосипеді й верхової їзди"],
+             d1:["Без алкоголю, жирної їжі й важких тренувань"],
+             day:["Натщесерце, пити можна лише воду"]}},
+    {id:"oam", cat:"lab", name:"Загальний аналіз сечі", kw:"сеча оам загальний аналіз сечі", fast:0, water:0, order:0, dur:"вдома",
+      url:SITE+"/diagnostika/laboratorna-diagnostika/",
+      steps:{d1:["Не їжте буряк, чорницю, моркву в надлишку: вони фарбують сечу","Погодьте з лікарем паузу в прийомі сечогінних препаратів","Жінкам: не здавайте під час менструації та 2 дні після неї"],
+             day:["Зберіть першу ранкову сечу після гігієни зовнішніх статевих органів","Першу порцію — в унітаз, середню (50–100 мл) — у стерильний контейнер з аптеки","Доставте в клініку протягом 1,5–2 годин, не охолоджуйте"],
+             bring:["Контейнер з сечею, підписаний: ПІБ і час збору"]}},
+
+    /* ---- УЗД ---- */
+    {id:"uzd-abd", cat:"uzd", name:"УЗД органів черевної порожнини", kw:"узд печінка жовчний підшлункова селезінка нирки черевна", fast:8, water:0, order:3, dur:"20–30 хв",
+      url:SITE+"/diagnostika/uzd-diagnostika/",
+      steps:{d3:["Уникайте продуктів, від яких утворюються гази: капуста, бобові, чорний хліб, сире овоччя та фрукти, молоко, газовані напої, солодка випічка","Якщо схильні до здуття, запитайте лікаря про сорбент або симетикон"],
+             eve:["Легка вечеря до 19:00–20:00"],
+             day:["Не їжте 6–8 годин, не жуйте гумку, не куріть","Можна кілька ковтків води"],
+             bring:["Попередні висновки УЗД (якщо є)"]}},
+    {id:"uzd-pelvis", cat:"uzd", sex:"f", name:"УЗД органів малого тазу (жіноче)", kw:"узд малий таз матка яєчники гінекологічне трансвагінальне", fast:0, water:0, order:3, dur:"20 хв",
+      url:SITE+"/diagnostika/uzd-diagnostika/",
+      steps:{d7:["Оптимально на 5–7 день циклу, якщо лікар не призначив інший день"],
+             d1:["Напередодні відмовтеся від продуктів, що утворюють гази"],
+             day:["Трансвагінальне УЗД: перед процедурою спорожніть сечовий міхур","Трансабдомінальне УЗД: за 1 годину випийте 1–1,5 л негазованої води й не ходіть у туалет до дослідження"],
+             bring:["Дату першого дня останньої менструації","Пелюшку або рушник"]}},
+    {id:"uzd-thyroid", cat:"uzd", name:"УЗД щитоподібної залози", kw:"узд щитовидка щитоподібна залоза вузол", fast:0, water:0, order:3, dur:"15 хв", easy:true,
+      url:SITE+"/diagnostika/uzd-diagnostika/",
+      steps:{day:["Спеціальна підготовка не потрібна","Не вдягайте на шию прикраси та одяг з високим коміром"],
+             bring:["Результати аналізів на гормони (ТТГ, Т4) і попередні УЗД, якщо є"]}},
+    {id:"uzd-breast", cat:"uzd", sex:"f", name:"УЗД молочних залоз", kw:"узд груди молочні залози мамолог мамологія", fast:0, water:0, order:3, dur:"20 хв",
+      url:SITE+"/departments-2/mamolog/",
+      steps:{d7:["Найкраще на 5–12 день менструального циклу. У менопаузі — будь-який день"],
+             day:["Не наносьте крем, лосьйон чи дезодорант на груди та пахви"],
+             bring:["Попередні УЗД чи мамографію для порівняння"]}},
+    {id:"uzd-prostate", cat:"uzd", sex:"m", name:"УЗД передміхурової залози", kw:"узд простата передміхурова залоза трузд уролог", fast:0, water:0, order:3, dur:"20 хв",
+      url:SITE+"/departments-2/urolog/",
+      steps:{day:["Трансабдомінальне УЗД: за 1 годину до дослідження випийте 1–1,5 л води, не спорожнюйте сечовий міхур","ТРУЗД: за 2–3 години до процедури зробіть очисну мікроклізму (наприклад, «Мікролакс»), перед процедурою спорожніть сечовий міхур"],
+             bring:["Результат аналізу ПСА, якщо є"]},
+      warn:"Кров на ПСА здавайте до ТРУЗД або щонайменше через 2 тижні після нього."},
+
+    /* ---- Функціональна ---- */
+    {id:"ecg", cat:"func", name:"ЕКГ (електрокардіограма)", kw:"екг кардіограма серце", fast:0, water:0, order:2.5, dur:"10 хв", easy:true,
+      steps:{day:["Не їжте щільно за 2 години до процедури","За 2 години до ЕКГ не пийте каву й енергетики, не куріть","Не наносьте крем чи лосьйон на груди, гомілки та зап'ястя","Одягніться так, щоб легко звільнити груди та гомілки","Перед записом посидьте в спокої 10–15 хвилин"],
+             bring:["Попередні ЕКГ для порівняння","Список ліків, які ви приймаєте"]}},
+
+    /* ---- Ендоскопія ---- */
+    {id:"fgds", cat:"endo", name:"Гастроскопія (ФГДС)", kw:"гастроскопія фгдс езофагогастродуоденоскопія шлунок", fast:10, water:3, order:4, dur:"10–20 хв", sedation:true,
+      steps:{d7:["Приймаєте антикоагулянти (варфарин, ривароксабан тощо) чи аспірин? Погодьте з лікарем, чи потрібна пауза: під час дослідження можуть взяти біопсію"],
+             eve:["Легка вечеря до 19:00. Без алкоголю"],
+             day:["Не їжте щонайменше 8–10 годин","Пити воду малими ковтками можна до 3 годин перед дослідженням, потім не пийте","Не куріть і не жуйте гумку","Зніміть знімні зубні протези"],
+             bring:["Попередні висновки ФГДС і біопсій","Рушник"],
+             after:["Не їжте 1–2 години після процедури (після біопсії — їжа тепла, не гаряча)","Після седації не сідайте за кермо до кінця дня. Попросіть когось вас супроводити"]}},
+    {id:"fcs", cat:"endo", name:"Колоноскопія", kw:"колоноскопія фкс кишечник товста кишка поліп", fast:12, water:3, order:5, dur:"30–60 хв", sedation:true,
+      steps:{d7:["Погодьте з лікарем паузу в прийомі препаратів заліза й активованого вугілля (за 5–7 днів)","Приймаєте антикоагулянти чи аспірин? Погодьте, чи потрібна пауза: можливе видалення поліпів","Придбайте препарат для очищення кишечника за призначенням лікаря"],
+             d3:["Безшлакова дієта: можна білий хліб, варене м'ясо й рибу, яйця, рис, картоплю, нежирні кисломолочні продукти","Виключіть сире овоччя й фрукти, ягоди з кісточками, зелень, горіхи, насіння, крупи з цільних зерен, бобові, гриби"],
+             d1:["Легкий сніданок, далі тільки прозорі рідини: вода, бульйон без гущі, чай, прозорий сік без м'якоті","Увечері почніть очищення кишечника: препарат пийте за схемою, яку дав лікар"],
+             day:["Вранці випийте другу частину препарату, якщо схема двоетапна","Очищення має завершитися за 3–4 години до процедури: виходить прозора жовтувата рідина","Пити припиніть за 3 години до дослідження"],
+             bring:["Попередні висновки колоноскопії та біопсій","Зручний змінний одяг"],
+             after:["Можливе відчуття здуття, воно минає за кілька годин","Після седації не сідайте за кермо до кінця дня. Попросіть когось вас супроводити"]}},
+
+    /* ---- Гінекологія ---- */
+    {id:"colpo", cat:"gyn", sex:"f", name:"Кольпоскопія", kw:"кольпоскопія шийка матки гінеколог ерозія", fast:0, water:0, order:3.5, dur:"15–20 хв",
+      url:SITE+"/departments-2/ginekolog/kolposkopiya/",
+      steps:{d7:["Процедуру не проводять під час менструації. Оптимально на 7–12 день циклу"],
+             d3:["2 дні утримуйтеся від статевих контактів","2 дні без спринцювань, вагінальних свічок, кремів і тампонів"],
+             day:["Звичайний гігієнічний душ без інтимних засобів з антисептиком"],
+             bring:["Дату першого дня останньої менструації","Попередні результати цитології (ПАП-тесту)"]}},
+
+    /* ---- Пункції та біопсії ---- */
+    {id:"punct", cat:"punct", name:"Пункція під контролем УЗД (щитоподібна, молочна залоза, лімфовузли)", kw:"пункція біопсія тонкоголкова щитовидка молочна лімфовузол", fast:0, water:0, order:4, dur:"20–30 хв",
+      url:SITE+"/diagnostika/punkcziya/",
+      steps:{d7:["Приймаєте антикоагулянти, аспірин чи клопідогрель? За 5–7 днів погодьте з лікарем паузу. Не скасовуйте самостійно"],
+             d1:["Легка вечеря, без алкоголю"],
+             day:["Можна легкий сніданок, якщо лікар не сказав інакше","Скажіть лікареві про алергію на анестетики чи йод"],
+             bring:["Висновок УЗД, за яким призначили пункцію","Результати аналізу крові та коагулограми, якщо лікар їх призначав"],
+             after:["Тримайте холод або тиск на місці проколу 10–15 хвилин","Не мочіть місце пункції в день процедури"]}},
+    {id:"biopsy", cat:"punct", name:"Біопсія (трепан-біопсія, біопсія під УЗД / КТ / МРТ)", kw:"біопсія трепан гістологія онколог пухлина", fast:6, water:2, order:4, dur:"30–60 хв",
+      url:SITE+"/departments-2/himioterapevt/diagnostika-raku/",
+      steps:{d7:["Погодьте з онкологом паузу в прийомі антикоагулянтів та антиагрегантів","Здайте аналізи, які призначить лікар: загальний аналіз крові, коагулограма, група крові"],
+             eve:["Легка вечеря, без алкоголю"],
+             day:["Не їжте 6 годин, воду не пийте за 2 години (якщо буде седація)"],
+             bring:["Результати КТ/МРТ/УЗД, за якими призначили біопсію, та диски з записом","Паспорт і результати аналізів"],
+             after:["2–3 дні не підіймайте важкого й не займайтеся спортом","Гістологічний висновок зазвичай готовий за 5–10 робочих днів"]}},
+
+    /* ---- Дерматологія / трихологія ---- */
+    {id:"tricho", cat:"derm", name:"Трихоскопія", kw:"трихоскопія трихолог волосся випадіння", fast:0, water:0, order:3, dur:"20–30 хв",
+      url:SITE+"/departments/dermatovenerolog/tryholog/",
+      steps:{d7:["Не фарбуйте волосся й не робіть процедур на шкірі голови 2 тижні до діагностики"],
+             d3:["Не мийте голову 2 дні: лікарю треба побачити шкіру у звичайному стані"],
+             day:["Не наносьте лаки, гелі, пінки й сухий шампунь"],
+             bring:["Результати аналізів, якщо вже здавали (феритин, ТТГ, вітамін D, загальний аналіз крові)","Список засобів і препаратів для волосся, які ви використовуєте"]}},
+    {id:"dermato", cat:"derm", name:"Дерматоскопія (огляд родимок)", kw:"дерматоскопія родимка невус онкодерматолог меланома", fast:0, water:0, order:3, dur:"15–30 хв", easy:true,
+      url:SITE+"/departments-2/onkodermatolog/",
+      steps:{d7:["2 тижні до огляду не засмагайте й не ходіть у солярій"],
+             day:["Не наносьте на шкіру тональні засоби, креми й автозасмагу","Зніміть лак з нігтів, якщо лікар оглядатиме нігті"],
+             bring:["Фото родимок, які змінились, та попередні висновки"]}},
+
+    /* ---- Онкоінститут: КТ / МРТ / ПЕТ-КТ ---- */
+    {id:"ct", cat:"onco", name:"КТ (комп'ютерна томографія)", kw:"кт комп'ютерна томографія контраст", fast:4, water:0, order:3, dur:"10–30 хв",
+      url:SITE+"/departments-2/himioterapevt/diagnostika-raku/",
+      steps:{d7:["КТ з контрастом: здайте аналіз на креатинін (свіжість до 14 днів)","Скажіть лікареві про алергію на йод, цукровий діабет (метформін) і хвороби нирок"],
+             day:["КТ з контрастом: не їжте 4 години, пити воду можна","Зніміть металеві прикраси й шпильки"],
+             bring:["Результат креатиніну","Попередні КТ/МРТ на диску й висновки"],
+             after:["Після контрасту пийте більше води протягом доби"]}},
+    {id:"mri", cat:"onco", name:"МРТ (магнітно-резонансна томографія)", kw:"мрт магнітно-резонансна томографія", fast:0, water:0, order:3, dur:"20–60 хв",
+      url:SITE+"/departments-2/himioterapevt/diagnostika-raku/",
+      steps:{d7:["Скажіть лікареві про кардіостимулятор, металеві імплантати, кліпси, слухові апарати: це можуть бути протипоказання","МРТ з контрастом: потрібен свіжий аналіз на креатинін"],
+             day:["МРТ органів черевної порожнини й малого тазу: не їжте 4–6 годин","Приходьте без металу: прикраси, шпильки, пірсинг, одяг зі стразами","Макіяж з блискітками може містити метал: краще без нього"],
+             bring:["Документи на імплантати, якщо є","Попередні знімки на диску й висновки"]}},
+    {id:"pet", cat:"onco", name:"ПЕТ-КТ", kw:"пет кт позитронна томографія онкологія стадіювання", fast:6, water:0, order:3, dur:"2–3 год загалом",
+      url:SITE+"/departments-2/himioterapevt/diagnostika-raku/",
+      steps:{d1:["Добу не займайтеся спортом і не робіть важкої фізичної роботи","За 24 години обмежте вуглеводи: солодке, хліб, картоплю, макарони, фрукти, соки"],
+             eve:["Вечеря з білкової їжі (м'ясо, риба, яйця, сир), без солодкого"],
+             day:["Не їжте щонайменше 6 годин. Можна чисту воду без цукру","При цукровому діабеті — окрема схема: обов'язково погодьте з лікарем","Одягніться тепло: переохолодження спотворює результат"],
+             bring:["Висновки попередніх КТ/МРТ/ПЕТ на диску","Виписки лікування (хіміотерапія, операції, опромінення) з датами"]}}
+  ];
+
+  var byId = {}; TESTS.forEach(function(t){ byId[t.id] = t; });
+  var selected = [];
+  var activeCat = "all";
+  var apptTime = "09:00";
+
+  var $q = root.querySelector("#bpg-q");
+  var $tabs = root.querySelector("#bpg-tabs");
+  var $groups = root.querySelector("#bpg-groups");
+  var $out = root.querySelector("#bpg-out");
+  var $count = root.querySelector("#bpg-count");
+
+  var ICON_CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m3 8.5 3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function norm(s){ return s.toLowerCase().replace(/[ʼ'’`]/g,"").replace(/ё/g,"е"); }
+
+  function metaFor(t){
+    var parts = [];
+    parts.push(t.fast ? "натщесерце " + t.fast + " год" : (t.easy ? "без підготовки" : "без голодування"));
+    if(t.dur) parts.push(t.dur);
+    if(t.sex === "f") parts.push("для жінок");
+    if(t.sex === "m") parts.push("для чоловіків");
+    return parts.join(" · ");
+  }
+
+  /* ---------- Вкладки категорій ---------- */
+  function renderTabs(){
+    var html = '<button type="button" class="bpg-tab" data-cat="all" aria-pressed="'+(activeCat==="all")+'">Усі</button>';
+    CATS.forEach(function(c){
+      html += '<button type="button" class="bpg-tab" data-cat="'+c[0]+'" aria-pressed="'+(activeCat===c[0])+'">'+esc(c[1])+'</button>';
+    });
+    $tabs.innerHTML = html;
+  }
+
+  /* ---------- Список процедур ---------- */
+  function renderList(){
+    var q = norm($q.value.trim());
+    var html = "", found = 0;
+    CATS.forEach(function(c){
+      if(activeCat !== "all" && activeCat !== c[0]) return;
+      var items = TESTS.filter(function(t){
+        if(t.cat !== c[0]) return false;
+        if(!q) return true;
+        return norm(t.name + " " + (t.kw||"")).indexOf(q) !== -1;
+      });
+      if(!items.length) return;
+      found += items.length;
+      html += '<div class="bpg-group"><h3>'+esc(c[1])+'</h3><div class="bpg-list">';
+      items.forEach(function(t){
+        var on = selected.indexOf(t.id) !== -1;
+        html += '<button type="button" class="bpg-item" data-id="'+t.id+'" aria-pressed="'+on+'">'+
+                  '<span class="bpg-check">'+ICON_CHECK+'</span>'+
+                  '<span><span class="bpg-item-name">'+esc(t.name)+'</span>'+
+                  '<span class="bpg-item-meta">'+esc(metaFor(t))+'</span></span>'+
+                '</button>';
+      });
+      html += '</div></div>';
+    });
+    if(!found){
+      html = '<p class="bpg-empty">Нічого не знайдено. Зателефонуйте нам: <a class="bpg-link" href="tel:'+CLINIC.phone+'">'+CLINIC.phoneLabel+'</a>. Адміністратор підкаже, як підготуватися.</p>';
+    }
+    $groups.innerHTML = html;
+  }
+
+  /* ---------- Розрахунки ---------- */
+  function timeMinus(hhmm, hours){
+    var p = hhmm.split(":"), m = (+p[0])*60 + (+p[1]) - hours*60;
+    var dayBefore = m < 0;
+    m = ((m % 1440) + 1440) % 1440;
+    var h = Math.floor(m/60), mm = m % 60;
+    return (h<10?"0":"")+h+":"+(mm<10?"0":"")+mm + (dayBefore ? " напередодні" : "");
+  }
+
+  function buildPlan(){
+    var list = selected.map(function(id){ return byId[id]; }).filter(Boolean);
+    var fast = 0, water = 0, sedation = false, phases = {}, warns = [];
+    PHASES.forEach(function(p){ phases[p[0]] = []; });
+
+    list.forEach(function(t){
+      fast = Math.max(fast, t.fast||0);
+      water = Math.max(water, t.water||0);
+      if(t.sedation) sedation = true;
+      Object.keys(t.steps||{}).forEach(function(k){
+        (t.steps[k]||[]).forEach(function(s){
+          var dup = phases[k].filter(function(x){ return x.text === s; })[0];
+          if(dup){ dup.src.push(t.name); } else { phases[k].push({text:s, src:[t.name]}); }
+        });
+      });
+      if(t.warn) warns.push(t.warn);
+    });
+
+    /* Перевірка поєднань процедур */
+    var has = function(id){ return selected.indexOf(id) !== -1; };
+    if(has("onco") && (has("uzd-prostate") || has("biopsy")))
+      warns.push("Кров на онкомаркери (зокрема ПСА) здайте першою, ДО ТРУЗД чи біопсії. Інакше результат може бути хибно завищеним.");
+    if(has("oam") && (has("uzd-pelvis") || has("uzd-prostate")))
+      warns.push("Ранкову сечу для аналізу зберіть удома, а воду для наповнення сечового міхура перед УЗД пийте вже після цього.");
+    if(has("fgds") && has("fcs"))
+      warns.push("Гастроскопію та колоноскопію можна зробити в один візит під однією седацією. Уточніть у адміністратора.");
+    if(has("fcs") && list.some(function(t){ return t.cat === "lab"; }))
+      warns.push("Препарат для очищення кишечника впливає на електроліти крові. Кров краще здати до початку підготовки до колоноскопії або в інший день.");
+    if(has("ct") && has("mri"))
+      warns.push("Якщо і КТ, і МРТ робитимуть з контрастом, між ними зазвичай потрібна перерва. Узгодьте розклад з лікарем.");
+
+    var orderList = list.slice().sort(function(a,b){ return a.order - b.order; });
+    return {list:list, orderList:orderList, fast:fast, water:water, sedation:sedation, phases:phases, warns:warns};
+  }
+
+  /* ---------- Рендер чек-листа ---------- */
+  function renderResult(){
+    $count.textContent = selected.length;
+    if(!selected.length){
+      $out.innerHTML = '<div class="bpg-placeholder">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v2h6V3M9 11h6M9 15h4" stroke-linecap="round"/></svg>'+
+        '<p>Оберіть одну або кілька процедур зі списку. Тут з\'явиться ваш покроковий план підготовки.</p></div>'+
+        '<div class="bpg-actions"><a class="bpg-btn bpg-btn-primary" href="tel:'+CLINIC.phone+'">'+phoneIcon()+'Записатися: '+CLINIC.phoneLabel+'</a></div>';
+      return;
+    }
+    var P = buildPlan();
+    var html = '<div class="bpg-chips">';
+    P.list.forEach(function(t){
+      html += '<span class="bpg-chip">'+esc(t.name)+'<button type="button" data-remove="'+t.id+'" aria-label="Прибрати: '+esc(t.name)+'">×</button></span>';
+    });
+    html += '</div>';
+
+    html += '<div class="bpg-summary">'+
+      '<div class="bpg-stat"><small>Голодування</small><strong>'+(P.fast ? P.fast+' год' : 'не потрібне')+'</strong></div>'+
+      '<div class="bpg-stat"><small>Вода</small><strong>'+(P.water ? 'стоп за '+P.water+' год' : 'можна')+'</strong></div>'+
+    '</div>';
+
+    if(P.fast || P.water){
+      html += '<div class="bpg-time"><label for="bpg-time">Час запису:</label>'+
+        '<input type="time" id="bpg-time" value="'+apptTime+'" step="900">'+
+        '<span>→ '+(P.fast ? 'останній прийом їжі до <output id="bpg-meal">'+timeMinus(apptTime,P.fast)+'</output>' : '')+
+        (P.water ? (P.fast?'; ':'')+'вода до <output id="bpg-water">'+timeMinus(apptTime,P.water)+'</output>' : '')+'</span></div>';
+    }
+
+    if(P.warns.length){
+      html += '<ul class="bpg-warn">'+P.warns.map(function(w){ return '<li>'+esc(w)+'</li>'; }).join("")+'</ul>';
+    }
+
+    html += '<div class="bpg-tl">';
+    PHASES.forEach(function(p){
+      var items = P.phases[p[0]];
+      if(!items.length) return;
+      html += '<div class="bpg-phase"><span class="bpg-dot" aria-hidden="true"></span><h4>'+esc(p[1])+'</h4><ul>';
+      items.forEach(function(it){
+        var src = P.list.length > 1 ? ' <em>· '+esc(shortNames(it.src))+'</em>' : '';
+        html += '<li>'+esc(it.text)+src+'</li>';
+      });
+      if(p[0] === "bring" && !P.phases.bring.some(function(x){ return /паспорт/i.test(x.text); })){
+        html += '<li>Паспорт або ID-картку, направлення лікаря (якщо є)</li>';
+      }
+      html += '</ul></div>';
+    });
+    if(!P.phases.bring.length){
+      html += '<div class="bpg-phase"><span class="bpg-dot" aria-hidden="true"></span><h4>Візьміть із собою</h4><ul><li>Паспорт або ID-картку, направлення лікаря (якщо є)</li></ul></div>';
+    }
+    if(P.orderList.length > 1){
+      html += '<div class="bpg-phase"><span class="bpg-dot" aria-hidden="true"></span><h4>Порядок, якщо все в один день</h4><ul>';
+      P.orderList.forEach(function(t,i){ html += '<li>'+(i+1)+'. '+esc(t.name)+'</li>'; });
+      html += '</ul></div>';
+    }
+    html += '</div>';
+
+    var links = P.list.filter(function(t){ return t.url; });
+    if(links.length){
+      html += '<p style="font-size:13px;color:var(--bpg-ink-mute);margin:4px 0 6px">Детальніше: '+
+        links.map(function(t){ return '<a class="bpg-link" href="'+t.url+'" target="_blank" rel="noopener">'+esc(shortNames([t.name]))+'</a>'; }).join(" · ")+'</p>';
+    }
+
+    html += '<div class="bpg-actions">'+
+      '<a class="bpg-btn bpg-btn-primary" href="tel:'+CLINIC.phone+'">'+phoneIcon()+'Записатися: '+CLINIC.phoneLabel+'</a>'+
+      '<button type="button" class="bpg-btn bpg-small" data-act="copy">Скопіювати</button>'+
+      '<button type="button" class="bpg-btn bpg-small" data-act="share">Поділитися</button>'+
+      '<button type="button" class="bpg-btn bpg-small" data-act="print">Друк / PDF</button>'+
+      '<button type="button" class="bpg-btn bpg-small" data-act="clear">Очистити</button>'+
+    '</div><p class="bpg-toast" id="bpg-toast" role="status"></p>';
+
+    $out.innerHTML = html;
+  }
+
+  function shortNames(arr){
+    return arr.map(function(n){ return n.replace(/\s*\(.*\)\s*/,"").trim(); }).join(", ");
+  }
+  function phoneIcon(){
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" stroke-linejoin="round"/></svg>';
+  }
+
+  /* ---------- Текстова версія для копіювання / месенджерів ---------- */
+  function planText(){
+    var P = buildPlan();
+    var L = ["Підготовка до обстежень — " + CLINIC.name, ""];
+    L.push("Процедури: " + P.list.map(function(t){ return t.name; }).join("; "));
+    if(P.fast) L.push("Не їсти: " + P.fast + " год (при записі на " + apptTime + " — остання їжа до " + timeMinus(apptTime,P.fast) + ")");
+    if(P.water) L.push("Воду не пити за " + P.water + " год (до " + timeMinus(apptTime,P.water) + ")");
+    if(P.warns.length){ L.push(""); P.warns.forEach(function(w){ L.push("⚠ " + w); }); }
+    PHASES.forEach(function(p){
+      var items = P.phases[p[0]];
+      if(!items.length) return;
+      L.push(""); L.push(p[1].toUpperCase());
+      items.forEach(function(it){ L.push("• " + it.text); });
+    });
+    if(P.orderList.length > 1){
+      L.push(""); L.push("ПОРЯДОК, ЯКЩО ВСЕ В ОДИН ДЕНЬ");
+      P.orderList.forEach(function(t,i){ L.push((i+1) + ". " + t.name); });
+    }
+    L.push(""); L.push(CLINIC.name + ": " + CLINIC.address + ", тел. " + CLINIC.phoneLabel);
+    return L.join("\n");
+  }
+
+  function toast(msg){
+    var el = root.querySelector("#bpg-toast");
+    if(el){ el.textContent = msg; clearTimeout(toast.t); toast.t = setTimeout(function(){ el.textContent = ""; }, 3000); }
+  }
+
+  function copyText(text){
+    if(navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function(res, rej){
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly",""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy") ? res() : rej(); } catch(e){ rej(e); }
+      document.body.removeChild(ta);
+    });
+  }
+
+  /* ---------- Посилання з вибором (#bpg=zak,bio) ---------- */
+  function shareUrl(){
+    return location.href.split("#")[0] + "#bpg=" + selected.join(",");
+  }
+  function readHash(){
+    var m = /[#&]bpg=([\w,-]+)/.exec(location.hash);
+    if(!m) return;
+    selected = m[1].split(",").filter(function(id){ return byId[id]; });
+  }
+
+  function track(action, label){
+    /* Подія для GA4 / GTM, якщо вони підключені на сайті */
+    try {
+      if(typeof window.gtag === "function") window.gtag("event", "prep_guide_" + action, {event_label: label});
+      else if(Array.isArray(window.dataLayer)) window.dataLayer.push({event: "prep_guide_" + action, prep_label: label});
+    } catch(e){}
+  }
+
+  function toggle(id){
+    var i = selected.indexOf(id);
+    if(i === -1){ selected.push(id); track("select", id); }
+    else selected.splice(i,1);
+    renderList(); renderResult();
+  }
+
+  /* ---------- Події ---------- */
+  $tabs.addEventListener("click", function(e){
+    var b = e.target.closest("[data-cat]"); if(!b) return;
+    activeCat = b.getAttribute("data-cat");
+    renderTabs(); renderList();
+  });
+  $groups.addEventListener("click", function(e){
+    var b = e.target.closest("[data-id]"); if(b) toggle(b.getAttribute("data-id"));
+  });
+  $q.addEventListener("input", function(){
+    if($q.value.trim() && activeCat !== "all"){ activeCat = "all"; renderTabs(); }
+    renderList();
+  });
+  $out.addEventListener("click", function(e){
+    var r = e.target.closest("[data-remove]");
+    if(r){ toggle(r.getAttribute("data-remove")); return; }
+    if(e.target.closest('a[href^="tel:"]')) track("call", selected.join(","));
+    var a = e.target.closest("[data-act]"); if(!a) return;
+    var act = a.getAttribute("data-act");
+    track(act, selected.join(","));
+    if(act === "clear"){ selected = []; renderList(); renderResult(); }
+    else if(act === "print"){ window.print(); }
+    else if(act === "copy"){
+      copyText(planText()).then(function(){ toast("Чек-лист скопійовано. Можна надіслати собі у Viber чи Telegram"); },
+                           function(){ toast("Не вдалося скопіювати. Спробуйте «Друк / PDF»"); });
+    }
+    else if(act === "share"){
+      var url = shareUrl();
+      if(navigator.share){
+        navigator.share({title:"Підготовка до обстежень — " + CLINIC.name, text:planText(), url:url}).catch(function(){});
+      } else {
+        copyText(url).then(function(){ toast("Посилання на ваш чек-лист скопійовано"); }, function(){ toast(url); });
+      }
+    }
+  });
+  $out.addEventListener("input", function(e){
+    if(e.target.id !== "bpg-time" || !e.target.value) return;
+    apptTime = e.target.value;
+    var P = buildPlan();
+    var meal = root.querySelector("#bpg-meal"), water = root.querySelector("#bpg-water");
+    if(meal) meal.textContent = timeMinus(apptTime, P.fast);
+    if(water) water.textContent = timeMinus(apptTime, P.water);
+  });
+
+  readHash();
+  renderTabs(); renderList(); renderResult();
+})();
+</script>
+<!-- ===================== BP MEDICAL · ГІД З ПІДГОТОВКИ — КІНЕЦЬ МОДУЛЯ ===================== -->
+
+</body>
+</html>
