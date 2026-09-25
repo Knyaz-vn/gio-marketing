@@ -1,0 +1,907 @@
+# Copyright (C) 2026 EcoDom
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: EcoDom Quote 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ecodom-quote\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-25T08:17:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: ecodom-quote\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: uk\n"
+
+#. Plugin Name of the plugin
+#: ecodom-quote.php:3
+#: includes/class-post-types.php:37
+msgid "EcoDom Quote"
+msgstr "EcoDom Quote"
+
+#. Description of the plugin
+#: ecodom-quote.php:4
+msgid "Roof and fence calculator for metal tile and corrugated sheet: estimate, lead capture, PDF, Telegram and webhook."
+msgstr "Калькулятор покрівлі та паркану з металочерепиці й профнастилу: кошторис, збір лідів, PDF, Telegram і вебхук."
+
+#. Author of the plugin
+#: ecodom-quote.php:8
+msgid "EcoDom"
+msgstr "EcoDom"
+
+#: ecodom-quote.php:29
+msgid "EcoDom Quote requires PHP 8.1 or newer."
+msgstr "EcoDom Quote потребує PHP 8.1 або новішої версії."
+
+#: includes/class-calculator.php:40
+msgid "This model cannot be used in this calculator."
+msgstr "Цю модель не можна використати в цьому калькуляторі."
+
+#: includes/class-calculator.php:43
+msgid "Model dimensions are not configured. Please contact us."
+msgstr "Розміри моделі не налаштовані. Будь ласка, зв'яжіться з нами."
+
+#: includes/class-calculator.php:50
+msgid "Select an available thickness and coating."
+msgstr "Оберіть доступну товщину та покриття."
+
+#. translators: 1: model, 2: thickness, 3: coating
+#: includes/class-calculator.php:60
+#, php-format
+msgid "Sheet %1$s, %2$s mm, %3$s"
+msgstr "Лист %1$s, %2$s мм, %3$s"
+
+#. translators: 1: sheet name, 2: length in mm
+#: includes/class-calculator.php:165
+#: includes/class-calculator.php:258
+#, php-format
+msgid "%1$s, L = %2$d mm"
+msgstr "%1$s, L = %2$d мм"
+
+#: includes/class-calculator.php:167
+#: includes/class-calculator.php:188
+#: includes/class-calculator.php:260
+#: includes/class-calculator.php:264
+#: includes/class-calculator.php:374
+msgid "pcs"
+msgstr "шт"
+
+#: includes/class-calculator.php:175
+msgid "Ridge / hip trim"
+msgstr "Коньок / ребро"
+
+#: includes/class-calculator.php:176
+msgid "End (gable) trim"
+msgstr "Торцева (вітрова) планка"
+
+#: includes/class-calculator.php:177
+msgid "Eave trim"
+msgstr "Карнизна планка"
+
+#. translators: 1: trim name, 2: piece length, 3: running meters
+#: includes/class-calculator.php:186
+#, php-format
+msgid "%1$s %2$s m (%3$s r.m.)"
+msgstr "%1$s %2$s м (%3$s м.п.)"
+
+#: includes/class-calculator.php:222
+msgid "Enter the fence length."
+msgstr "Вкажіть довжину паркану."
+
+#: includes/class-calculator.php:225
+msgid "Enter the fence height."
+msgstr "Вкажіть висоту паркану."
+
+#: includes/class-calculator.php:237
+msgid "Post"
+msgstr "Стовп"
+
+#. translators: %d: max length mm
+#: includes/class-calculator.php:244
+#, php-format
+msgid "Maximum sheet length for this model is %d mm."
+msgstr "Максимальна довжина листа для цієї моделі — %d мм."
+
+#. translators: %d: number of rails
+#: includes/class-calculator.php:268
+#, php-format
+msgid "Rail (cross bar), %d row"
+msgid_plural "Rail (cross bar), %d rows"
+msgstr[0] "Лага (прожилина), %d ряд"
+msgstr[1] "Лага (прожилина), %d ряди"
+msgstr[2] "Лага (прожилина), %d рядів"
+
+#: includes/class-calculator.php:270
+#: templates/pdf.php:95
+#: templates/pdf.php:96
+msgid "m"
+msgstr "м"
+
+#. translators: %d: slope number
+#: includes/class-calculator.php:310
+#, php-format
+msgid "Check the dimensions of slope #%d."
+msgstr "Перевірте розміри ската №%d."
+
+#: includes/class-calculator.php:321
+msgid "Add at least one roof slope."
+msgstr "Додайте хоча б один скат."
+
+#: includes/class-calculator.php:363
+msgid "The slope is too long for this model."
+msgstr "Скат задовгий для цієї моделі."
+
+#: includes/class-calculator.php:372
+msgid "Roofing screws with EPDM washer"
+msgstr "Саморізи покрівельні з ЕПДМ-шайбою"
+
+#: includes/class-importer.php:50
+msgid "Import / export prices"
+msgstr "Імпорт / експорт цін"
+
+#: includes/class-importer.php:51
+msgid "Import / export"
+msgstr "Імпорт / експорт"
+
+#. translators: 1: created, 2: updated
+#: includes/class-importer.php:71
+#, php-format
+msgid "Import finished: %1$d created, %2$d updated."
+msgstr "Імпорт завершено: створено %1$d, оновлено %2$d."
+
+#: includes/class-importer.php:80
+msgid "Export"
+msgstr "Експорт"
+
+#: includes/class-importer.php:81
+msgid "Download all models as CSV (UTF-8, semicolon separated — opens in Excel / Google Sheets). Use it as a template."
+msgstr "Завантажте всі моделі у CSV (UTF-8, роздільник «;» — відкривається в Excel / Google Таблицях). Використовуйте його як шаблон."
+
+#: includes/class-importer.php:82
+msgid "Download CSV"
+msgstr "Завантажити CSV"
+
+#: includes/class-importer.php:84
+#: includes/class-importer.php:91
+msgid "Import"
+msgstr "Імпорт"
+
+#: includes/class-importer.php:85
+msgid "Models are matched by slug (or by title when slug is empty): existing ones are updated, new ones are created. Separator \";\" or \",\", decimal comma is allowed. Empty price cells keep the current price."
+msgstr "Моделі зіставляються за slug (або за назвою, якщо slug порожній): наявні оновлюються, нові створюються. Роздільник \";\" або \",\", можна десяткову кому. Порожні клітинки ціни зберігають поточну ціну."
+
+#: includes/class-importer.php:100
+#: includes/class-importer.php:279
+#: includes/class-lead-admin.php:194
+msgid "Access denied."
+msgstr "Доступ заборонено."
+
+#: includes/class-importer.php:107
+msgid "File was not uploaded."
+msgstr "Файл не завантажено."
+
+#: includes/class-importer.php:135
+msgid "The file is empty."
+msgstr "Файл порожній."
+
+#: includes/class-importer.php:141
+msgid "The header must contain a \"title\" or \"slug\" column."
+msgstr "Заголовок має містити колонку \"title\" або \"slug\"."
+
+#. translators: 1: line number, 2: error
+#: includes/class-importer.php:157
+#, php-format
+msgid "Line %1$d: %2$s"
+msgstr "Рядок %1$d: %2$s"
+
+#: includes/class-importer.php:175
+msgid "slug or title is required"
+msgstr "потрібен slug або title"
+
+#: includes/class-lead-admin.php:47
+#: includes/class-post-types.php:62
+#: includes/class-post-types.php:64
+msgid "Lead"
+msgstr "Лід"
+
+#: includes/class-lead-admin.php:48
+#: includes/class-lead-admin.php:124
+msgid "Channel"
+msgstr "Канал"
+
+#: includes/class-lead-admin.php:49
+msgid "Calculation"
+msgstr "Розрахунок"
+
+#: includes/class-lead-admin.php:50
+#: includes/class-lead-admin.php:167
+#: templates/calculator.php:123
+#: templates/pdf.php:107
+msgid "Sum"
+msgstr "Сума"
+
+#: includes/class-lead-admin.php:51
+msgid "Source"
+msgstr "Джерело"
+
+#: includes/class-lead-admin.php:52
+msgid "Delivery"
+msgstr "Доставка"
+
+#: includes/class-lead-admin.php:53
+msgid "Date"
+msgstr "Дата"
+
+#: includes/class-lead-admin.php:67
+#: includes/class-settings.php:211
+#: includes/class-telegram.php:78
+#: templates/calculator.php:21
+#: templates/calculator.php:58
+#: templates/pdf.php:63
+msgid "Fence"
+msgstr "Паркан"
+
+#: includes/class-lead-admin.php:67
+#: includes/class-telegram.php:78
+#: templates/calculator.php:20
+#: templates/pdf.php:63
+msgid "Roof"
+msgstr "Покрівля"
+
+#: includes/class-lead-admin.php:111
+msgid "Lead details"
+msgstr "Дані ліда"
+
+#: includes/class-lead-admin.php:117
+msgid "No data."
+msgstr "Немає даних."
+
+#: includes/class-lead-admin.php:122
+#: templates/calculator.php:142
+msgid "Name"
+msgstr "Ім'я"
+
+#: includes/class-lead-admin.php:123
+#: includes/class-lead-admin.php:147
+#: templates/calculator.php:146
+msgid "Phone"
+msgstr "Телефон"
+
+#: includes/class-lead-admin.php:125
+#: includes/class-post-types.php:36
+#: templates/calculator.php:30
+#: templates/pdf.php:64
+msgid "Model"
+msgstr "Модель"
+
+#: includes/class-lead-admin.php:125
+#: includes/class-shortcode.php:101
+#: includes/class-telegram.php:78
+#: templates/pdf.php:64
+msgid "mm"
+msgstr "мм"
+
+#: includes/class-lead-admin.php:126
+#: includes/class-shortcode.php:98
+#: templates/pdf.php:65
+msgid "Sheet area"
+msgstr "Площа листів"
+
+#: includes/class-lead-admin.php:126
+#: includes/class-rest.php:193
+#: includes/class-shortcode.php:95
+#: templates/pdf.php:65
+#: templates/pdf.php:115
+msgid "m²"
+msgstr "м²"
+
+#: includes/class-lead-admin.php:127
+msgid "Price range"
+msgstr "Вилка ціни"
+
+#: includes/class-lead-admin.php:128
+msgid "Page"
+msgstr "Сторінка"
+
+#. translators: %s: channel
+#: includes/class-lead-admin.php:137
+#, php-format
+msgid "Status: %s"
+msgstr "Статус: %s"
+
+#: includes/class-lead-admin.php:161
+#: templates/pdf.php:101
+msgid "Materials"
+msgstr "Матеріали"
+
+#: includes/class-lead-admin.php:164
+#: templates/calculator.php:120
+#: templates/pdf.php:104
+msgid "Item"
+msgstr "Позиція"
+
+#: includes/class-lead-admin.php:165
+#: templates/calculator.php:121
+#: templates/pdf.php:105
+msgid "Qty"
+msgstr "К-сть"
+
+#: includes/class-lead-admin.php:166
+#: templates/calculator.php:122
+#: templates/pdf.php:106
+msgid "Price"
+msgstr "Ціна"
+
+#: includes/class-lead-admin.php:180
+msgid "Download PDF"
+msgstr "Завантажити PDF"
+
+#: includes/class-lead-admin.php:184
+msgid "Raw input"
+msgstr "Вхідні дані"
+
+#: includes/class-lead-admin.php:198
+msgid "PDF not found."
+msgstr "PDF не знайдено."
+
+#: includes/class-lead-service.php:28
+msgid "Phone call"
+msgstr "Дзвінок"
+
+#: includes/class-lead-service.php:54
+msgid "Could not save the request. Please call us."
+msgstr "Не вдалося зберегти заявку. Будь ласка, зателефонуйте нам."
+
+#: includes/class-model.php:30
+msgid "Metal roof tile"
+msgstr "Металочерепиця"
+
+#: includes/class-model.php:31
+msgid "Corrugated sheet (roof and fence)"
+msgstr "Профнастил (покрівля і паркан)"
+
+#: includes/class-model.php:32
+msgid "Fence sheet"
+msgstr "Профнастил для паркану"
+
+#: includes/class-model.php:41
+msgid "Gloss"
+msgstr "Глянець"
+
+#: includes/class-model.php:42
+msgid "Matt"
+msgstr "Мат"
+
+#: includes/class-post-types.php:35
+#: includes/class-post-types.php:38
+msgid "Models"
+msgstr "Моделі"
+
+#: includes/class-post-types.php:39
+#: includes/class-post-types.php:40
+msgid "Add model"
+msgstr "Додати модель"
+
+#: includes/class-post-types.php:41
+msgid "Edit model"
+msgstr "Редагувати модель"
+
+#: includes/class-post-types.php:42
+msgid "Search models"
+msgstr "Шукати моделі"
+
+#: includes/class-post-types.php:43
+msgid "No models found"
+msgstr "Моделей не знайдено"
+
+#: includes/class-post-types.php:61
+#: includes/class-post-types.php:63
+msgid "Leads"
+msgstr "Ліди"
+
+#: includes/class-post-types.php:65
+msgid "Search leads"
+msgstr "Шукати ліди"
+
+#: includes/class-post-types.php:66
+msgid "No leads yet"
+msgstr "Лідів поки немає"
+
+#: includes/class-post-types.php:81
+msgid "Model parameters and prices"
+msgstr "Параметри та ціни моделі"
+
+#: includes/class-post-types.php:89
+msgid "Total width, mm"
+msgstr "Загальна ширина, мм"
+
+#: includes/class-post-types.php:90
+msgid "Useful (effective) width, mm"
+msgstr "Корисна ширина, мм"
+
+#: includes/class-post-types.php:91
+msgid "Wave step, mm"
+msgstr "Крок хвилі, мм"
+
+#: includes/class-post-types.php:92
+msgid "Min sheet length, mm"
+msgstr "Мін. довжина листа, мм"
+
+#: includes/class-post-types.php:93
+msgid "Max sheet length, mm"
+msgstr "Макс. довжина листа, мм"
+
+#: includes/class-post-types.php:98
+#: includes/class-post-types.php:171
+msgid "Type"
+msgstr "Тип"
+
+#: includes/class-post-types.php:105
+msgid "Roof — metal tile (the wave step is along the sheet); corrugated sheet can be used in both roof and fence calculators."
+msgstr "Покрівля — металочерепиця (крок хвилі вздовж листа, довжина кратна кроку); профнастил доступний і в калькуляторі покрівлі, і паркану."
+
+#: includes/class-post-types.php:116
+msgid "Price per m², UAH (leave 0 if the variant is not available)"
+msgstr "Ціна за м², грн (0 — варіант недоступний)"
+
+#: includes/class-post-types.php:120
+#: templates/calculator.php:41
+msgid "Thickness, mm"
+msgstr "Товщина, мм"
+
+#. translators: %d: post ID
+#: includes/class-post-types.php:145
+#, php-format
+msgid "Shortcode for this model: [ecodom_calc model=\"%d\"]"
+msgstr "Шорткод для цієї моделі: [ecodom_calc model=\"%d\"]"
+
+#: includes/class-post-types.php:172
+msgid "Width total / useful"
+msgstr "Ширина загальна / корисна"
+
+#: includes/class-post-types.php:173
+msgid "Price from, UAH/m²"
+msgstr "Ціна від, грн/м²"
+
+#: includes/class-post-types.php:174
+msgid "Shortcode"
+msgstr "Шорткод"
+
+#: includes/class-rest.php:57
+msgid "The page has expired. Please refresh it and try again."
+msgstr "Сторінка застаріла. Оновіть її та спробуйте ще раз."
+
+#: includes/class-rest.php:94
+#: includes/class-shortcode.php:92
+msgid "Enter your name."
+msgstr "Вкажіть ім'я."
+
+#: includes/class-rest.php:97
+#: includes/class-shortcode.php:91
+msgid "Enter a phone number in the format +380 XX XXX XX XX."
+msgstr "Вкажіть телефон у форматі +380 XX XXX XX XX."
+
+#: includes/class-rest.php:176
+#: includes/class-shortcode.php:93
+msgid "Select a model."
+msgstr "Оберіть модель."
+
+#: includes/class-rest.php:209
+msgid "Too many requests. Please try again later or call us."
+msgstr "Забагато запитів. Спробуйте пізніше або зателефонуйте нам."
+
+#: includes/class-settings.php:52
+msgid "Profile pipe 60×40"
+msgstr "Профтруба 60×40"
+
+#: includes/class-settings.php:53
+msgid "Profile pipe 60×60"
+msgstr "Профтруба 60×60"
+
+#: includes/class-settings.php:54
+msgid "Brick pillar"
+msgstr "Цегляний стовп"
+
+#: includes/class-settings.php:102
+msgid "EcoDom Quote settings"
+msgstr "Налаштування EcoDom Quote"
+
+#: includes/class-settings.php:103
+msgid "Settings"
+msgstr "Налаштування"
+
+#: includes/class-settings.php:118
+msgid "Notifications"
+msgstr "Сповіщення"
+
+#: includes/class-settings.php:121
+msgid "Telegram bot token"
+msgstr "Токен Telegram-бота"
+
+#: includes/class-settings.php:123
+msgid "Create a bot via @BotFather and paste its token."
+msgstr "Створіть бота через @BotFather і вставте його токен."
+
+#: includes/class-settings.php:126
+msgid "Telegram chat_id"
+msgstr "Telegram chat_id"
+
+#: includes/class-settings.php:128
+msgid "User, group (starts with -) or channel id. The bot must be a member of the chat."
+msgstr "ID користувача, групи (починається з -) або каналу. Бот має бути учасником чату."
+
+#: includes/class-settings.php:131
+msgid "Webhook URL"
+msgstr "URL вебхука"
+
+#: includes/class-settings.php:133
+msgid "Each lead is sent here as JSON via POST (CRM, Make, Zapier, n8n)."
+msgstr "Кожен лід надсилається сюди POST-запитом у форматі JSON (CRM, Make, Zapier, n8n)."
+
+#: includes/class-settings.php:136
+msgid "Webhook secret"
+msgstr "Секрет вебхука"
+
+#: includes/class-settings.php:138
+msgid "Optional. When set, the X-EDQ-Signature header contains the HMAC-SHA256 of the body."
+msgstr "Необов'язково. Якщо задано, заголовок X-EDQ-Signature містить HMAC-SHA256 тіла запиту."
+
+#: includes/class-settings.php:143
+msgid "Texts and company"
+msgstr "Тексти та компанія"
+
+#: includes/class-settings.php:146
+msgid "Company name"
+msgstr "Назва компанії"
+
+#: includes/class-settings.php:150
+msgid "Company phone"
+msgstr "Телефон компанії"
+
+#: includes/class-settings.php:154
+msgid "Warranty text"
+msgstr "Текст гарантії"
+
+#: includes/class-settings.php:156
+msgid "Shown under the result and in the PDF."
+msgstr "Показується під результатом і в PDF."
+
+#: includes/class-settings.php:159
+msgid "Price range, ±%"
+msgstr "Вилка ціни, ±%"
+
+#: includes/class-settings.php:166
+msgid "Roof: accessories and fasteners"
+msgstr "Покрівля: доборні елементи та кріплення"
+
+#: includes/class-settings.php:169
+msgid "Vertical sheet overlap, mm"
+msgstr "Поздовжній нахлест листів, мм"
+
+#: includes/class-settings.php:174
+msgid "Trim piece length, m"
+msgstr "Довжина доборного елемента, м"
+
+#: includes/class-settings.php:179
+msgid "Trim overlap, m"
+msgstr "Нахлест доборних елементів, м"
+
+#: includes/class-settings.php:184
+msgid "Ridge price, UAH/pc"
+msgstr "Ціна коника, грн/шт"
+
+#: includes/class-settings.php:189
+msgid "End (gable) trim price, UAH/pc"
+msgstr "Ціна торцевої планки, грн/шт"
+
+#: includes/class-settings.php:194
+msgid "Eave trim price, UAH/pc"
+msgstr "Ціна карнизної планки, грн/шт"
+
+#: includes/class-settings.php:199
+msgid "Roofing screw price, UAH/pc"
+msgstr "Ціна саморіза, грн/шт"
+
+#: includes/class-settings.php:204
+msgid "Screws per m² (roof)"
+msgstr "Саморізів на м² (покрівля)"
+
+#: includes/class-settings.php:214
+msgid "Post spacing, m"
+msgstr "Крок стовпів, м"
+
+#: includes/class-settings.php:219
+msgid "Rail (cross bar) price, UAH/m"
+msgstr "Ціна лаги (прожилини), грн/м"
+
+#: includes/class-settings.php:224
+msgid "Height above which 3 rails are used, m"
+msgstr "Висота, від якої ставимо 3 лаги, м"
+
+#: includes/class-settings.php:229
+msgid "Screws per m² (fence)"
+msgstr "Саморізів на м² (паркан)"
+
+#: includes/class-settings.php:234
+msgid "Post types"
+msgstr "Типи стовпів"
+
+#: includes/class-settings.php:236
+msgid "One per line: \"Name|price per post, UAH\"."
+msgstr "По одному в рядку: \"Назва|ціна за стовп, грн\"."
+
+#: includes/class-settings.php:346
+msgid "Shortcode:"
+msgstr "Шорткод:"
+
+#: includes/class-settings.php:349
+msgid "dompdf is not installed: leads are saved and sent, but without a PDF. Run \"composer install --no-dev\" in the plugin folder or install the release ZIP."
+msgstr "dompdf не встановлено: ліди зберігаються й надсилаються, але без PDF. Виконайте \"composer install --no-dev\" у папці плагіна або встановіть зібраний ZIP."
+
+#: includes/class-shortcode.php:86
+msgid "Slope"
+msgstr "Скат"
+
+#: includes/class-shortcode.php:87
+msgid "Remove slope"
+msgstr "Видалити скат"
+
+#: includes/class-shortcode.php:88
+msgid "Calculating…"
+msgstr "Рахуємо…"
+
+#: includes/class-shortcode.php:89
+msgid "Sending…"
+msgstr "Надсилаємо…"
+
+#: includes/class-shortcode.php:90
+msgid "Something went wrong. Please try again or call us."
+msgstr "Щось пішло не так. Спробуйте ще раз або зателефонуйте нам."
+
+#: includes/class-shortcode.php:94
+msgid "UAH"
+msgstr "грн"
+
+#: includes/class-shortcode.php:96
+msgid "from"
+msgstr "від"
+
+#: includes/class-shortcode.php:97
+msgid "to"
+msgstr "до"
+
+#: includes/class-shortcode.php:99
+msgid "Covered area"
+msgstr "Площа покриття"
+
+#: includes/class-shortcode.php:100
+#: templates/pdf.php:78
+msgid "Sheets"
+msgstr "Листів"
+
+#: includes/class-shortcode.php:154
+msgid "EcoDom calculator: add at least one published model with prices."
+msgstr "Калькулятор EcoDom: додайте хоча б одну опубліковану модель з цінами."
+
+#. translators: %d: lead id
+#: includes/class-telegram.php:54
+#, php-format
+msgid "Estimate for lead #%d"
+msgstr "Кошторис для ліда №%d"
+
+#. translators: %d: lead id
+#: includes/class-telegram.php:74
+#, php-format
+msgid "New lead #%d"
+msgstr "Новий лід №%d"
+
+#. translators: %s: area
+#: includes/class-telegram.php:80
+#, php-format
+msgid "Sheet area: %s m²"
+msgstr "Площа листів: %s м²"
+
+#. translators: 1: min price, 2: max price
+#: includes/class-telegram.php:85
+#, php-format
+msgid "%1$s – %2$s"
+msgstr "%1$s – %2$s"
+
+#. translators: %s: formatted amount
+#: includes/class-util.php:39
+#, php-format
+msgid "%s UAH"
+msgstr "%s грн"
+
+#: templates/calculator.php:18
+msgid "What are we calculating?"
+msgstr "Що розраховуємо?"
+
+#: templates/calculator.php:33
+msgid "— select a model —"
+msgstr "— оберіть модель —"
+
+#: templates/calculator.php:45
+msgid "Coating"
+msgstr "Покриття"
+
+#: templates/calculator.php:51
+msgid "Roof slopes"
+msgstr "Скати покрівлі"
+
+#: templates/calculator.php:52
+msgid "Enter dimensions along the slope surface, in metres, including the eave overhang. A triangle is a trapezoid with a top of 0."
+msgstr "Вказуйте розміри по поверхні ската в метрах, разом зі звисом карниза. Трикутник — це трапеція з верхом 0."
+
+#: templates/calculator.php:54
+msgid "+ Add slope"
+msgstr "+ Додати скат"
+
+#: templates/calculator.php:61
+msgid "Fence length, m"
+msgstr "Довжина паркану, м"
+
+#: templates/calculator.php:65
+msgid "Height, m"
+msgstr "Висота, м"
+
+#: templates/calculator.php:69
+msgid "Post type"
+msgstr "Тип стовпів"
+
+#: templates/calculator.php:80
+msgid "Calculate"
+msgstr "Розрахувати"
+
+#: templates/calculator.php:90
+#: templates/pdf.php:73
+msgid "Shape"
+msgstr "Форма"
+
+#: templates/calculator.php:92
+#: templates/pdf.php:83
+msgid "Rectangle"
+msgstr "Прямокутник"
+
+#: templates/calculator.php:93
+#: templates/pdf.php:83
+msgid "Trapezoid / triangle"
+msgstr "Трапеція / трикутник"
+
+#: templates/calculator.php:97
+msgid "Length along eave, m"
+msgstr "Довжина по карнизу, м"
+
+#: templates/calculator.php:97
+msgid "Bottom (eave), m"
+msgstr "Низ (карниз), м"
+
+#: templates/calculator.php:101
+msgid "Top (ridge), m"
+msgstr "Верх (коньок), м"
+
+#: templates/calculator.php:105
+msgid "Width: eave to ridge, m"
+msgstr "Ширина: від карниза до конька, м"
+
+#: templates/calculator.php:114
+msgid "Your estimate"
+msgstr "Ваш розрахунок"
+
+#: templates/calculator.php:130
+msgid "Estimated cost"
+msgstr "Орієнтовна вартість"
+
+#: templates/calculator.php:132
+msgid "The final price depends on the current price list and measurements."
+msgstr "Остаточна ціна залежить від актуального прайсу та замірів."
+
+#: templates/calculator.php:139
+msgid "Get the exact estimate in PDF and a manager consultation"
+msgstr "Отримайте точний кошторис у PDF та консультацію менеджера"
+
+#: templates/calculator.php:151
+msgid "How should we contact you?"
+msgstr "Як з вами зв'язатися?"
+
+#: templates/calculator.php:165
+msgid "Leave this field empty"
+msgstr "Залиште це поле порожнім"
+
+#: templates/calculator.php:169
+msgid "Get estimate"
+msgstr "Отримати кошторис"
+
+#: templates/calculator.php:171
+msgid "By submitting the form you agree to the processing of personal data."
+msgstr "Надсилаючи форму, ви погоджуєтеся на обробку персональних даних."
+
+#: templates/calculator.php:175
+msgid "Thank you! Your request has been received."
+msgstr "Дякуємо! Заявку отримано."
+
+#: templates/calculator.php:176
+msgid "A manager will contact you shortly."
+msgstr "Менеджер зв'яжеться з вами найближчим часом."
+
+#. translators: %d: lead id
+#: templates/pdf.php:23
+#: templates/pdf.php:55
+#, php-format
+msgid "Estimate #%d"
+msgstr "Кошторис №%d"
+
+#: templates/pdf.php:62
+msgid "Customer"
+msgstr "Замовник"
+
+#: templates/pdf.php:63
+msgid "Object"
+msgstr "Об'єкт"
+
+#: templates/pdf.php:65
+msgid "covered"
+msgstr "покриття"
+
+#: templates/pdf.php:69
+msgid "Slopes"
+msgstr "Скати"
+
+#: templates/pdf.php:74
+msgid "Bottom, m"
+msgstr "Низ, м"
+
+#: templates/pdf.php:75
+msgid "Top, m"
+msgstr "Верх, м"
+
+#: templates/pdf.php:76
+msgid "Width, m"
+msgstr "Ширина, м"
+
+#: templates/pdf.php:77
+msgid "Area, m²"
+msgstr "Площа, м²"
+
+#: templates/pdf.php:93
+msgid "Fence parameters"
+msgstr "Параметри паркану"
+
+#: templates/pdf.php:95
+msgid "Length"
+msgstr "Довжина"
+
+#: templates/pdf.php:96
+msgid "Height"
+msgstr "Висота"
+
+#: templates/pdf.php:97
+msgid "Posts"
+msgstr "Стовпи"
+
+#. translators: %s: spacing
+#: templates/pdf.php:97
+#, php-format
+msgid "spacing %s m"
+msgstr "крок %s м"
+
+#: templates/pdf.php:125
+msgid "Estimated cost:"
+msgstr "Орієнтовна вартість:"
+
+#. translators: %s: amount
+#: templates/pdf.php:130
+#, php-format
+msgid "Base calculation: %s. The final price is confirmed by the manager after measurements."
+msgstr "Базовий розрахунок: %s. Остаточну ціну підтверджує менеджер після замірів."
+
+#: templates/pdf.php:137
+msgid "Warranty"
+msgstr "Гарантія"
+
+#: templates/pdf.php:143
+msgid "This estimate is preliminary and is not a public offer."
+msgstr "Кошторис попередній і не є публічною офертою."

@@ -1,0 +1,16 @@
+{
+	"name": "ecodom/ecodom-quote",
+	"description": "Roof and fence calculator with lead capture for WordPress.",
+	"type": "wordpress-plugin",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=8.1",
+		"dompdf/dompdf": "^3.1"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"platform": {
+			"php": "8.1"
+		}
+	}
+}

@@ -1,0 +1,904 @@
+# Copyright (C) 2026 EcoDom
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: EcoDom Quote 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ecodom-quote\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-25T08:17:44+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: ecodom-quote\n"
+
+#. Plugin Name of the plugin
+#: ecodom-quote.php:3
+#: includes/class-post-types.php:37
+msgid "EcoDom Quote"
+msgstr ""
+
+#. Description of the plugin
+#: ecodom-quote.php:4
+msgid "Roof and fence calculator for metal tile and corrugated sheet: estimate, lead capture, PDF, Telegram and webhook."
+msgstr ""
+
+#. Author of the plugin
+#: ecodom-quote.php:8
+msgid "EcoDom"
+msgstr ""
+
+#: ecodom-quote.php:29
+msgid "EcoDom Quote requires PHP 8.1 or newer."
+msgstr ""
+
+#: includes/class-calculator.php:40
+msgid "This model cannot be used in this calculator."
+msgstr ""
+
+#: includes/class-calculator.php:43
+msgid "Model dimensions are not configured. Please contact us."
+msgstr ""
+
+#: includes/class-calculator.php:50
+msgid "Select an available thickness and coating."
+msgstr ""
+
+#. translators: 1: model, 2: thickness, 3: coating
+#: includes/class-calculator.php:60
+#, php-format
+msgid "Sheet %1$s, %2$s mm, %3$s"
+msgstr ""
+
+#. translators: 1: sheet name, 2: length in mm
+#: includes/class-calculator.php:165
+#: includes/class-calculator.php:258
+#, php-format
+msgid "%1$s, L = %2$d mm"
+msgstr ""
+
+#: includes/class-calculator.php:167
+#: includes/class-calculator.php:188
+#: includes/class-calculator.php:260
+#: includes/class-calculator.php:264
+#: includes/class-calculator.php:374
+msgid "pcs"
+msgstr ""
+
+#: includes/class-calculator.php:175
+msgid "Ridge / hip trim"
+msgstr ""
+
+#: includes/class-calculator.php:176
+msgid "End (gable) trim"
+msgstr ""
+
+#: includes/class-calculator.php:177
+msgid "Eave trim"
+msgstr ""
+
+#. translators: 1: trim name, 2: piece length, 3: running meters
+#: includes/class-calculator.php:186
+#, php-format
+msgid "%1$s %2$s m (%3$s r.m.)"
+msgstr ""
+
+#: includes/class-calculator.php:222
+msgid "Enter the fence length."
+msgstr ""
+
+#: includes/class-calculator.php:225
+msgid "Enter the fence height."
+msgstr ""
+
+#: includes/class-calculator.php:237
+msgid "Post"
+msgstr ""
+
+#. translators: %d: max length mm
+#: includes/class-calculator.php:244
+#, php-format
+msgid "Maximum sheet length for this model is %d mm."
+msgstr ""
+
+#. translators: %d: number of rails
+#: includes/class-calculator.php:268
+#, php-format
+msgid "Rail (cross bar), %d row"
+msgid_plural "Rail (cross bar), %d rows"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-calculator.php:270
+#: templates/pdf.php:95
+#: templates/pdf.php:96
+msgid "m"
+msgstr ""
+
+#. translators: %d: slope number
+#: includes/class-calculator.php:310
+#, php-format
+msgid "Check the dimensions of slope #%d."
+msgstr ""
+
+#: includes/class-calculator.php:321
+msgid "Add at least one roof slope."
+msgstr ""
+
+#: includes/class-calculator.php:363
+msgid "The slope is too long for this model."
+msgstr ""
+
+#: includes/class-calculator.php:372
+msgid "Roofing screws with EPDM washer"
+msgstr ""
+
+#: includes/class-importer.php:50
+msgid "Import / export prices"
+msgstr ""
+
+#: includes/class-importer.php:51
+msgid "Import / export"
+msgstr ""
+
+#. translators: 1: created, 2: updated
+#: includes/class-importer.php:71
+#, php-format
+msgid "Import finished: %1$d created, %2$d updated."
+msgstr ""
+
+#: includes/class-importer.php:80
+msgid "Export"
+msgstr ""
+
+#: includes/class-importer.php:81
+msgid "Download all models as CSV (UTF-8, semicolon separated — opens in Excel / Google Sheets). Use it as a template."
+msgstr ""
+
+#: includes/class-importer.php:82
+msgid "Download CSV"
+msgstr ""
+
+#: includes/class-importer.php:84
+#: includes/class-importer.php:91
+msgid "Import"
+msgstr ""
+
+#: includes/class-importer.php:85
+msgid "Models are matched by slug (or by title when slug is empty): existing ones are updated, new ones are created. Separator \";\" or \",\", decimal comma is allowed. Empty price cells keep the current price."
+msgstr ""
+
+#: includes/class-importer.php:100
+#: includes/class-importer.php:279
+#: includes/class-lead-admin.php:194
+msgid "Access denied."
+msgstr ""
+
+#: includes/class-importer.php:107
+msgid "File was not uploaded."
+msgstr ""
+
+#: includes/class-importer.php:135
+msgid "The file is empty."
+msgstr ""
+
+#: includes/class-importer.php:141
+msgid "The header must contain a \"title\" or \"slug\" column."
+msgstr ""
+
+#. translators: 1: line number, 2: error
+#: includes/class-importer.php:157
+#, php-format
+msgid "Line %1$d: %2$s"
+msgstr ""
+
+#: includes/class-importer.php:175
+msgid "slug or title is required"
+msgstr ""
+
+#: includes/class-lead-admin.php:47
+#: includes/class-post-types.php:62
+#: includes/class-post-types.php:64
+msgid "Lead"
+msgstr ""
+
+#: includes/class-lead-admin.php:48
+#: includes/class-lead-admin.php:124
+msgid "Channel"
+msgstr ""
+
+#: includes/class-lead-admin.php:49
+msgid "Calculation"
+msgstr ""
+
+#: includes/class-lead-admin.php:50
+#: includes/class-lead-admin.php:167
+#: templates/calculator.php:123
+#: templates/pdf.php:107
+msgid "Sum"
+msgstr ""
+
+#: includes/class-lead-admin.php:51
+msgid "Source"
+msgstr ""
+
+#: includes/class-lead-admin.php:52
+msgid "Delivery"
+msgstr ""
+
+#: includes/class-lead-admin.php:53
+msgid "Date"
+msgstr ""
+
+#: includes/class-lead-admin.php:67
+#: includes/class-settings.php:211
+#: includes/class-telegram.php:78
+#: templates/calculator.php:21
+#: templates/calculator.php:58
+#: templates/pdf.php:63
+msgid "Fence"
+msgstr ""
+
+#: includes/class-lead-admin.php:67
+#: includes/class-telegram.php:78
+#: templates/calculator.php:20
+#: templates/pdf.php:63
+msgid "Roof"
+msgstr ""
+
+#: includes/class-lead-admin.php:111
+msgid "Lead details"
+msgstr ""
+
+#: includes/class-lead-admin.php:117
+msgid "No data."
+msgstr ""
+
+#: includes/class-lead-admin.php:122
+#: templates/calculator.php:142
+msgid "Name"
+msgstr ""
+
+#: includes/class-lead-admin.php:123
+#: includes/class-lead-admin.php:147
+#: templates/calculator.php:146
+msgid "Phone"
+msgstr ""
+
+#: includes/class-lead-admin.php:125
+#: includes/class-post-types.php:36
+#: templates/calculator.php:30
+#: templates/pdf.php:64
+msgid "Model"
+msgstr ""
+
+#: includes/class-lead-admin.php:125
+#: includes/class-shortcode.php:101
+#: includes/class-telegram.php:78
+#: templates/pdf.php:64
+msgid "mm"
+msgstr ""
+
+#: includes/class-lead-admin.php:126
+#: includes/class-shortcode.php:98
+#: templates/pdf.php:65
+msgid "Sheet area"
+msgstr ""
+
+#: includes/class-lead-admin.php:126
+#: includes/class-rest.php:193
+#: includes/class-shortcode.php:95
+#: templates/pdf.php:65
+#: templates/pdf.php:115
+msgid "m²"
+msgstr ""
+
+#: includes/class-lead-admin.php:127
+msgid "Price range"
+msgstr ""
+
+#: includes/class-lead-admin.php:128
+msgid "Page"
+msgstr ""
+
+#. translators: %s: channel
+#: includes/class-lead-admin.php:137
+#, php-format
+msgid "Status: %s"
+msgstr ""
+
+#: includes/class-lead-admin.php:161
+#: templates/pdf.php:101
+msgid "Materials"
+msgstr ""
+
+#: includes/class-lead-admin.php:164
+#: templates/calculator.php:120
+#: templates/pdf.php:104
+msgid "Item"
+msgstr ""
+
+#: includes/class-lead-admin.php:165
+#: templates/calculator.php:121
+#: templates/pdf.php:105
+msgid "Qty"
+msgstr ""
+
+#: includes/class-lead-admin.php:166
+#: templates/calculator.php:122
+#: templates/pdf.php:106
+msgid "Price"
+msgstr ""
+
+#: includes/class-lead-admin.php:180
+msgid "Download PDF"
+msgstr ""
+
+#: includes/class-lead-admin.php:184
+msgid "Raw input"
+msgstr ""
+
+#: includes/class-lead-admin.php:198
+msgid "PDF not found."
+msgstr ""
+
+#: includes/class-lead-service.php:28
+msgid "Phone call"
+msgstr ""
+
+#: includes/class-lead-service.php:54
+msgid "Could not save the request. Please call us."
+msgstr ""
+
+#: includes/class-model.php:30
+msgid "Metal roof tile"
+msgstr ""
+
+#: includes/class-model.php:31
+msgid "Corrugated sheet (roof and fence)"
+msgstr ""
+
+#: includes/class-model.php:32
+msgid "Fence sheet"
+msgstr ""
+
+#: includes/class-model.php:41
+msgid "Gloss"
+msgstr ""
+
+#: includes/class-model.php:42
+msgid "Matt"
+msgstr ""
+
+#: includes/class-post-types.php:35
+#: includes/class-post-types.php:38
+msgid "Models"
+msgstr ""
+
+#: includes/class-post-types.php:39
+#: includes/class-post-types.php:40
+msgid "Add model"
+msgstr ""
+
+#: includes/class-post-types.php:41
+msgid "Edit model"
+msgstr ""
+
+#: includes/class-post-types.php:42
+msgid "Search models"
+msgstr ""
+
+#: includes/class-post-types.php:43
+msgid "No models found"
+msgstr ""
+
+#: includes/class-post-types.php:61
+#: includes/class-post-types.php:63
+msgid "Leads"
+msgstr ""
+
+#: includes/class-post-types.php:65
+msgid "Search leads"
+msgstr ""
+
+#: includes/class-post-types.php:66
+msgid "No leads yet"
+msgstr ""
+
+#: includes/class-post-types.php:81
+msgid "Model parameters and prices"
+msgstr ""
+
+#: includes/class-post-types.php:89
+msgid "Total width, mm"
+msgstr ""
+
+#: includes/class-post-types.php:90
+msgid "Useful (effective) width, mm"
+msgstr ""
+
+#: includes/class-post-types.php:91
+msgid "Wave step, mm"
+msgstr ""
+
+#: includes/class-post-types.php:92
+msgid "Min sheet length, mm"
+msgstr ""
+
+#: includes/class-post-types.php:93
+msgid "Max sheet length, mm"
+msgstr ""
+
+#: includes/class-post-types.php:98
+#: includes/class-post-types.php:171
+msgid "Type"
+msgstr ""
+
+#: includes/class-post-types.php:105
+msgid "Roof — metal tile (the wave step is along the sheet); corrugated sheet can be used in both roof and fence calculators."
+msgstr ""
+
+#: includes/class-post-types.php:116
+msgid "Price per m², UAH (leave 0 if the variant is not available)"
+msgstr ""
+
+#: includes/class-post-types.php:120
+#: templates/calculator.php:41
+msgid "Thickness, mm"
+msgstr ""
+
+#. translators: %d: post ID
+#: includes/class-post-types.php:145
+#, php-format
+msgid "Shortcode for this model: [ecodom_calc model=\"%d\"]"
+msgstr ""
+
+#: includes/class-post-types.php:172
+msgid "Width total / useful"
+msgstr ""
+
+#: includes/class-post-types.php:173
+msgid "Price from, UAH/m²"
+msgstr ""
+
+#: includes/class-post-types.php:174
+msgid "Shortcode"
+msgstr ""
+
+#: includes/class-rest.php:57
+msgid "The page has expired. Please refresh it and try again."
+msgstr ""
+
+#: includes/class-rest.php:94
+#: includes/class-shortcode.php:92
+msgid "Enter your name."
+msgstr ""
+
+#: includes/class-rest.php:97
+#: includes/class-shortcode.php:91
+msgid "Enter a phone number in the format +380 XX XXX XX XX."
+msgstr ""
+
+#: includes/class-rest.php:176
+#: includes/class-shortcode.php:93
+msgid "Select a model."
+msgstr ""
+
+#: includes/class-rest.php:209
+msgid "Too many requests. Please try again later or call us."
+msgstr ""
+
+#: includes/class-settings.php:52
+msgid "Profile pipe 60×40"
+msgstr ""
+
+#: includes/class-settings.php:53
+msgid "Profile pipe 60×60"
+msgstr ""
+
+#: includes/class-settings.php:54
+msgid "Brick pillar"
+msgstr ""
+
+#: includes/class-settings.php:102
+msgid "EcoDom Quote settings"
+msgstr ""
+
+#: includes/class-settings.php:103
+msgid "Settings"
+msgstr ""
+
+#: includes/class-settings.php:118
+msgid "Notifications"
+msgstr ""
+
+#: includes/class-settings.php:121
+msgid "Telegram bot token"
+msgstr ""
+
+#: includes/class-settings.php:123
+msgid "Create a bot via @BotFather and paste its token."
+msgstr ""
+
+#: includes/class-settings.php:126
+msgid "Telegram chat_id"
+msgstr ""
+
+#: includes/class-settings.php:128
+msgid "User, group (starts with -) or channel id. The bot must be a member of the chat."
+msgstr ""
+
+#: includes/class-settings.php:131
+msgid "Webhook URL"
+msgstr ""
+
+#: includes/class-settings.php:133
+msgid "Each lead is sent here as JSON via POST (CRM, Make, Zapier, n8n)."
+msgstr ""
+
+#: includes/class-settings.php:136
+msgid "Webhook secret"
+msgstr ""
+
+#: includes/class-settings.php:138
+msgid "Optional. When set, the X-EDQ-Signature header contains the HMAC-SHA256 of the body."
+msgstr ""
+
+#: includes/class-settings.php:143
+msgid "Texts and company"
+msgstr ""
+
+#: includes/class-settings.php:146
+msgid "Company name"
+msgstr ""
+
+#: includes/class-settings.php:150
+msgid "Company phone"
+msgstr ""
+
+#: includes/class-settings.php:154
+msgid "Warranty text"
+msgstr ""
+
+#: includes/class-settings.php:156
+msgid "Shown under the result and in the PDF."
+msgstr ""
+
+#: includes/class-settings.php:159
+msgid "Price range, ±%"
+msgstr ""
+
+#: includes/class-settings.php:166
+msgid "Roof: accessories and fasteners"
+msgstr ""
+
+#: includes/class-settings.php:169
+msgid "Vertical sheet overlap, mm"
+msgstr ""
+
+#: includes/class-settings.php:174
+msgid "Trim piece length, m"
+msgstr ""
+
+#: includes/class-settings.php:179
+msgid "Trim overlap, m"
+msgstr ""
+
+#: includes/class-settings.php:184
+msgid "Ridge price, UAH/pc"
+msgstr ""
+
+#: includes/class-settings.php:189
+msgid "End (gable) trim price, UAH/pc"
+msgstr ""
+
+#: includes/class-settings.php:194
+msgid "Eave trim price, UAH/pc"
+msgstr ""
+
+#: includes/class-settings.php:199
+msgid "Roofing screw price, UAH/pc"
+msgstr ""
+
+#: includes/class-settings.php:204
+msgid "Screws per m² (roof)"
+msgstr ""
+
+#: includes/class-settings.php:214
+msgid "Post spacing, m"
+msgstr ""
+
+#: includes/class-settings.php:219
+msgid "Rail (cross bar) price, UAH/m"
+msgstr ""
+
+#: includes/class-settings.php:224
+msgid "Height above which 3 rails are used, m"
+msgstr ""
+
+#: includes/class-settings.php:229
+msgid "Screws per m² (fence)"
+msgstr ""
+
+#: includes/class-settings.php:234
+msgid "Post types"
+msgstr ""
+
+#: includes/class-settings.php:236
+msgid "One per line: \"Name|price per post, UAH\"."
+msgstr ""
+
+#: includes/class-settings.php:346
+msgid "Shortcode:"
+msgstr ""
+
+#: includes/class-settings.php:349
+msgid "dompdf is not installed: leads are saved and sent, but without a PDF. Run \"composer install --no-dev\" in the plugin folder or install the release ZIP."
+msgstr ""
+
+#: includes/class-shortcode.php:86
+msgid "Slope"
+msgstr ""
+
+#: includes/class-shortcode.php:87
+msgid "Remove slope"
+msgstr ""
+
+#: includes/class-shortcode.php:88
+msgid "Calculating…"
+msgstr ""
+
+#: includes/class-shortcode.php:89
+msgid "Sending…"
+msgstr ""
+
+#: includes/class-shortcode.php:90
+msgid "Something went wrong. Please try again or call us."
+msgstr ""
+
+#: includes/class-shortcode.php:94
+msgid "UAH"
+msgstr ""
+
+#: includes/class-shortcode.php:96
+msgid "from"
+msgstr ""
+
+#: includes/class-shortcode.php:97
+msgid "to"
+msgstr ""
+
+#: includes/class-shortcode.php:99
+msgid "Covered area"
+msgstr ""
+
+#: includes/class-shortcode.php:100
+#: templates/pdf.php:78
+msgid "Sheets"
+msgstr ""
+
+#: includes/class-shortcode.php:154
+msgid "EcoDom calculator: add at least one published model with prices."
+msgstr ""
+
+#. translators: %d: lead id
+#: includes/class-telegram.php:54
+#, php-format
+msgid "Estimate for lead #%d"
+msgstr ""
+
+#. translators: %d: lead id
+#: includes/class-telegram.php:74
+#, php-format
+msgid "New lead #%d"
+msgstr ""
+
+#. translators: %s: area
+#: includes/class-telegram.php:80
+#, php-format
+msgid "Sheet area: %s m²"
+msgstr ""
+
+#. translators: 1: min price, 2: max price
+#: includes/class-telegram.php:85
+#, php-format
+msgid "%1$s – %2$s"
+msgstr ""
+
+#. translators: %s: formatted amount
+#: includes/class-util.php:39
+#, php-format
+msgid "%s UAH"
+msgstr ""
+
+#: templates/calculator.php:18
+msgid "What are we calculating?"
+msgstr ""
+
+#: templates/calculator.php:33
+msgid "— select a model —"
+msgstr ""
+
+#: templates/calculator.php:45
+msgid "Coating"
+msgstr ""
+
+#: templates/calculator.php:51
+msgid "Roof slopes"
+msgstr ""
+
+#: templates/calculator.php:52
+msgid "Enter dimensions along the slope surface, in metres, including the eave overhang. A triangle is a trapezoid with a top of 0."
+msgstr ""
+
+#: templates/calculator.php:54
+msgid "+ Add slope"
+msgstr ""
+
+#: templates/calculator.php:61
+msgid "Fence length, m"
+msgstr ""
+
+#: templates/calculator.php:65
+msgid "Height, m"
+msgstr ""
+
+#: templates/calculator.php:69
+msgid "Post type"
+msgstr ""
+
+#: templates/calculator.php:80
+msgid "Calculate"
+msgstr ""
+
+#: templates/calculator.php:90
+#: templates/pdf.php:73
+msgid "Shape"
+msgstr ""
+
+#: templates/calculator.php:92
+#: templates/pdf.php:83
+msgid "Rectangle"
+msgstr ""
+
+#: templates/calculator.php:93
+#: templates/pdf.php:83
+msgid "Trapezoid / triangle"
+msgstr ""
+
+#: templates/calculator.php:97
+msgid "Length along eave, m"
+msgstr ""
+
+#: templates/calculator.php:97
+msgid "Bottom (eave), m"
+msgstr ""
+
+#: templates/calculator.php:101
+msgid "Top (ridge), m"
+msgstr ""
+
+#: templates/calculator.php:105
+msgid "Width: eave to ridge, m"
+msgstr ""
+
+#: templates/calculator.php:114
+msgid "Your estimate"
+msgstr ""
+
+#: templates/calculator.php:130
+msgid "Estimated cost"
+msgstr ""
+
+#: templates/calculator.php:132
+msgid "The final price depends on the current price list and measurements."
+msgstr ""
+
+#: templates/calculator.php:139
+msgid "Get the exact estimate in PDF and a manager consultation"
+msgstr ""
+
+#: templates/calculator.php:151
+msgid "How should we contact you?"
+msgstr ""
+
+#: templates/calculator.php:165
+msgid "Leave this field empty"
+msgstr ""
+
+#: templates/calculator.php:169
+msgid "Get estimate"
+msgstr ""
+
+#: templates/calculator.php:171
+msgid "By submitting the form you agree to the processing of personal data."
+msgstr ""
+
+#: templates/calculator.php:175
+msgid "Thank you! Your request has been received."
+msgstr ""
+
+#: templates/calculator.php:176
+msgid "A manager will contact you shortly."
+msgstr ""
+
+#. translators: %d: lead id
+#: templates/pdf.php:23
+#: templates/pdf.php:55
+#, php-format
+msgid "Estimate #%d"
+msgstr ""
+
+#: templates/pdf.php:62
+msgid "Customer"
+msgstr ""
+
+#: templates/pdf.php:63
+msgid "Object"
+msgstr ""
+
+#: templates/pdf.php:65
+msgid "covered"
+msgstr ""
+
+#: templates/pdf.php:69
+msgid "Slopes"
+msgstr ""
+
+#: templates/pdf.php:74
+msgid "Bottom, m"
+msgstr ""
+
+#: templates/pdf.php:75
+msgid "Top, m"
+msgstr ""
+
+#: templates/pdf.php:76
+msgid "Width, m"
+msgstr ""
+
+#: templates/pdf.php:77
+msgid "Area, m²"
+msgstr ""
+
+#: templates/pdf.php:93
+msgid "Fence parameters"
+msgstr ""
+
+#: templates/pdf.php:95
+msgid "Length"
+msgstr ""
+
+#: templates/pdf.php:96
+msgid "Height"
+msgstr ""
+
+#: templates/pdf.php:97
+msgid "Posts"
+msgstr ""
+
+#. translators: %s: spacing
+#: templates/pdf.php:97
+#, php-format
+msgid "spacing %s m"
+msgstr ""
+
+#: templates/pdf.php:125
+msgid "Estimated cost:"
+msgstr ""
+
+#. translators: %s: amount
+#: templates/pdf.php:130
+#, php-format
+msgid "Base calculation: %s. The final price is confirmed by the manager after measurements."
+msgstr ""
+
+#: templates/pdf.php:137
+msgid "Warranty"
+msgstr ""
+
+#: templates/pdf.php:143
+msgid "This estimate is preliminary and is not a public offer."
+msgstr ""
