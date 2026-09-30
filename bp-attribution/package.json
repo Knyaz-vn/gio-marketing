@@ -1,0 +1,16 @@
+{
+  "name": "bp-attribution",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Мультиканальна атрибуція заявок для bpmedical.com.ua (WordPress-плагін)",
+  "scripts": {
+    "build": "node tools/build.js",
+    "test": "node --test tests/unit/*.test.js",
+    "test:e2e": "playwright test -c tests/e2e/playwright.config.js",
+    "wp:setup": "bash tests/e2e/setup-wp.sh"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "terser": "^5.43.0"
+  }
+}
