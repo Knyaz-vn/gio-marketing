@@ -28,6 +28,7 @@ WordPress-плагін для bpmedical.com.ua. Для кожної заявки
 10. [Звіт "Атрибуція заявок"](#10-звіт-атрибуція-заявок)
 11. [Тести і збірка](#11-тести-і-збірка)
 12. [Обмеження](#12-обмеження)
+13. [Кліки по телефону](#13-кліки-по-телефону)
 
 ---
 
@@ -328,6 +329,9 @@ https://bpmedical.com.ua/?utm_source=google&utm_medium=gbp&utm_campaign={locatio
 ## 9. Телефон, месенджери, Binotel
 
 Кліки по `tel:`, `viber:`, `t.me`, `wa.me` відправляють `contact_click` з ft_/lt_ полями (див. розділ 7).
+Для телефонів є окремий, детальніший модуль з подією `phone_click`, таблицею кліків, звітом і зіставленням
+з дзвінками Binotel: див. [розділ 13](#13-кліки-по-телефону). Для GA4 / Ads по телефону використовуйте `phone_click`,
+`contact_click` лишається для месенджерів.
 
 ### Binotel GetCall
 
@@ -388,7 +392,7 @@ https://bpmedical.com.ua/?utm_source=google&utm_medium=gbp&utm_campaign={locatio
 ```bash
 cd bp-attribution
 npm install
-npm test          # unit-тести classify.js (node:test)
+npm test          # unit-тести classify.js і phone-core.js (node:test)
 npm run build     # assets/src -> assets/dist, перевірка бюджету < 8 KB gzip
 npm run wp:setup  # локальний WordPress 6.5 + SQLite у .wp/ (ядро - з npm-пакета @wp-playground/wordpress-builds)
 npm run test:e2e  # Playwright
@@ -413,6 +417,8 @@ utm_medium=paid_social і нормалізація; referrer maps; direct піс
 5. звіт в адмінці і CSV без ПД;
 6. модуль запису: сервер читає cookie і пише ті самі поля у власну таблицю модуля (паритет PHP і JS).
 
+Тести модуля телефонів - у [розділі 13](#тести-модуля-телефонів).
+
 Фікстура `tests/e2e/fixture/bp-e2e-fixture.php` - лише для тестів, **не встановлюйте її на робочий сайт**.
 
 Структура:
@@ -422,9 +428,13 @@ bp-attribution.php          головний файл плагіна
 includes/functions.php      схема БД, cookie, поля, збереження, лист, категорії
 includes/integrations.php   Elementor, CF7, WPForms, fallback, wp_mail
 includes/booking.php        хелпери модуля запису
-includes/admin-*.php        звіт, форми, налаштування
+includes/phone.php          модуль телефонів: конфіг, обгортання номерів, REST, Binotel
+includes/admin-*.php        звіти, форми, номери на сайті, налаштування
+phones.json                 номери клініки, локації, правила сторінок, робочі години
 assets/src/classify.js      класифікація (чисті функції, unit-тести)
 assets/src/tracker.js       DOM, cookie/згода, форми, dataLayer
+assets/src/phone-core.js    номери, тип сторінки, місце кнопки, дедуплікація (чисті функції, unit-тести)
+assets/src/phone-tracker.js кліки/копіювання номерів, dataLayer, sendBeacon
 assets/dist/                зібраний JS (підключається на сайті)
 ```
 
@@ -441,3 +451,204 @@ assets/dist/                зібраний JS (підключається на
 - **Відмова від cookies**: дотики живуть лише до кінця сесії (sessionStorage); заявка в тій самій сесії
   все одно отримує поля.
 - Заявки, надіслані до встановлення плагіна, у звіті відсутні.
+
+
+---
+
+## 13. Кліки по телефону
+
+Модуль фіксує кліки по номерах клініки разом із джерелом трафіку, номером (локацією) і сторінкою.
+Клік по номеру - це **намір** зателефонувати, а не дзвінок; дзвінки - з Binotel (нижче).
+
+### 13.1. Де на сайті номери: tel:-посилання чи текст
+
+Сайт був недоступний із середовища розробки, тому інвентаризацію номерів зроблено інструментом
+на самому сайті: **Атрибуція заявок → Номери на сайті → Сканувати**. Сканер відкриває всі опубліковані
+сторінки (головна, сторінки, записи, лікарі, спеціальності, контакти, акції) як відвідувач і для кожного
+номера показує:
+
+| Колонка | Значення |
+|---|---|
+| Сторінка | URL |
+| Місце | `header`, `footer`, `banner`, `popup`, `content`, `sticky` |
+| Номер | E.164 і мітка з `phones.json` або "невідомий" |
+| Статус | **tel:-посилання** - клікабельний, кліки рахуються; **текст → обгорнуто плагіном** - був текстом, плагін зробив посилання; **текст** - лишився текстом |
+
+Попапи Popup Maker і Elementor Popup потрапляють у скан, бо їхня розмітка є на сторінках.
+Статус "текст" означає, що номер невідомий (додайте в `phones.json`) або виводиться поза фільтрами
+(наприклад, жорстко в PHP-шаблоні теми) - тоді його треба зробити посиланням у шаблоні.
+Сканеру потрібні loopback-запити сайту до самого себе (як для Site Health).
+
+### 13.2. Конфіг `phones.json`
+
+```json
+{
+  "phones": [
+    { "number": "+380502119922", "location": "strilets", "address": "вул. Стрілецька 7Д", "label": "050 Стрілецька" },
+    { "number": "+380662119922", "location": "koriat",   "address": "вул. Князів Коріатовичів 168A", "label": "066 Коріатовичів" },
+    { "number": "+380800337617", "location": "hotline",  "address": "", "label": "0800 гаряча лінія" }
+  ],
+  "track_messengers": false,
+  "wrap_text_numbers": true,
+  "dedupe_seconds": 60,
+  "session_minutes": 30,
+  "doctor_path_prefixes": ["/doctors/", "/likari/", "/likar/", "/doctor/"],
+  "doctor_specialty": { "ivanenko-olena": "mamolog" },
+  "page_types": { "contacts": ["/contacts", "/kontakty"], "promo": ["/akcii", "/promo"], "article": ["/blog", "/news"] },
+  "working_hours": { "weekdays": [8, 18], "saturday": [8, 15], "sunday": null },
+  "binotel_match_window_sec": 180
+}
+```
+
+- Номер у будь-якому форматі нормалізується в E.164: `050-211-99-22`, `(050) 211 9922`, `0 (800) 337 617`,
+  `050- 211-99-22`, `+38 (050) 211-99-22`, `380502119922`.
+- **Невідомий номер** у `tel:` теж трекається з `location: unknown`, пишеться в лог PHP
+  (`[bp-phone] unknown phone number ...`) і в блок "Невідомі номери" у звіті - звідти поповнюйте конфіг.
+- `doctor_path_prefixes` / `doctor_specialty` - як визначити сторінку лікаря і його спеціальність.
+  Якщо лікарі - окремий тип записів з іншим URL, використайте фільтр:
+  `add_filter( 'bp_phone_page_context', fn( $c ) => is_singular( 'doctor' ) ? array( 'page_type' => 'doctor', 'doctor_slug' => get_post_field( 'post_name' ), 'specialty' => '...' ) : $c );`
+- `working_hours` - робочі години для розмітки неробочого часу у звіті (вкажіть реальний час відкриття).
+- Змінити конфіг без редагування файлу: фільтр `bp_phone_config`.
+
+### 13.3. Що фіксується
+
+1. **Клік / тап по `tel:`**: делегований слухач на `document` у capture-фазі, тож ловить і динамічні попапи
+   Elementor / Popup Maker. `action: tap` на мобільних і планшетах, `click` на десктопі.
+2. **Номери текстом**: обгортаються в `<a href="tel:+380…" class="bp-phone-link">` фільтрами `the_content`,
+   текстових віджетів і **всіх віджетів Elementor** (`elementor/widget/render_content`, зокрема хедер, футер, попапи).
+   Обробляється лише текст між тегами: атрибути (`alt`, `data-*`), вміст існуючих `<a>`, `<script>`, `<style>`,
+   `<button>`, `<select>`, `<textarea>` не змінюються. Обгортаються лише номери з конфігу. Вимкнути: `"wrap_text_numbers": false`.
+3. **Копіювання** (`action: copy`): якщо виділений і скопійований текст містить номер з конфігу (типово на десктопі).
+4. **Месенджери** (`action: messenger`): `viber:`, `t.me`, `wa.me`, лише якщо `"track_messengers": true`.
+
+**Дедуплікація**: той самий номер у тій самій сесії протягом 60 с рахується один раз (у браузері і повторно на сервері).
+**Перехід за `tel:` не блокується і не затримується**: немає `preventDefault`, таймерів чи очікування відповіді;
+`dataLayer.push` і `sendBeacon` виконуються синхронно до переходу.
+
+### 13.4. Дані події
+
+| Поле | Опис |
+|---|---|
+| `event_id` | UUID події |
+| `ts` | час кліку (ISO, UTC) |
+| `action` | `tap` / `click` / `copy` / `messenger` |
+| `phone_e164`, `phone_label`, `location` | номер клініки, мітка, локація (`strilets`, `koriat`, `hotline`, `unknown`) |
+| `device` | `mobile` / `desktop` / `tablet` |
+| `page_path`, `page_type` | шлях сторінки; `home`, `department`, `doctor`, `article`, `contacts`, `promo`, `other` |
+| `specialty`, `doctor_slug` | з `/departments/{slug}/` або з мапи лікарів |
+| `element` | `header` / `footer` / `banner` / `popup` / `content` / `sticky` (найближчий контейнер) |
+| `ft_source`, `ft_medium`, `ft_campaign` | перше джерело |
+| `lt_source`, `lt_medium`, `lt_campaign`, `lt_term` | останнє непряме джерело |
+| `touch_count`, `paid_in_path` | кількість дотиків; 1, якщо в шляху була платна реклама |
+| `gclid`, `gbraid`, `wbraid` | останні click id |
+| `session_id` | випадковий id, живе 30 хв від останньої активності |
+
+**Джерело** береться з cookie `bp_attr` (див. розділ 3). Якщо її немає (відмова від cookies, перший захід до згоди) -
+поточний захід класифікується тими самими правилами: gclid/gbraid/wbraid → `google/cpc`; utm_* як є;
+fbclid без utm → `facebook/social`; пошуковик → `organic`; соцмережі → `social`; Google Maps → `google/maps`;
+інший домен → `referral`; нічого → `direct`.
+
+**Персональних даних немає**: лише номер клініки. Номер, ім'я, IP відвідувача в подію не потрапляють.
+
+### 13.5. Куди відправляється
+
+1. `dataLayer.push({ event: 'phone_click', ...усі поля })` - до переходу за `tel:`.
+2. `navigator.sendBeacon('/wp-json/bp/v1/phone-click')`, fallback `fetch(..., { keepalive: true })`.
+   Ендпоінт без nonce (сторінки можуть бути закешовані), але: rate limit **30 запитів/хв на IP**,
+   сувора схема (тип, enum, довжина кожного поля; невідомі поля відкидаються), мітку і локацію визначає сервер.
+   Запис у `wp_bp_phone_clicks`. **IP не зберігається**; лише солений хеш (HMAC з ключем сайту) для
+   дедуплікації, який щодня обнуляється для записів старших за 30 днів (WP-Cron `bp_phone_daily`).
+   За Cloudflare / проксі підставте реальний IP відвідувача для rate limit фільтром `bp_phone_client_ip`.
+
+### 13.6. GTM, GA4, Google Ads, Meta (налаштувати вручну)
+
+**GTM (GTM-KVR78MJ)**
+
+- Тригер: Custom Event `phone_click`.
+- Змінні Data Layer Variable: `phone_label`, `location`, `specialty`, `page_type`, `element`, `lt_medium`,
+  `lt_source`, `paid_in_path`, `action`, `device`, `doctor_slug`, `ft_medium`.
+- Якщо в контейнері вже є тег на "клік по посиланню tel:" (Just Links / Click URL), вимкніть його, щоб не було дублів.
+
+**GA4**: тег GA4 Event `phone_click` з параметрами `phone_label`, `location`, `specialty`, `page_type`, `element`,
+`lt_medium`, `paid_in_path` (за бажанням `action`, `device`, `lt_source`).
+Custom dimensions (Admin → Custom definitions, Scope: **Event**):
+
+| Dimension name | Event parameter |
+|---|---|
+| Phone label | `phone_label` |
+| Phone location | `location` |
+| Specialty | `specialty` (вже є, якщо створено для lead_submit) |
+| Page type | `page_type` |
+| Phone element | `element` |
+| Last touch medium | `lt_medium` (вже є) |
+| Paid in path | `paid_in_path` (вже є) |
+| Phone action | `action` |
+
+**Google Ads**: імпортуйте GA4-подію `phone_click` (або створіть конверсію з тегу GTM) як **вторинну** дію
+(Goals → Conversions → дія → "Secondary" / "Використовувати для оптимізації ставок: ні"). Клік не дорівнює дзвінку:
+частина людей передумає, частина набере номер з пам'яті. **Первинні** конверсії лишаються: дзвінки з Binotel
+тривалістю від 30-60 с і заявки (`lead_submit`, `booking_submit`).
+
+**Meta Pixel**: окремий тег у GTM на тригер `phone_click`:
+
+```html
+<script>fbq('track', 'Contact', { location: {{DLV - location}} });</script>
+```
+
+(лише `location`, без номера відвідувача; якщо Pixel підключено через шаблон - подія `Contact`, параметр `location`).
+
+### 13.7. Зіставлення з дзвінками Binotel (опційно)
+
+1. **Налаштування → Binotel: секрет** - згенеруйте рядок від 16 символів (або константа `BP_BINOTEL_SECRET` у wp-config.php).
+2. У Make.com: сценарій "Binotel → вхідні дзвінки" → HTTP-модуль `POST https://bpmedical.com.ua/wp-json/bp/v1/binotel-calls`,
+   заголовок `X-BP-Secret: <секрет>`, тіло JSON (один дзвінок, масив або `{ "calls": [...] }`, до 500 за раз):
+
+```json
+{ "call_id": "123456789", "dialed_number": "0662119922", "started_at": "2026-09-30T14:05:12+03:00", "duration_sec": 74, "answered": true }
+```
+
+   `started_at` - ISO 8601 з часовим поясом, unix timestamp або `Y-m-d H:i:s` у часовому поясі сайту.
+   **Номер абонента не передавайте**; якщо він є в тілі, плагін його ігнорує (у таблиці `wp_bp_binotel_calls` для нього немає колонки).
+3. Правило зіставлення: той самий набраний номер + клік за **0-180 с до початку дзвінка**; якщо кандидатів кілька -
+   найближчий за часом, `match_confidence: low`; один - `high`. Один клік зіставляється лише з одним дзвінком.
+   Повторна відправка того самого `call_id` оновлює статус/тривалість.
+4. Результат: клік отримує "дзвінок відбувся / відповіли / тривалість", дзвінок - джерело трафіку (через клік).
+
+Якщо в Binotel увімкнено динамічний коллтрекінг, номери з пулу теж треба додати в `phones.json`
+(з відповідною `location`), інакше кліки по них будуть `unknown`, а дзвінки не зіставляться.
+
+### 13.8. Звіт "Кліки по телефону"
+
+**Атрибуція заявок → Кліки по телефону**. Фільтри: дати, номер/локація, пристрій. Експорт CSV (без хешу IP).
+
+- кліки за джерелом (`lt_source/lt_medium`) і частка з `paid_in_path=1`;
+- розбивка за номером/локацією, спеціальністю, типом сторінки, місцем кнопки, дією і пристроєм;
+- з Binotel: % кліків, що перейшли в дзвінок, % відповіданих, середня тривалість, по джерелах;
+- графік по днях і теплова карта "день тижня × година": неробочий час (Пн-Пт після 18:00, Сб після 15:00, неділя)
+  заштриховано, KPI "у неробочий час" - частка таких кліків;
+- невідомі номери, які треба додати в конфіг.
+
+### Тести модуля телефонів
+
+**Unit** (`tests/unit/phone-core.test.js`): нормалізація всіх форматів номерів у E.164 і пошук їх у тексті;
+визначення `element` і `page_type` / `specialty` / `doctor_slug`; пристрій; дедуплікація 60 с; сесія 30 хв;
+класифікація джерела без cookie `bp_attr` і пріоритет cookie.
+
+**E2E** (`tests/e2e/phone.spec.js`):
+
+1. `?gclid=test` на `/departments/mamolog/` → клік по 066 у хедері → у dataLayer `phone_click` з `location=koriat`,
+   `specialty=mamolog`, `lt_medium=cpc`, `element=header`; запис у `wp_bp_phone_clicks` з хешем IP, без самого IP;
+2. мобільний (Pixel 7): tap - `preventDefault` не викликано, обробка < 50 мс, `action=tap`;
+3. дедуплікація 60 с, закріплена кнопка (`sticky`), невідомий номер (`unknown` + лог);
+4. текстові номери обгорнуто, існуюче посилання і `alt` не змінено, невідомий номер у тексті не обгорнуто; копіювання;
+5. Binotel: 403 без секрету, `high` / `low`, дзвінок без кліку, номер абонента не зберігається;
+6. звіт, CSV, сканер "Номери на сайті";
+7. валідація схеми (400) і rate limit (429).
+
+### Обмеження модуля
+
+- Клік ≠ дзвінок. На десктопі `tel:` відкриває Skype / FaceTime / "Зв'язок з телефоном", тому десктопні кліки
+  здебільшого не стають дзвінками; зважайте на `device` у звіті.
+- Номери, що виводяться поза `the_content` / віджетами / Elementor (жорстко в PHP-шаблоні теми), автоматично
+  не обгортаються - сканер покаже їх зі статусом "текст".
+- Зіставлення з Binotel ймовірнісне: людина могла клікнути і подзвонити пізніше за 3 хв або з іншого телефону.

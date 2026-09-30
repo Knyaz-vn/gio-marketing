@@ -14,6 +14,7 @@ module.exports = defineConfig({
 		launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {},
 	},
 	webServer: {
+		env: { PHP_CLI_SERVER_WORKERS: '4' }, // сканер "Номери на сайті" робить loopback-запити
 		command: `php -S ${BASE.replace(/^https?:\/\//, '')} -t "${WP_DIR}" "${WP_DIR}/router.php"`,
 		url: BASE + '/wp-login.php',
 		reuseExistingServer: true,

@@ -1,0 +1,24 @@
+{
+	"phones": [
+		{ "number": "+380502119922", "location": "strilets", "address": "вул. Стрілецька 7Д", "label": "050 Стрілецька" },
+		{ "number": "+380662119922", "location": "koriat", "address": "вул. Князів Коріатовичів 168A", "label": "066 Коріатовичів" },
+		{ "number": "+380800337617", "location": "hotline", "address": "", "label": "0800 гаряча лінія" }
+	],
+	"track_messengers": false,
+	"wrap_text_numbers": true,
+	"dedupe_seconds": 60,
+	"session_minutes": 30,
+	"doctor_path_prefixes": ["/doctors/", "/likari/", "/likar/", "/doctor/"],
+	"doctor_specialty": {},
+	"page_types": {
+		"contacts": ["/contacts", "/kontakty", "/kontakti"],
+		"promo": ["/akcii", "/aktsii", "/promo", "/special"],
+		"article": ["/blog", "/news", "/novyny", "/statti", "/articles"]
+	},
+	"working_hours": {
+		"weekdays": [8, 18],
+		"saturday": [8, 15],
+		"sunday": null
+	},
+	"binotel_match_window_sec": 180
+}

@@ -15,8 +15,20 @@ add_action( 'wp_head', function () {
 	}
 }, 1 );
 
+// Хедер (як Elementor Theme Builder) і закріплена кнопка дзвінка.
+add_action( 'wp_body_open', function () {
+	?>
+	<header class="elementor elementor-location-header" data-elementor-type="header">
+		<a id="hdr-066" href="tel:+380662119922">066 211 99 22</a>
+		<a id="hdr-050" href="tel:+380502119922">050 211 99 22</a>
+	</header>
+	<div class="call-btn" style="position:fixed;bottom:10px;right:10px;z-index:9"><a id="sticky-050" href="tel:+380502119922">Подзвонити</a></div>
+	<?php
+} );
+
 add_action( 'wp_footer', function () {
 	?>
+	<p><a id="unknown-tel" href="tel:+380931112233">093 111 22 33</a></p>
 	<p><button type="button" id="open-popup">Записатися</button> <a id="call" href="tel:+380441234567">+38 044 123 45 67</a></p>
 	<template id="bp-popup-tpl">
 		<div id="pum-13597" class="pum pum-overlay"><div id="popmake-13597" class="pum-container popmake">

@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       BP Attribution
- * Description:       Мультиканальна атрибуція заявок: перше джерело, останнє непряме джерело і шлях дотиків для кожної заявки. Звіт "Атрибуція заявок" в адмінці.
- * Version:           1.0.0
+ * Description:       Мультиканальна атрибуція заявок (перше і останнє непряме джерело, шлях дотиків) і відстеження кліків по номерах телефону з джерелом трафіку. Звіти "Атрибуція заявок" і "Кліки по телефону" в адмінці.
+ * Version:           1.1.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            BP Medical
@@ -11,8 +11,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BP_ATTR_VERSION', '1.0.0' );
-define( 'BP_ATTR_DB_VERSION', '1' );
+define( 'BP_ATTR_VERSION', '1.1.0' );
+define( 'BP_ATTR_DB_VERSION', '2' );
 define( 'BP_ATTR_FILE', __FILE__ );
 define( 'BP_ATTR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BP_ATTR_URL', plugin_dir_url( __FILE__ ) );
@@ -20,14 +20,17 @@ define( 'BP_ATTR_URL', plugin_dir_url( __FILE__ ) );
 require_once BP_ATTR_DIR . 'includes/functions.php';
 require_once BP_ATTR_DIR . 'includes/integrations.php';
 require_once BP_ATTR_DIR . 'includes/booking.php';
+require_once BP_ATTR_DIR . 'includes/phone.php';
 
 if ( is_admin() ) {
 	require_once BP_ATTR_DIR . 'includes/admin-report.php';
 	require_once BP_ATTR_DIR . 'includes/admin-forms.php';
 	require_once BP_ATTR_DIR . 'includes/admin-settings.php';
+	require_once BP_ATTR_DIR . 'includes/admin-phone.php';
 }
 
 register_activation_hook( __FILE__, 'bp_attr_install' );
+register_deactivation_hook( __FILE__, static function () { wp_clear_scheduled_hook( 'bp_phone_daily' ); } );
 add_action( 'plugins_loaded', 'bp_attr_maybe_upgrade' );
 add_action( 'wp_enqueue_scripts', 'bp_attr_enqueue' );
 BP_Attr_Integrations::init();

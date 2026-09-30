@@ -16,6 +16,16 @@ function bp_attr_register_settings() {
 			'sanitize_callback' => 'bp_attr_sanitize_settings',
 		)
 	);
+	register_setting(
+		'bp_attr',
+		'bp_phone_binotel_secret',
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => static function ( $v ) {
+				return preg_replace( '/[^A-Za-z0-9_\-]/', '', (string) $v );
+			},
+		)
+	);
 }
 
 function bp_attr_sanitize_settings( $in ) {
@@ -67,6 +77,14 @@ function bp_attr_render_settings() {
 				<tr><th>Форми, що не є заявками</th><td>
 					<textarea class="large-text" rows="3" name="<?php echo esc_attr( $f( 'non_lead_forms' ) ); ?>"><?php echo esc_textarea( $s['non_lead_forms'] ); ?></textarea>
 					<p class="description">form_id форм (напр. відгук "Нам прикро", підписка), які зберігаються, але за замовчуванням не рахуються у звіті.</p></td></tr>
+				<tr><th>Binotel: секрет для /wp-json/bp/v1/binotel-calls</th><td>
+					<?php if ( defined( 'BP_BINOTEL_SECRET' ) ) : ?>
+						<p>Задано константою <code>BP_BINOTEL_SECRET</code> у wp-config.php.</p>
+					<?php else : ?>
+						<input class="regular-text code" name="bp_phone_binotel_secret" value="<?php echo esc_attr( get_option( 'bp_phone_binotel_secret', '' ) ); ?>" autocomplete="off" placeholder="<?php echo esc_attr( wp_generate_password( 32, false ) ); ?>">
+					<?php endif; ?>
+					<p class="description">Мінімум 16 символів (латиниця, цифри, - _). Make.com передає його в заголовку <code>X-BP-Secret</code>.
+						Порожньо - зіставлення з дзвінками вимкнено, ендпоінт відповідає 403.</p></td></tr>
 			</table>
 			<?php submit_button(); ?>
 		</form>

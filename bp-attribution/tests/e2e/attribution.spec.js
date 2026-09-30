@@ -106,7 +106,7 @@ test('звіт "Атрибуція заявок": категорія, прави
 	await page.goto('/wp-login.php');
 	await page.fill('#user_login', 'admin');
 	await page.fill('#user_pass', 'admin');
-	await Promise.all([page.waitForURL(/wp-admin/), page.click('#wp-submit')]);
+	await Promise.all([page.waitForURL(/wp-admin/, { waitUntil: 'commit' }), page.click('#wp-submit')]);
 	await page.goto('/wp-admin/admin.php?page=bp-attribution');
 	const row = page.locator('tr', { hasText: 'Платна реклама (асистована)' }).first();
 	await expect(row).toBeVisible();

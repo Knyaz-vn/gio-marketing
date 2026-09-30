@@ -98,6 +98,7 @@ function bp_attr_install() {
 	$lines[] = 'KEY specialty (specialty)';
 	$sql     = "CREATE TABLE $table (\n" . implode( ",\n", $lines ) . "\n) " . $wpdb->get_charset_collate() . ';';
 	dbDelta( $sql );
+	do_action( 'bp_attr_installed' ); // таблиці модулів (кліки по телефону тощо)
 	update_option( 'bp_attr_db_version', BP_ATTR_DB_VERSION );
 }
 
