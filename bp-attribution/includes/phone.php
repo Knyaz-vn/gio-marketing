@@ -86,12 +86,74 @@ function bp_phone_enqueue() {
 		'doctor_specialty'     => (object) ( $cfg['doctor_specialty'] ?? array() ),
 		'page_types'           => (object) ( $cfg['page_types'] ?? array() ),
 		'endpoint'             => rest_url( 'bp/v1/phone-click' ),
+		'ajax'                 => admin_url( 'admin-ajax.php?action=bp_phone_click' ), // резерв, якщо REST заблоковано
+		'version'              => BP_ATTR_VERSION,
 		'domain'               => $s['site_domain'],
 		'excludeReferrers'     => bp_attr_lines( $s['exclude_referrers'] ),
 		'page'                 => (object) bp_phone_page_hint(),
 	);
 	wp_add_inline_script( 'bp-phone', 'window.bpPhoneConfig=' . wp_json_encode( $js ) . ';', 'before' );
 }
+
+/* ---------------- Виключення з оптимізаторів JS ---------------- */
+
+/**
+ * Скрипти трекінгу мають виконуватися одразу: якщо оптимізатор відкладає їх "до першої взаємодії"
+ * (WP Rocket Delay JS, LiteSpeed Delay, Cloudflare Rocket Loader…), перший тап по номеру не фіксується.
+ */
+function bp_attr_script_handles() {
+	return array( 'bp-attribution', 'bp-phone' );
+}
+
+add_filter(
+	'script_loader_tag',
+	static function ( $tag, $handle ) {
+		if ( in_array( $handle, bp_attr_script_handles(), true ) ) {
+			// $tag містить і inline-конфіг (window.bpAttrConfig / bpPhoneConfig), і сам файл
+			$tag = str_replace( '<script ', '<script data-no-optimize="1" data-no-defer="1" data-no-minify="1" data-no-delay="1" data-cfasync="false" data-pagespeed-no-defer ', $tag );
+		}
+		return $tag;
+	},
+	20,
+	2
+);
+
+$bp_attr_opt_patterns = array( 'bp-attribution', 'bp-phone', 'bpAttrConfig', 'bpPhoneConfig' );
+// WP Rocket: Delay JS, Defer, мініфікація/об'єднання.
+foreach ( array( 'rocket_delay_js_exclusions', 'rocket_exclude_defer_js', 'rocket_exclude_js', 'rocket_exclude_inline_js', 'rocket_minify_excluded_external_js' ) as $bp_attr_f ) {
+	add_filter(
+		$bp_attr_f,
+		static function ( $list ) use ( $bp_attr_opt_patterns ) {
+			return array_merge( (array) $list, $bp_attr_opt_patterns );
+		}
+	);
+}
+// LiteSpeed Cache.
+foreach ( array( 'litespeed_optm_js_defer_exc', 'litespeed_optimize_js_excludes', 'litespeed_optm_gm_js_exc' ) as $bp_attr_f ) {
+	add_filter(
+		$bp_attr_f,
+		static function ( $list ) use ( $bp_attr_opt_patterns ) {
+			return array_merge( (array) $list, $bp_attr_opt_patterns );
+		}
+	);
+}
+// SiteGround Optimizer (очікує handle-и).
+foreach ( array( 'sgo_js_minify_exclude', 'sgo_javascript_combine_exclude', 'sgo_js_async_exclude' ) as $bp_attr_f ) {
+	add_filter(
+		$bp_attr_f,
+		static function ( $list ) {
+			return array_merge( (array) $list, bp_attr_script_handles() );
+		}
+	);
+}
+// Autoptimize (рядок через кому).
+add_filter(
+	'autoptimize_filter_js_exclude',
+	static function ( $list ) use ( $bp_attr_opt_patterns ) {
+		return trim( (string) $list . ', ' . implode( ', ', $bp_attr_opt_patterns ), ', ' );
+	}
+);
+unset( $bp_attr_f );
 
 /**
  * Підказка про поточну сторінку для JS (напр. сторінка лікаря - CPT з довільним URL).
@@ -290,7 +352,12 @@ function bp_phone_rest_routes() {
 
 function bp_phone_client_ip() {
 	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-	return (string) apply_filters( 'bp_phone_client_ip', $ip ); // за Cloudflare/проксі - підставити реальний IP фільтром
+	// За Cloudflare REMOTE_ADDR - адреса вузла CF, спільна для багатьох відвідувачів; справжня - у CF-Connecting-IP.
+	// (IP використовується лише для rate limit і солоного хешу, сам не зберігається.)
+	if ( ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+		$ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) );
+	}
+	return (string) apply_filters( 'bp_phone_client_ip', $ip ); // інший проксі - підставити реальний IP фільтром
 }
 
 /** Солений хеш IP (сам IP не зберігається ніде). */
@@ -384,14 +451,37 @@ function bp_phone_validate( $data ) {
 }
 
 function bp_phone_rest_click( WP_REST_Request $req ) {
+	$data = $req->get_json_params();
+	if ( null === $data ) { // sendBeacon з іншим Content-Type
+		$data = json_decode( (string) $req->get_body(), true );
+	}
+	return bp_phone_handle_click( $data );
+}
+
+/**
+ * Резервний канал: admin-ajax.php?action=bp_phone_click (тіло - той самий JSON).
+ * Потрібен, коли плагін безпеки / WAF / "Disable REST API" блокує /wp-json/ для гостей.
+ */
+function bp_phone_ajax_click() {
+	$res = bp_phone_handle_click( json_decode( (string) file_get_contents( 'php://input' ), true ) );
+	if ( is_wp_error( $res ) ) {
+		wp_send_json( array( 'code' => $res->get_error_code(), 'message' => $res->get_error_message() ), (int) ( $res->get_error_data()['status'] ?? 400 ) );
+	}
+	wp_send_json( $res->get_data() );
+}
+add_action( 'wp_ajax_nopriv_bp_phone_click', 'bp_phone_ajax_click' );
+add_action( 'wp_ajax_bp_phone_click', 'bp_phone_ajax_click' );
+
+/**
+ * Спільна обробка події кліку (REST і admin-ajax).
+ *
+ * @return WP_REST_Response|WP_Error
+ */
+function bp_phone_handle_click( $data ) {
 	global $wpdb;
 	$ip = bp_phone_client_ip();
 	if ( bp_phone_rate_limited( $ip ) ) {
 		return new WP_Error( 'bp_phone_rate_limited', 'Too many requests', array( 'status' => 429 ) );
-	}
-	$data = $req->get_json_params();
-	if ( null === $data ) { // sendBeacon з іншим Content-Type
-		$data = json_decode( (string) $req->get_body(), true );
 	}
 	$ev = bp_phone_validate( $data );
 	if ( is_wp_error( $ev ) ) {

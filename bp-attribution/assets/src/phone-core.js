@@ -173,4 +173,4 @@
 	};
 	if (typeof module === 'object' && module.exports) module.exports = api;
 	else root.BPPhoneCore = api;
-})(this);
+})(typeof window !== 'undefined' ? window : this);

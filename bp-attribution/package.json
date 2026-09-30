@@ -1,6 +1,6 @@
 {
   "name": "bp-attribution",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "Мультиканальна атрибуція заявок для bpmedical.com.ua (WordPress-плагін)",
   "scripts": {

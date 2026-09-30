@@ -173,7 +173,7 @@
 	};
 	if (typeof module === 'object' && module.exports) module.exports = api;
 	else root.BPPhoneCore = api;
-})(this);
+})(typeof window !== 'undefined' ? window : this);
 
 /*!
  * bp-attribution / phone-tracker.js
@@ -219,15 +219,84 @@
 		}
 		return out;
 	}
+	// Основний канал - REST (fetch keepalive: сторінка не вивантажується при переході за tel:).
+	// Якщо REST заблоковано (плагін безпеки, WAF, "Disable REST API") - резервний admin-ajax через sendBeacon.
 	function send(ev) {
-		var body = JSON.stringify(ev), ok = false;
-		try { ok = navigator.sendBeacon(cfg.endpoint, new Blob([body], { type: 'application/json' })); } catch (e) { /* fallback */ }
-		if (!ok && w.fetch) {
+		var body = JSON.stringify(ev);
+		var fallback = function (why) {
+			var ok = false;
+			try { ok = navigator.sendBeacon(cfg.ajax, new Blob([body], { type: 'text/plain' })); } catch (e) { /* ignore */ }
+			debug.sent(ev, 'REST ' + why + ' → admin-ajax ' + (ok ? 'відправлено' : 'НЕ відправлено'));
+		};
+		if (w.fetch) {
 			try {
-				fetch(cfg.endpoint, { method: 'POST', body: body, keepalive: true, credentials: 'omit', headers: { 'Content-Type': 'application/json' } })['catch'](function () {});
-			} catch (e) { /* ignore */ }
+				fetch(cfg.endpoint, { method: 'POST', body: body, keepalive: true, credentials: 'omit', headers: { 'Content-Type': 'application/json' } })
+					.then(function (r) {
+						if (r.ok) debug.sent(ev, 'REST ' + r.status + ' OK');
+						else if (r.status === 400 || r.status === 429) debug.sent(ev, 'REST ' + r.status + ' (відхилено сервером)');
+						else fallback(r.status);
+					}, function () { fallback('мережа/блок'); });
+				return;
+			} catch (e) { /* старий браузер */ }
 		}
+		var queued = false;
+		try { queued = navigator.sendBeacon(cfg.endpoint, new Blob([body], { type: 'application/json' })); } catch (e) { /* ignore */ }
+		if (queued) debug.sent(ev, 'REST beacon в черзі');
+		else fallback('beacon');
 	}
+
+	/* ---- Налагодження: ?bp_debug=1 показує панель на сторінці (зручно з телефону), ?bp_debug=0 вимикає ---- */
+	var debug = (function () {
+		var on = /[?&]bp_debug=1/.test(location.search) || (!/[?&]bp_debug=0/.test(location.search) && ss('bp_debug') === 1);
+		ss('bp_debug', on ? 1 : 0);
+		var box, lines = {}, t0 = Math.round(w.performance && performance.now ? performance.now() : 0), state0 = d.readyState;
+		function render() {
+			if (!on || !d.body) return;
+			if (!box) {
+				box = d.createElement('div');
+				box.id = 'bp-debug';
+				box.setAttribute('style', 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;max-width:520px;' +
+					'background:#111;color:#eee;font:12px/1.45 monospace;padding:8px 10px;border-radius:8px;opacity:.93;white-space:pre-wrap;word-break:break-word');
+				box.addEventListener('dblclick', function () { box.style.display = 'none'; });
+				d.body.appendChild(box);
+			}
+			var out = [];
+			for (var k in lines) out.push(lines[k]);
+			box.textContent = out.join('\n');
+		}
+		function set(k, v) { lines[k] = v; render(); }
+		function page() {
+			var tels = d.querySelectorAll('a[href]'), n = 0, known = 0, unknown = [];
+			for (var i = 0; i < tels.length; i++) {
+				var h = (tels[i].getAttribute('href') || '').trim();
+				if (!/^tel:/i.test(h)) continue;
+				n++;
+				var e = P.normalize(h);
+				if (e && P.lookup(e, cfg).known) known++;
+				else if (unknown.indexOf(e || h) < 0) unknown.push(e || h);
+			}
+			var src = P.sourceFields(C, attrState(), { url: location.href, referrer: d.referrer, now: Date.now(), siteDomain: cfg.domain || location.hostname, excludeReferrers: cfg.excludeReferrers || [] });
+			set('a', 'BP debug · bp-phone ' + (cfg.version || '?') + ' · подвійний тап - сховати');
+			set('b', 'Скрипт запущено через ' + t0 + ' мс (стан сторінки: ' + state0 + ')' + (t0 > 4000 ? '  ⚠ схоже на відкладений запуск (Delay JS)' : ''));
+			set('c', 'Джерело: ' + src.lt_source + '/' + src.lt_medium + ' · перше: ' + src.ft_source + '/' + src.ft_medium + ' · дотиків: ' + src.touch_count + (w.bpAttr ? '' : '  ⚠ bp-attribution не запущено'));
+			set('d', 'tel:-посилань: ' + n + ' (з конфігу: ' + known + (unknown.length ? ', невідомі: ' + unknown.join(', ') : '') + ')');
+			if (!lines.e) set('e', 'Натисніть на номер - тут з\'явиться результат.');
+		}
+		if (on) {
+			if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', page); else page();
+		}
+		return {
+			on: on,
+			tracked: function (ev, dup, e164) {
+				if (!on) return;
+				set('e', dup ? 'Клік ' + e164 + ': повтор протягом 60 с у цій сесії - не рахується (так задумано)'
+					: 'phone_click: ' + ev.action + ' · ' + ev.phone_label + ' · ' + ev.location + ' · ' + ev.element + ' · ' + ev.page_type + (ev.specialty ? '/' + ev.specialty : '') +
+					'\n  джерело ' + ev.lt_source + '/' + ev.lt_medium + ' · dataLayer: ' + (w.dataLayer ? 'так' : 'ні'));
+				set('f', dup ? '' : 'Відправка: …');
+			},
+			sent: function (ev, msg) { if (on) set('f', 'Відправка: ' + msg); }
+		};
+	})();
 
 	var dev = P.device(navigator.userAgent, navigator.maxTouchPoints || 0);
 
@@ -237,7 +306,10 @@
 		var r = P.dedupe(ss('bp_phone_dd') || mem.d, sid, e164 || (extra && extra.phone_label) || '', now, (cfg.dedupe_seconds || 60) * 1000);
 		mem.d = r.store;
 		ss('bp_phone_dd', r.store);
-		if (r.dup) return null;
+		if (r.dup) {
+			debug.tracked(null, true, e164);
+			return null;
+		}
 
 		var info = e164 ? P.lookup(e164, cfg) : { phone_label: '', location: 'unknown' };
 		var ctx = P.pageContext(location.pathname, cfg, cfg.page, d.body ? d.body.className : '');
@@ -259,6 +331,7 @@
 		var push = { event: 'phone_click' };
 		for (k in ev) push[k] = ev[k];
 		(w.dataLayer = w.dataLayer || []).push(push); // до переходу за tel:
+		debug.tracked(ev, false);
 		send(ev);
 		return ev;
 	}
@@ -274,7 +347,7 @@
 	d.addEventListener('click', function (e) {
 		var a = e.target && e.target.closest && e.target.closest('a[href]');
 		if (!a) return;
-		var href = a.getAttribute('href') || '';
+		var href = (a.getAttribute('href') || '').trim();
 		try {
 			if (/^tel:/i.test(href)) {
 				var e164 = P.normalize(href);

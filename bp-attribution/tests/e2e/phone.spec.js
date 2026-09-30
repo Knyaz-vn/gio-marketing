@@ -211,6 +211,67 @@ test('звіт "Кліки по телефону", CSV і сканер "Номе
 	await expect(rows.filter({ hasText: '/departments/mamolog/' }).filter({ hasText: '+380931112233' }).filter({ has: page.locator('td', { hasText: /^текст$/ }) })).toHaveCount(1);
 });
 
+test('скрипти виключено з оптимізаторів (Delay JS / Defer / Rocket Loader)', async ({ page }) => {
+	await page.goto('/departments/mamolog/');
+	for (const sel of ['script#bp-phone-js', 'script#bp-phone-js-before', 'script#bp-attribution-js', 'script#bp-attribution-js-before']) {
+		const el = page.locator(sel);
+		await expect(el).toHaveAttribute('data-no-optimize', '1');
+		await expect(el).toHaveAttribute('data-cfasync', 'false');
+		await expect(el).toHaveAttribute('data-no-defer', '1');
+	}
+});
+
+test('?bp_debug=1: панель на сторінці показує стан і результат відправки', async ({ page }) => {
+	await noTelNav(page);
+	await page.goto('/departments/mamolog/?bp_debug=1&gclid=dbg');
+	const panel = page.locator('#bp-debug');
+	await expect(panel).toContainText('bp-phone 1.1.1');
+	await expect(panel).toContainText('Джерело: google/cpc');
+	await expect(panel).toContainText('tel:-посилань:');
+	await page.click('#hdr-066');
+	await expect(panel).toContainText('phone_click: click · 066 Коріатовичів · koriat · header');
+	await expect(panel).toContainText('Відправка: REST 200 OK');
+	await page.click('#sticky-050');
+	await page.click('#hdr-050');
+	await expect(panel).toContainText('повтор протягом 60 с');
+	// режим зберігається між сторінками в межах вкладки, ?bp_debug=0 вимикає
+	await page.goto('/');
+	await expect(page.locator('#bp-debug')).toBeVisible();
+	await page.goto('/?bp_debug=0');
+	await expect(page.locator('#bp-debug')).toHaveCount(0);
+});
+
+test('REST заблоковано плагіном безпеки -> клік записується через резервний admin-ajax', async ({ page }) => {
+	db('block-rest');
+	try {
+		await noTelNav(page);
+		await page.goto('/departments/mamolog/?bp_debug=1&utm_source=google&utm_medium=cpc&utm_campaign=fallback');
+		expect((await page.request.post('/wp-json/bp/v1/phone-click', { data: {} })).status()).toBe(401);
+		await page.click('#hdr-066');
+		await expect(page.locator('#bp-debug')).toContainText('REST 401 → admin-ajax відправлено');
+		const ev = (await phoneEvents(page))[0];
+		const row = await waitClick((r) => r.event_id === ev.event_id);
+		expect(row).toMatchObject({ location: 'koriat', lt_campaign: 'fallback', lt_medium: 'cpc' });
+	} finally {
+		db('unblock-rest');
+	}
+});
+
+test('сторінка "Діагностика": REST, резерв, скрипт без відкладення', async ({ page }) => {
+	await page.goto('/wp-login.php');
+	await page.fill('#user_login', 'admin');
+	await page.fill('#user_pass', 'admin');
+	await Promise.all([page.waitForURL(/wp-admin/, { waitUntil: 'commit' }), page.click('#wp-submit')]);
+	await page.goto('/wp-admin/admin.php?page=bp-diagnostics');
+	const row = (name) => page.locator('tr', { hasText: name });
+	await expect(row('REST /wp-json/bp/v1/phone-click')).toContainText('✅');
+	await expect(row('Резерв admin-ajax')).toContainText('✅');
+	await expect(row('Скрипт bp-phone на сторінці')).toContainText('ver=1.1.1, без відкладення');
+	await expect(row('tel:-посилання на головній')).toContainText('✅');
+	// тестові події самоперевірки не лишаються в таблиці
+	expect(db().clicks.filter((c) => c.page_path === '/bp-diagnostics/')).toHaveLength(0);
+});
+
 test('REST: валідація схеми і rate limit 30/хв на IP', async ({ request }) => {
 	const ok = {
 		event_id: '00000000-0000-4000-8000-000000000000', ts: new Date().toISOString(), action: 'click',

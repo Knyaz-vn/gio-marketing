@@ -279,4 +279,4 @@
 	};
 	if (typeof module === 'object' && module.exports) module.exports = api;
 	else root.BPAttrClassify = api;
-})(this);
+})(typeof window !== 'undefined' ? window : this);

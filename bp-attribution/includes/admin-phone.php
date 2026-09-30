@@ -14,6 +14,7 @@ function bp_phone_admin_menu() {
 	$cap = bp_attr_settings()['capability'];
 	add_submenu_page( 'bp-attribution', 'Кліки по телефону', 'Кліки по телефону', $cap, 'bp-phone-clicks', 'bp_phone_render_report' );
 	add_submenu_page( 'bp-attribution', 'Номери на сайті', 'Номери на сайті', 'manage_options', 'bp-phone-scan', 'bp_phone_render_scan' );
+	add_submenu_page( 'bp-attribution', 'Діагностика трекінгу', 'Діагностика', 'manage_options', 'bp-diagnostics', 'bp_attr_render_diagnostics' );
 }
 
 /* ------------------------------------------------------------------ */
@@ -536,5 +537,137 @@ function bp_phone_render_scan() {
 		});
 	})();
 	</script>
+	<?php
+}
+
+/* ------------------------------------------------------------------ */
+/* Діагностика                                                         */
+/* ------------------------------------------------------------------ */
+
+/** Тестова подія для самоперевірки ендпоінтів (одразу видаляється). */
+function bp_attr_diag_event() {
+	return array(
+		'event_id'   => wp_generate_uuid4(),
+		'ts'         => gmdate( 'Y-m-d\TH:i:s\Z' ),
+		'action'     => 'click',
+		'phone_e164' => bp_phone_normalize( bp_phone_config()['phones'][0]['number'] ?? '+380000000000' ),
+		'device'     => 'desktop',
+		'page_path'  => '/bp-diagnostics/',
+		'page_type'  => 'other',
+		'element'    => 'content',
+		'session_id' => wp_generate_uuid4(),
+	);
+}
+
+/**
+ * @return array[] [status ok|warn|fail, назва, деталі]
+ */
+function bp_attr_diagnostics() {
+	global $wpdb;
+	$out   = array();
+	$table = bp_phone_clicks_table();
+
+	// 1. Версія і таблиці.
+	$has_table = (bool) $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+	$out[]     = array( $has_table ? 'ok' : 'fail', 'Плагін ' . BP_ATTR_VERSION . ', таблиця кліків', $has_table ? 'Таблиця ' . $table . ' є.' : 'Таблиці ' . $table . ' немає: деактивуйте й активуйте плагін.' );
+	if ( $has_table ) {
+		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM $table WHERE page_path <> '/bp-diagnostics/'" ); // phpcs:ignore WordPress.DB.PreparedSQL
+		$last  = $wpdb->get_var( "SELECT MAX(created_at) FROM $table WHERE page_path <> '/bp-diagnostics/'" ); // phpcs:ignore WordPress.DB.PreparedSQL
+		$out[] = array( $total ? 'ok' : 'warn', 'Записані кліки', $total ? "Усього $total, останній: " . get_date_from_gmt( $last ) : 'Жодного кліку ще не записано.' );
+	}
+
+	// 2. REST і admin-ajax (запит без cookies, як від відвідувача).
+	foreach ( array( 'REST /wp-json/bp/v1/phone-click' => rest_url( 'bp/v1/phone-click' ), 'Резерв admin-ajax' => admin_url( 'admin-ajax.php?action=bp_phone_click' ) ) as $name => $url ) {
+		$ev   = bp_attr_diag_event();
+		$res  = wp_remote_post( $url, array( 'timeout' => 15, 'headers' => array( 'Content-Type' => 'application/json' ), 'body' => wp_json_encode( $ev ), 'sslverify' => apply_filters( 'https_local_ssl_verify', false ) ) );
+		$code = is_wp_error( $res ) ? $res->get_error_message() : wp_remote_retrieve_response_code( $res );
+		$wpdb->delete( $table, array( 'event_id' => $ev['event_id'] ) );
+		if ( 200 === $code ) {
+			$out[] = array( 'ok', $name, 'Сервер приймає події.' );
+		} elseif ( 429 === $code ) {
+			$out[] = array( 'warn', $name, 'HTTP 429: спрацював rate limit (забагато тестів за хвилину). Повторіть через хвилину.' );
+		} else {
+			$body  = is_wp_error( $res ) ? '' : wp_strip_all_tags( substr( wp_remote_retrieve_body( $res ), 0, 200 ) );
+			$out[] = array( 'fail', $name, "Відповідь: $code $body. Імовірно, запит блокує плагін безпеки, WAF хостингу/Cloudflare або правило 'Disable REST API'. Дозвольте POST на цю адресу для гостей." );
+		}
+	}
+
+	// 3. Чи є скрипти на головній і чи не відкладає їх оптимізатор.
+	$res  = wp_remote_get( add_query_arg( 'bp_diag', time(), home_url( '/' ) ), array( 'timeout' => 20, 'sslverify' => apply_filters( 'https_local_ssl_verify', false ) ) );
+	$html = is_wp_error( $res ) ? '' : (string) wp_remote_retrieve_body( $res );
+	if ( ! $html ) {
+		$out[] = array( 'warn', 'Головна сторінка', 'Не вдалося завантажити головну з сервера (loopback): ' . ( is_wp_error( $res ) ? $res->get_error_message() : 'HTTP ' . wp_remote_retrieve_response_code( $res ) ) . '. Перевірте вручну з ?bp_debug=1.' );
+	} else {
+		$found = preg_match( '#<script[^>]*bp-phone(\.min)?\.js[^>]*>#i', $html, $tag );
+		if ( ! $found ) {
+			$out[] = array( 'fail', 'Скрипт bp-phone на сторінці', 'На головній немає bp-phone.js. Очистіть кеш сторінок (плагін кешу, Cloudflare, хостинг) - закешована сторінка без скрипту.' );
+		} else {
+			$ver     = preg_match( '/ver=([\d.]+)/', $tag[0], $vm ) ? $vm[1] : '?';
+			$delayed = preg_match( '/rocketlazyloadscript|data-rocket-src|litespeed\/javascript|data-lazy-src|type="[^"]*-text\/javascript"|data-flying|data-pmdelayedscript|type="text\/(plain|delayscript)"/i', $tag[0] );
+			if ( $delayed ) {
+				$out[] = array( 'fail', 'Скрипт bp-phone відкладено оптимізатором', 'Тег: ' . $tag[0] . ' - скрипт стартує лише після першої взаємодії, і тап по номеру відразу після відкриття сторінки не фіксується. Додайте bp-attribution, bp-phone, bpAttrConfig, bpPhoneConfig у виключення "Delay JS / Defer / Combine" оптимізатора.' );
+			} elseif ( BP_ATTR_VERSION !== $ver ) {
+				$out[] = array( 'warn', 'Версія скрипту на сторінці', "На сторінці ver=$ver, встановлено " . BP_ATTR_VERSION . '. Очистіть кеш сторінок.' );
+			} else {
+				$out[] = array( 'ok', 'Скрипт bp-phone на сторінці', 'Підключено, ver=' . $ver . ', без відкладення.' );
+			}
+		}
+		$tels  = preg_match_all( '/href\s*=\s*["\']\s*tel:([^"\']+)/i', $html, $tm );
+		$known = 0;
+		foreach ( $tm[1] as $t ) {
+			$known += bp_phone_lookup( bp_phone_normalize( $t ) )['known'] ? 1 : 0;
+		}
+		$out[] = array( $tels ? ( $known ? 'ok' : 'warn' ) : 'fail', 'tel:-посилання на головній', $tels ? "Знайдено $tels, з них номерів з phones.json: $known." . ( $known < $tels ? ' Решта будуть location=unknown - додайте в phones.json.' : '' ) : 'На головній немає жодного tel:-посилання: номери виводяться текстом або через JS. Запустіть "Номери на сайті".' );
+	}
+
+	// 4. Активні оптимізатори / безпека.
+	$known_plugins = array(
+		'wp-rocket'                => array( 'WP Rocket', 'виключення додано автоматично (Delay JS, Defer, Combine). Після оновлення плагіна очистіть кеш WP Rocket.' ),
+		'litespeed-cache'          => array( 'LiteSpeed Cache', 'атрибут data-no-optimize і фільтри додано автоматично. Очистіть кеш LiteSpeed (Purge All).' ),
+		'autoptimize'              => array( 'Autoptimize', 'виключення додано автоматично. Очистіть кеш Autoptimize.' ),
+		'sg-cachepress'            => array( 'SiteGround Optimizer', 'виключення додано автоматично. Очистіть кеш.' ),
+		'perfmatters'              => array( 'Perfmatters', 'ДОДАЙТЕ ВРУЧНУ bp-attribution, bp-phone, bpAttrConfig, bpPhoneConfig у Delay JavaScript → Exclusions.' ),
+		'flying-press'             => array( 'FlyingPress', 'ДОДАЙТЕ ВРУЧНУ bp-attribution, bp-phone, bpAttrConfig, bpPhoneConfig у виключення Delay JS.' ),
+		'nitropack'                => array( 'NitroPack', 'ДОДАЙТЕ ВРУЧНУ bp-attribution і bp-phone у Excluded resources.' ),
+		'w3-total-cache'           => array( 'W3 Total Cache', 'перевірте Minify/Defer JS: виключіть bp-attribution і bp-phone.' ),
+		'wp-optimize'              => array( 'WP-Optimize', 'перевірте Minify/Defer JS: виключіть bp-attribution і bp-phone.' ),
+		'wp-fastest-cache'         => array( 'WP Fastest Cache', 'перевірте Combine/Defer JS; очистіть кеш.' ),
+		'hummingbird-performance'  => array( 'Hummingbird', 'перевірте Delay JS / Asset Optimization; очистіть кеш.' ),
+		'disable-json-api'         => array( 'Disable REST API', 'дозвольте маршрут bp/v1 для гостей (плагін також має резервний канал admin-ajax).' ),
+		'wordfence'                => array( 'Wordfence', 'якщо REST-тест вище не пройшов - перевірте Firewall → Blocked requests.' ),
+		'better-wp-security'       => array( 'Solid/iThemes Security', 'перевірте "REST API: restricted access"; резервний канал admin-ajax працює і так.' ),
+		'all-in-one-wp-security-and-firewall' => array( 'All In One WP Security', 'перевірте блокування REST API для гостей.' ),
+	);
+	foreach ( (array) get_option( 'active_plugins', array() ) as $file ) {
+		$slug = strtok( $file, '/' );
+		if ( isset( $known_plugins[ $slug ] ) ) {
+			$out[] = array( 'warn', $known_plugins[ $slug ][0], $known_plugins[ $slug ][1] );
+		}
+	}
+	if ( $html && ( wp_remote_retrieve_header( $res, 'cf-ray' ) || stripos( (string) wp_remote_retrieve_header( $res, 'server' ), 'cloudflare' ) !== false ) ) {
+		$out[] = array( 'warn', 'Cloudflare', 'Якщо ввімкнено Rocket Loader - скрипти позначено data-cfasync="false". Перевірте WAF: POST на /wp-json/bp/v1/phone-click і /wp-admin/admin-ajax.php не повинні блокуватися.' );
+	}
+	return $out;
+}
+
+function bp_attr_render_diagnostics() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$icons = array( 'ok' => '✅', 'warn' => '⚠️', 'fail' => '❌' );
+	?>
+	<div class="wrap">
+		<h1>Діагностика трекінгу</h1>
+		<p>Перевірка з боку сервера. Перевірка з боку телефону: відкрийте сайт з <code><?php echo esc_html( home_url( '/?bp_debug=1' ) ); ?></code>
+			- внизу з'явиться чорна панель; натисніть на номер і подивіться рядок "Відправка". Вимкнути: <code>?bp_debug=0</code>.
+			Якщо панель не з'явилась узагалі - скрипт не запускається (кеш або оптимізатор).</p>
+		<table class="widefat striped" style="max-width:1100px">
+			<tbody>
+			<?php foreach ( bp_attr_diagnostics() as $c ) : ?>
+				<tr><td style="width:28px"><?php echo esc_html( $icons[ $c[0] ] ); ?></td><td style="width:260px"><strong><?php echo esc_html( $c[1] ); ?></strong></td><td><?php echo esc_html( $c[2] ); ?></td></tr>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
 	<?php
 }

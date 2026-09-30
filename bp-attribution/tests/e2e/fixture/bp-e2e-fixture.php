@@ -110,3 +110,8 @@ $bp_e2e_booking = function () {
 };
 add_action( 'wp_ajax_nopriv_bp_e2e_booking', $bp_e2e_booking );
 add_action( 'wp_ajax_bp_e2e_booking', $bp_e2e_booking );
+
+// Імітація плагіна безпеки, що блокує REST API для гостей (вмикається опцією з тесту).
+add_filter( 'rest_authentication_errors', function ( $r ) {
+	return get_option( 'bp_e2e_block_rest' ) ? new WP_Error( 'rest_forbidden', 'REST API disabled', array( 'status' => 401 ) ) : $r;
+} );

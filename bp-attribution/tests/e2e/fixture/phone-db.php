@@ -3,6 +3,10 @@
 $_SERVER['HTTP_HOST'] = 'localhost';
 require $argv[1] . '/wp-load.php';
 global $wpdb;
+if ( in_array( $argv[2] ?? '', array( 'block-rest', 'unblock-rest' ), true ) ) {
+	update_option( 'bp_e2e_block_rest', 'block-rest' === $argv[2] ? 1 : 0 );
+	exit;
+}
 if ( ( $argv[2] ?? '' ) === 'reset' ) {
 	$wpdb->query( 'DELETE FROM ' . bp_phone_clicks_table() );
 	$wpdb->query( 'DELETE FROM ' . bp_phone_calls_table() );

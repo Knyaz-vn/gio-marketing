@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       BP Attribution
  * Description:       Мультиканальна атрибуція заявок (перше і останнє непряме джерело, шлях дотиків) і відстеження кліків по номерах телефону з джерелом трафіку. Звіти "Атрибуція заявок" і "Кліки по телефону" в адмінці.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            BP Medical
@@ -11,7 +11,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BP_ATTR_VERSION', '1.1.0' );
+define( 'BP_ATTR_VERSION', '1.1.1' );
 define( 'BP_ATTR_DB_VERSION', '2' );
 define( 'BP_ATTR_FILE', __FILE__ );
 define( 'BP_ATTR_DIR', plugin_dir_path( __FILE__ ) );
