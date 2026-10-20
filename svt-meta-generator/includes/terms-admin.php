@@ -40,7 +40,7 @@ function svtmg_save_term_field( int $term_id ): void {
 add_action( 'edited_term', 'svtmg_save_term_field', 99 );
 
 function svtmg_render_term_column( string $content, string $column, int $term_id ): string {
-	return 'svtmg_meta' === $column ? svtmg_column_html( svtmg_get_description( 'term', $term_id ) ) : $content;
+	return 'svtmg_meta' === $column ? svtmg_column_html( 'term', $term_id ) : $content;
 }
 
 function svtmg_handle_term_bulk_action( string $redirect, string $action, array $ids ): string {

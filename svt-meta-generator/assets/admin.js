@@ -160,6 +160,40 @@
 		}
 	});
 
+	$('#svtmg-coverage').on('click', function () {
+		var $btn = $(this);
+		var $out = $('#svtmg-coverage-table');
+		$btn.prop('disabled', true);
+		$out.text(t.counting);
+		post('svtmg_coverage').done(function (res) {
+			if (!res || !res.success) {
+				$out.text(t.error + ' ' + ((res && res.data && res.data.message) || ''));
+				return;
+			}
+			var cols = ['group', 'lang', 'total', 'ok', 'empty', 'template', 'wrong_lang'];
+			var $table = $('<table class="widefat striped svtmg-coverage"><thead><tr></tr></thead><tbody></tbody></table>');
+			cols.forEach(function (c) {
+				$table.find('thead tr').append($('<th>').text(t.cov[c]));
+			});
+			res.data.rows.forEach(function (row) {
+				var $tr = $('<tr>');
+				cols.forEach(function (c) {
+					var $td = $('<td>').text(row[c]);
+					if ((c === 'empty' || c === 'template' || c === 'wrong_lang') && row[c] > 0) {
+						$td.addClass('is-warn');
+					}
+					$tr.append($td);
+				});
+				$table.find('tbody').append($tr);
+			});
+			$out.empty().append($table);
+		}).fail(function (xhr) {
+			$out.text(t.error + ' ' + errorText(xhr));
+		}).always(function () {
+			$btn.prop('disabled', false);
+		});
+	});
+
 	var $progress = $('#svtmg-bulk-progress');
 	if ($progress.length) {
 		var $fill = $progress.find('.svtmg-progress__fill');

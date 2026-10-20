@@ -24,7 +24,8 @@ function svtmg_defaults(): array {
 		'prompt_ru'         => $prompts['ru'],
 		'prompt_uk'         => $prompts['uk'],
 		'default_lang'      => 'ru',
-		'template_patterns' => '',
+		// Шаблон Yoast, що зараз стоїть і на російських, і на українських сторінках svtmarket.com.
+		'template_patterns' => 'На рынке с 1997 года',
 		'auto_generate'     => 1,
 		'overwrite'         => 0,
 		'batch_size'        => 5,
@@ -348,13 +349,20 @@ function svtmg_render_settings_page(): void {
 
 		<hr>
 
+		<h2><?php esc_html_e( 'Покриття за мовами', 'svt-meta-generator' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Скільки опублікованих об\'єктів кожною мовою вже мають власний опис, а скільки мають порожній, шаблонний або написаний іншою мовою (наприклад, російський опис, скопійований в український переклад).', 'svt-meta-generator' ); ?></p>
+		<p><button type="button" class="button" id="svtmg-coverage"><?php esc_html_e( 'Порахувати', 'svt-meta-generator' ); ?></button></p>
+		<div id="svtmg-coverage-table"></div>
+
+		<hr>
+
 		<h2><?php esc_html_e( 'Масова генерація', 'svt-meta-generator' ); ?></h2>
 		<p class="description">
 			<?php
 			echo esc_html(
 				! empty( $s['overwrite'] )
 					? __( 'Перезапис увімкнено: будуть оброблені ВСІ опубліковані об\'єкти вибраного обсягу.', 'svt-meta-generator' )
-					: __( 'Будуть оброблені об\'єкти з порожнім або шаблонним описом.', 'svt-meta-generator' )
+					: __( 'Будуть оброблені об\'єкти з порожнім, шаблонним описом або описом не тією мовою.', 'svt-meta-generator' )
 			);
 			?>
 			<?php esc_html_e( 'Обробка йде пачками через WP-Cron, сторінку можна закрити.', 'svt-meta-generator' ); ?>

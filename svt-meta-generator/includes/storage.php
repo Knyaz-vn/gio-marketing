@@ -174,6 +174,59 @@ function svtmg_is_replaceable( string $description ): bool {
 	return false;
 }
 
-function svtmg_needs_description( string $type, int $id ): bool {
-	return svtmg_is_replaceable( svtmg_get_description( $type, $id ) );
+/**
+ * Мова тексту за буквами, які є лише в одній з мов: укр. і ї є ґ / рос. ы э ъ ё.
+ *
+ * @return string ru|uk|'' (не визначено)
+ */
+function svtmg_detect_text_lang( string $text ): string {
+	$uk = (int) preg_match_all( '/[іїєґ]/iu', $text );
+	$ru = (int) preg_match_all( '/[ыэъё]/iu', $text );
+	if ( $uk >= 2 && $uk >= $ru * 3 ) {
+		return 'uk';
+	}
+	if ( $ru >= 2 && $ru >= $uk * 3 ) {
+		return 'ru';
+	}
+	return '';
 }
+
+/**
+ * Стан опису об'єкта.
+ *
+ * @return string ok | empty | template | wrong_lang
+ */
+function svtmg_description_status( string $type, int $id ): string {
+	$desc = svtmg_get_description( $type, $id );
+	if ( '' === $desc ) {
+		return 'empty';
+	}
+	if ( svtmg_is_replaceable( $desc ) ) {
+		return 'template';
+	}
+	// Напр., Polylang скопіював російський опис в український переклад.
+	$text_lang = svtmg_detect_text_lang( $desc );
+	if ( '' !== $text_lang && $text_lang !== svtmg_get_object_language( $type, $id ) ) {
+		return 'wrong_lang';
+	}
+	return 'ok';
+}
+
+/**
+ * Опис порожній, шаблонний або не тією мовою — його можна замінювати без перезапису.
+ */
+function svtmg_needs_description( string $type, int $id ): bool {
+	return 'ok' !== svtmg_description_status( $type, $id );
+}
+
+/* -------------------------------------------------------------------------
+ * Polylang: не копіювати опис у новий переклад (і при синхронізації полів),
+ * інакше український товар отримає російський опис.
+ * ---------------------------------------------------------------------- */
+
+function svtmg_pll_exclude_metas( $keys ): array {
+	$exclude = (array) apply_filters( 'svtmg_pll_exclude_meta_keys', array( '_svtmg_meta_description', '_yoast_wpseo_metadesc', 'rank_math_description' ) );
+	return array_values( array_diff( (array) $keys, $exclude ) );
+}
+add_filter( 'pll_copy_post_metas', 'svtmg_pll_exclude_metas', 99 );
+add_filter( 'pll_copy_term_metas', 'svtmg_pll_exclude_metas', 99 );

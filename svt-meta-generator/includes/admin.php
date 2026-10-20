@@ -51,6 +51,16 @@ function svtmg_admin_assets( string $hook ): void {
 				'statusDone'   => __( 'Завершено: %1$d з %2$d (успішно %3$d, пропущено %4$d, помилок %5$d)', 'svt-meta-generator' ),
 				'statusCancel' => __( 'Зупинено: оброблено %1$d з %2$d (успішно %3$d, пропущено %4$d, помилок %5$d)', 'svt-meta-generator' ),
 				'lastError'    => __( 'Остання помилка:', 'svt-meta-generator' ),
+				'counting'     => __( 'Рахую… для кількох тисяч товарів це може зайняти до хвилини.', 'svt-meta-generator' ),
+				'cov'          => array(
+					'group'      => __( 'Тип', 'svt-meta-generator' ),
+					'lang'       => __( 'Мова', 'svt-meta-generator' ),
+					'total'      => __( 'Усього', 'svt-meta-generator' ),
+					'ok'         => __( 'Готово', 'svt-meta-generator' ),
+					'empty'      => __( 'Порожні', 'svt-meta-generator' ),
+					'template'   => __( 'Шаблон', 'svt-meta-generator' ),
+					'wrong_lang' => __( 'Інша мова', 'svt-meta-generator' ),
+				),
 			),
 		)
 	);
@@ -75,9 +85,7 @@ function svtmg_render_field( string $type, int $id ): void {
 		<p class="svtmg-counter">
 			<span id="svtmg-count">0</span> / <?php echo esc_html( $min . '–' . $max ); ?> <?php esc_html_e( 'символів', 'svt-meta-generator' ); ?>
 			<span class="svtmg-lang"><?php echo esc_html( strtoupper( $lang ) ); ?></span>
-			<?php if ( '' !== $desc && svtmg_is_replaceable( $desc ) ) : ?>
-				<span class="svtmg-template-badge"><?php esc_html_e( 'шаблон', 'svt-meta-generator' ); ?></span>
-			<?php endif; ?>
+			<?php echo svtmg_status_badge( svtmg_description_status( $type, $id ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside. ?>
 		</p>
 		<p class="svtmg-buttons">
 			<button type="button" class="button button-primary" data-svtmg-mode="generate"><?php esc_html_e( 'Згенерувати', 'svt-meta-generator' ); ?></button>
@@ -225,20 +233,31 @@ function svtmg_add_column( array $columns ): array {
 
 function svtmg_render_post_column( string $column, int $post_id ): void {
 	if ( 'svtmg_meta' === $column ) {
-		echo svtmg_column_html( svtmg_get_description( 'post', $post_id ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside.
+		echo svtmg_column_html( 'post', $post_id ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped inside.
 	}
 }
 
-function svtmg_column_html( string $desc ): string {
+function svtmg_column_html( string $type, int $id ): string {
+	$desc = svtmg_get_description( $type, $id );
 	if ( '' === $desc ) {
 		return '<span class="svtmg-col-empty">' . esc_html__( 'немає', 'svt-meta-generator' ) . '</span>';
 	}
 
-	$len      = mb_strlen( $desc );
-	$ok       = $len >= (int) svtmg_get_setting( 'min_len' ) && $len <= (int) svtmg_get_setting( 'max_len' );
-	$template = svtmg_is_replaceable( $desc );
+	$len = mb_strlen( $desc );
+	$ok  = $len >= (int) svtmg_get_setting( 'min_len' ) && $len <= (int) svtmg_get_setting( 'max_len' );
 
 	return '<div class="svtmg-col-text">' . esc_html( $desc ) . '</div>'
-		. '<span class="svtmg-col-len ' . ( $ok ? 'is-ok' : 'is-warn' ) . '">' . esc_html( (string) $len ) . '</span>'
-		. ( $template ? ' <span class="svtmg-template-badge">' . esc_html__( 'шаблон', 'svt-meta-generator' ) . '</span>' : '' );
+		. '<span class="svtmg-col-len ' . ( $ok ? 'is-ok' : 'is-warn' ) . '">' . esc_html( (string) $len ) . '</span> '
+		. svtmg_status_badge( svtmg_description_status( $type, $id ) );
+}
+
+/**
+ * Позначка для шаблонного опису або опису не тією мовою.
+ */
+function svtmg_status_badge( string $status ): string {
+	$labels = array(
+		'template'   => __( 'шаблон', 'svt-meta-generator' ),
+		'wrong_lang' => __( 'інша мова', 'svt-meta-generator' ),
+	);
+	return isset( $labels[ $status ] ) ? '<span class="svtmg-template-badge">' . esc_html( $labels[ $status ] ) . '</span>' : '';
 }

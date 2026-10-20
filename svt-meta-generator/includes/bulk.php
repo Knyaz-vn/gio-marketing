@@ -46,14 +46,14 @@ function svtmg_bulk_set_queue( array $queue ): void {
 }
 
 /**
- * Знайти об'єкти для обробки.
+ * Перелічити опубліковані записи і терміни з увімкнених типів / таксономій.
+ * Кеші мета-полів і термінів (мова Polylang) підвантажуються пачками, щоб не робити запит на кожен об'єкт.
  *
  * @param string $scope all | post_type:{name} | taxonomy:{name}
  * @param string $lang  '' = усі мови
- * @param int    $limit 0 = без обмеження
- * @return string[] Ключі черги.
+ * @return array<int, array{0: string, 1: int, 2: string, 3: string}> [type, id, мова, група (тип запису / таксономія)]
  */
-function svtmg_bulk_find( string $scope, string $lang, bool $overwrite, int $limit ): array {
+function svtmg_collect_objects( string $scope, string $lang ): array {
 	$types = svtmg_get_enabled_post_types();
 	$taxes = svtmg_get_enabled_taxonomies();
 
@@ -65,45 +65,36 @@ function svtmg_bulk_find( string $scope, string $lang, bool $overwrite, int $lim
 		$types = array();
 	}
 
-	$is_pll = 'polylang' === svtmg_multilang_plugin();
-	$keys   = array();
+	// Polylang фільтрує мову прямо в запиті; перевірка в PHP нижче страхує WPML і неперекладні типи.
+	$lang_arg = 'polylang' === svtmg_multilang_plugin() ? $lang : '';
+	$objects  = array();
 
-	// Записи: фільтр "порожній або шаблонний" прямо в SQL. Мову Polylang фільтрує в запиті,
-	// а перевірка в PHP нижче страхує WPML і таксономії без перекладу.
-	if ( $types ) {
-		$args = array(
-			'post_type'              => array_values( $types ),
-			'post_status'            => 'publish',
-			'fields'                 => 'ids',
-			'posts_per_page'         => -1,
-			'orderby'                => 'ID',
-			'order'                  => 'ASC',
-			'no_found_rows'          => true,
-			'update_post_term_cache' => false,
-			'suppress_filters'       => true, // WPML інакше обмежить поточною мовою адмінки; Polylang читає 'lang' при parse_query.
-			'lang'                   => $is_pll ? $lang : '',
+	foreach ( $types as $pt ) {
+		$ids = get_posts(
+			array(
+				'post_type'        => $pt,
+				'post_status'      => 'publish',
+				'fields'           => 'ids',
+				'posts_per_page'   => -1,
+				'orderby'          => 'ID',
+				'order'            => 'ASC',
+				'no_found_rows'    => true,
+				'suppress_filters' => true, // WPML інакше обмежить поточною мовою адмінки; Polylang читає 'lang' при parse_query.
+				'lang'             => $lang_arg,
+			)
 		);
-		if ( ! $overwrite ) {
-			$meta_key = svtmg_post_meta_key();
-			$clauses  = array(
-				'relation' => 'OR',
-				array( 'key' => $meta_key, 'compare' => 'NOT EXISTS' ),
-				array( 'key' => $meta_key, 'value' => '', 'compare' => '=' ),
-			);
-			foreach ( svtmg_template_patterns() as $pattern ) {
-				$clauses[] = array( 'key' => $meta_key, 'value' => $pattern, 'compare' => 'LIKE' );
+		foreach ( array_chunk( array_map( 'intval', $ids ), 500 ) as $chunk ) {
+			update_meta_cache( 'post', $chunk );
+			update_object_term_cache( $chunk, $pt );
+			foreach ( $chunk as $id ) {
+				$obj_lang = svtmg_get_object_language( 'post', $id );
+				if ( '' === $lang || $obj_lang === $lang ) {
+					$objects[] = array( 'post', $id, $obj_lang, $pt );
+				}
 			}
-			$args['meta_query'] = $clauses; // phpcs:ignore WordPress.DB.SlowDBQuery
-		}
-		foreach ( get_posts( $args ) as $id ) {
-			if ( '' !== $lang && svtmg_get_object_language( 'post', (int) $id ) !== $lang ) {
-				continue;
-			}
-			$keys[] = svtmg_key( 'post', (int) $id );
 		}
 	}
 
-	// Терміни: опис Yoast лежить в опції, тож фільтруємо в PHP.
 	foreach ( $taxes as $tax ) {
 		$ids = get_terms(
 			array(
@@ -111,24 +102,57 @@ function svtmg_bulk_find( string $scope, string $lang, bool $overwrite, int $lim
 				'hide_empty' => false,
 				'fields'     => 'ids',
 				'orderby'    => 'term_id',
-				'lang'       => $is_pll ? $lang : '',
+				'lang'       => $lang_arg,
 			)
 		);
 		if ( is_wp_error( $ids ) ) {
 			continue;
 		}
+		$ids = array_map( 'intval', $ids );
+		update_termmeta_cache( $ids );
 		foreach ( $ids as $id ) {
-			$id = (int) $id;
-			if ( '' !== $lang && svtmg_get_object_language( 'term', $id ) !== $lang ) {
-				continue;
-			}
-			if ( $overwrite || svtmg_needs_description( 'term', $id ) ) {
-				$keys[] = svtmg_key( 'term', $id );
+			$obj_lang = svtmg_get_object_language( 'term', $id );
+			if ( '' === $lang || $obj_lang === $lang ) {
+				$objects[] = array( 'term', $id, $obj_lang, $tax );
 			}
 		}
 	}
 
-	return $limit > 0 ? array_slice( $keys, 0, $limit ) : $keys;
+	return $objects;
+}
+
+/**
+ * Знайти об'єкти для обробки: з порожнім, шаблонним описом або описом не тією мовою (або всі при перезаписі).
+ *
+ * @param int $limit 0 = без обмеження
+ * @return string[] Ключі черги.
+ */
+function svtmg_bulk_find( string $scope, string $lang, bool $overwrite, int $limit ): array {
+	$keys = array();
+	foreach ( svtmg_collect_objects( $scope, $lang ) as list( $type, $id ) ) {
+		if ( $overwrite || svtmg_needs_description( $type, $id ) ) {
+			$keys[] = svtmg_key( $type, $id );
+			if ( $limit > 0 && count( $keys ) >= $limit ) {
+				break;
+			}
+		}
+	}
+	return $keys;
+}
+
+/**
+ * Покриття описами в розрізі типу та мови.
+ *
+ * @return array<string, array<string, array<string, int>>> [група][мова][ok|empty|template|wrong_lang|total]
+ */
+function svtmg_coverage_stats(): array {
+	$stats = array();
+	foreach ( svtmg_collect_objects( 'all', '' ) as list( $type, $id, $lang, $group ) ) {
+		$status = svtmg_description_status( $type, $id );
+		$stats[ $group ][ $lang ]['total']   = ( $stats[ $group ][ $lang ]['total'] ?? 0 ) + 1;
+		$stats[ $group ][ $lang ][ $status ] = ( $stats[ $group ][ $lang ][ $status ] ?? 0 ) + 1;
+	}
+	return $stats;
 }
 
 /**
@@ -330,6 +354,35 @@ function svtmg_ajax_bulk_cancel(): void {
 	wp_send_json_success( svtmg_bulk_public_state() );
 }
 add_action( 'wp_ajax_svtmg_bulk_cancel', 'svtmg_ajax_bulk_cancel' );
+
+function svtmg_ajax_coverage(): void {
+	svtmg_ajax_check( 'manage_options' );
+
+	$labels = array();
+	foreach ( svtmg_get_enabled_post_types() as $pt ) {
+		$labels[ $pt ] = get_post_type_object( $pt )->labels->name;
+	}
+	foreach ( svtmg_get_enabled_taxonomies() as $tax ) {
+		$labels[ $tax ] = get_taxonomy( $tax )->labels->name;
+	}
+
+	$rows = array();
+	foreach ( svtmg_coverage_stats() as $group => $by_lang ) {
+		foreach ( $by_lang as $lang => $c ) {
+			$rows[] = array(
+				'group'      => $labels[ $group ] ?? $group,
+				'lang'       => strtoupper( $lang ),
+				'total'      => $c['total'] ?? 0,
+				'ok'         => $c['ok'] ?? 0,
+				'empty'      => $c['empty'] ?? 0,
+				'template'   => $c['template'] ?? 0,
+				'wrong_lang' => $c['wrong_lang'] ?? 0,
+			);
+		}
+	}
+	wp_send_json_success( array( 'rows' => $rows ) );
+}
+add_action( 'wp_ajax_svtmg_coverage', 'svtmg_ajax_coverage' );
 
 /* -------------------------------------------------------------------------
  * Групова дія у списку записів / товарів

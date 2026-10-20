@@ -39,3 +39,5 @@
 .svtmg-checklist label, .svtmg-block { display: block; margin-bottom: 4px; }
 .svtmg-checklist--cols { columns: 2 260px; }
 .svtmg-bulk-controls { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.svtmg-coverage { max-width: 760px; }
+.svtmg-coverage td.is-warn { color: #8a2424; font-weight: 600; }
