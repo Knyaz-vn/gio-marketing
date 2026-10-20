@@ -105,7 +105,9 @@ function bpmg_render_metabox( WP_Post $post ): void {
  * Зберігаємо лише якщо значення змінили в нашому полі.
  */
 function bpmg_save_metabox( int $post_id, WP_Post $post ): void {
-	if ( ! isset( $_POST['bpmg_metabox_nonce'] )
+	// Лише запис, якому належить форма (інші плагіни можуть створювати записи під час цього ж збереження).
+	if ( ! isset( $_POST['post_ID'] ) || absint( $_POST['post_ID'] ) !== $post_id
+		|| ! isset( $_POST['bpmg_metabox_nonce'] )
 		|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bpmg_metabox_nonce'] ) ), 'bpmg_save_metabox' )
 		|| ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 		|| wp_is_post_revision( $post_id )

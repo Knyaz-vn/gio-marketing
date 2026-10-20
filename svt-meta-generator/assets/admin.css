@@ -1,0 +1,41 @@
+/* SVT Meta Generator — адмінка */
+
+#svtmg-box textarea { resize: vertical; }
+#svtmg-box .svtmg-counter { margin: 4px 0 8px; color: #50575e; }
+#svtmg-count { font-weight: 600; }
+#svtmg-count.is-ok { color: #008a20; }
+#svtmg-count.is-warn { color: #b26200; }
+#svtmg-box .svtmg-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.svtmg-status { min-height: 1.4em; margin: 6px 0; }
+.svtmg-status.is-error,
+.svtmg-inline-status.is-error { color: #d63638; }
+.svtmg-inline-status { margin-left: 8px; }
+.svtmg-inline-status.is-ok { color: #008a20; }
+
+.svtmg-progress { max-width: 640px; margin-top: 12px; }
+.svtmg-progress__bar { height: 18px; background: #f0f0f1; border: 1px solid #c3c4c7; border-radius: 3px; overflow: hidden; }
+.svtmg-progress__fill { display: block; height: 100%; background: #2271b1; transition: width .4s ease; }
+.svtmg-progress[data-status="done"] .svtmg-progress__fill { background: #00a32a; }
+.svtmg-progress[data-status="cancelled"] .svtmg-progress__fill { background: #996800; }
+.svtmg-progress__text { margin: 6px 0 0; }
+
+.svtmg-log td { vertical-align: top; }
+.svtmg-log td:first-child { white-space: nowrap; }
+.svtmg-level { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; background: #f0f0f1; }
+.svtmg-level--error { background: #fcf0f1; color: #8a2424; }
+.svtmg-level--warning { background: #fcf9e8; color: #6e4b00; }
+.svtmg-level--info { background: #f0f6fc; color: #135e96; }
+
+.column-svtmg_meta { width: 28%; }
+.svtmg-col-text { font-size: 12px; line-height: 1.4; color: #50575e; }
+.svtmg-col-empty { color: #a7aaad; font-style: italic; }
+.svtmg-col-len { display: inline-block; margin-top: 3px; padding: 0 5px; border-radius: 3px; font-size: 11px; }
+.svtmg-col-len.is-ok { background: #edfaef; color: #008a20; }
+.svtmg-col-len.is-warn { background: #fcf9e8; color: #996800; }
+
+.svtmg-lang { display: inline-block; margin-left: 6px; padding: 0 5px; border-radius: 3px; font-size: 11px; background: #f0f0f1; color: #50575e; }
+.svtmg-template-badge { display: inline-block; padding: 0 5px; border-radius: 3px; font-size: 11px; background: #fcf0f1; color: #8a2424; }
+.svtmg-term-row #svtmg-box { max-width: 95%; }
+.svtmg-checklist label, .svtmg-block { display: block; margin-bottom: 4px; }
+.svtmg-checklist--cols { columns: 2 260px; }
+.svtmg-bulk-controls { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
