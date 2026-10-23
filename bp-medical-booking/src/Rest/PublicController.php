@@ -40,13 +40,15 @@ final class PublicController
     {
         $ns = Plugin::REST_NS;
         $public = ['permission_callback' => '__return_true'];
-        register_rest_route($ns, '/catalog', $public + ['methods' => 'GET', 'callback' => [$this, 'catalog']]);
-        register_rest_route($ns, '/nearest', $public + ['methods' => 'GET', 'callback' => [$this, 'nearest']]);
-        register_rest_route($ns, '/availability', $public + ['methods' => 'GET', 'callback' => [$this, 'availability']]);
-        register_rest_route($ns, '/slots', $public + ['methods' => 'GET', 'callback' => [$this, 'slots']]);
-        register_rest_route($ns, '/holds', $public + ['methods' => 'POST', 'callback' => [$this, 'hold']]);
-        register_rest_route($ns, '/bookings', $public + ['methods' => 'POST', 'callback' => [$this, 'book']]);
-        register_rest_route($ns, '/callback', $public + ['methods' => 'POST', 'callback' => [$this, 'callback']]);
+        // Тестовий режим: API запису доступне лише адміністраторам (ics і webhook лишаються публічними).
+        $widget = ['permission_callback' => fn() => $this->p->widgetVisible()];
+        register_rest_route($ns, '/catalog', $widget + ['methods' => 'GET', 'callback' => [$this, 'catalog']]);
+        register_rest_route($ns, '/nearest', $widget + ['methods' => 'GET', 'callback' => [$this, 'nearest']]);
+        register_rest_route($ns, '/availability', $widget + ['methods' => 'GET', 'callback' => [$this, 'availability']]);
+        register_rest_route($ns, '/slots', $widget + ['methods' => 'GET', 'callback' => [$this, 'slots']]);
+        register_rest_route($ns, '/holds', $widget + ['methods' => 'POST', 'callback' => [$this, 'hold']]);
+        register_rest_route($ns, '/bookings', $widget + ['methods' => 'POST', 'callback' => [$this, 'book']]);
+        register_rest_route($ns, '/callback', $widget + ['methods' => 'POST', 'callback' => [$this, 'callback']]);
         register_rest_route($ns, '/ics/(?P<lead>BP-[0-9A-Z]{8})', $public + ['methods' => 'GET', 'callback' => [$this, 'ics']]);
         register_rest_route($ns, '/calendar/webhook', $public + ['methods' => 'POST', 'callback' => [$this, 'webhook']]);
     }

@@ -16,6 +16,7 @@ use BPMedical\Booking\Core\Ids;
 use BPMedical\Booking\Core\Phone;
 use BPMedical\Booking\Core\Slot;
 use BPMedical\Booking\Core\Tz;
+use BPMedical\Booking\Notify\SmsSender;
 use BPMedical\Booking\Storage\BookingRepository;
 use BPMedical\Booking\Storage\Connection;
 use BPMedical\Booking\Storage\EventCacheRepository;
@@ -47,6 +48,7 @@ final class BookingService
     private Notifier $notifier;
     private Clock $clock;
     private Logger $log;
+    private ?SmsSender $sms;
 
     public function __construct(
         Connection $db,
@@ -61,7 +63,8 @@ final class BookingService
         CalendarRefresher $refresher,
         Notifier $notifier,
         Clock $clock,
-        Logger $log
+        Logger $log,
+        ?SmsSender $sms = null
     ) {
         $this->db = $db;
         $this->catalog = $catalog;
@@ -76,6 +79,7 @@ final class BookingService
         $this->notifier = $notifier;
         $this->clock = $clock;
         $this->log = $log;
+        $this->sms = $sms;
     }
 
     /**
@@ -239,8 +243,66 @@ final class BookingService
             $update['sync_error'] = 'Календар: ' . substr($e->getMessage(), 0, 200);
             $this->log->error('status calendar sync failed', ['lead' => $b['lead_id'], 'error' => $e->getMessage()]);
         }
+        if ($status === BookingStatus::CONFIRMED && $prev !== BookingStatus::CONFIRMED && empty($b['sms_sent_at'])) {
+            $update += $this->sendConfirmSms($b);
+        }
         $this->bookings->update($id, $update);
         return (array) $this->bookings->find($id);
+    }
+
+    /**
+     * SMS пацієнту після підтвердження (один раз на заявку). Помилка SMS не скасовує зміну статусу,
+     * а зберігається в sms_status, щоб адміністратор її побачив.
+     *
+     * @param array<string, mixed> $b
+     * @return array<string, mixed>
+     */
+    private function sendConfirmSms(array $b): array
+    {
+        if ($this->sms === null || !$this->config->get('sms_enabled')) {
+            return [];
+        }
+        if (empty($b['phone'])) {
+            return ['sms_status' => 'немає телефону'];
+        }
+        try {
+            $id = $this->sms->send((string) $b['phone'], $this->confirmSmsText($b));
+            $this->log->info('confirm sms sent', ['lead' => $b['lead_id'], 'phone' => $b['phone']]);
+            return ['sms_status' => 'надіслано' . ($id !== '' ? ' #' . substr($id, 0, 60) : ''), 'sms_sent_at' => $this->clock->now()];
+        } catch (\Throwable $e) {
+            $this->log->error('confirm sms failed', ['lead' => $b['lead_id'], 'error' => $e->getMessage()]);
+            return ['sms_status' => 'помилка: ' . substr($e->getMessage(), 0, 200)];
+        }
+    }
+
+    /**
+     * Текст SMS за шаблоном sms_confirm_template.
+     * Плейсхолдери: {name} {doctor} {doctor_full} {service} {date} {time} {address} {phone} {lead_id}.
+     *
+     * @param array<string, mixed> $b
+     */
+    public function confirmSmsText(array $b): string
+    {
+        $doctor = $this->catalog->doctor((string) $b['doctor_id']);
+        $service = $this->catalog->service((string) $b['service_id']);
+        $location = $this->catalog->location((string) $b['location_id']);
+        $full = (string) ($doctor['full_name'] ?? '');
+        $parts = preg_split('/\s+/u', trim($full)) ?: [];
+        $short = $parts ? $parts[0] . (isset($parts[1]) ? ' ' . mb_substr($parts[1], 0, 1) . '.' : '') . (isset($parts[2]) ? mb_substr($parts[2], 0, 1) . '.' : '') : '';
+        $start = (int) $b['start_ts'];
+        $vars = [
+            '{name}' => (string) $b['patient_name'],
+            '{doctor}' => $short,
+            '{doctor_full}' => $full,
+            '{service}' => (string) ($service['name'] ?? ''),
+            '{date}' => Tz::local($start)->format('d.m') . ' (' . self::weekdayName((int) Tz::local($start)->format('N')) . ')',
+            '{time}' => Tz::time($start),
+            '{address}' => (string) preg_replace('/^м\.\s*Вінниця,\s*/u', '', (string) ($location['address'] ?? '')),
+            '{phone}' => (string) ($location['phone_display'] ?? ''),
+            '{lead_id}' => (string) $b['lead_id'],
+        ];
+        $text = strtr((string) $this->config->get('sms_confirm_template'), $vars);
+        return trim((string) preg_replace('/\s+/u', ' ', $text));
     }
 
     /** @param array<string, mixed> $b */

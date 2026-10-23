@@ -42,6 +42,7 @@ final class TestStack
     public EventCacheRepository $events;
     public CalendarSync $sync;
     public NullNotifier $notifier;
+    public FakeSms $sms;
     /** @var list<string> */
     public array $logLines = [];
 
@@ -75,9 +76,10 @@ final class TestStack
         );
         $this->sync = new CalendarSync($this->config, $this->calendar, $this->events, $this->classifier, $clock, $log, $this->bookingRepo);
         $this->notifier = new NullNotifier();
+        $this->sms = new FakeSms();
         $this->bookings = new BookingService(
             $this->db, $this->catalog, $this->config, $this->availability, $this->holds, $this->bookingRepo,
-            $this->events, $this->classifier, $this->calendar, $this->sync, $this->notifier, $clock, $log
+            $this->events, $this->classifier, $this->calendar, $this->sync, $this->notifier, $clock, $log, $this->sms
         );
     }
 

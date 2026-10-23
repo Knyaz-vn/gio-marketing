@@ -9,7 +9,7 @@ namespace BPMedical\Booking\Storage;
  */
 final class Schema
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.1.0';
 
     private const ATTRIBUTION = [
         'gclid' => 'str:255', 'gbraid' => 'str:255', 'wbraid' => 'str:255', 'fbclid' => 'str:255',
@@ -82,6 +82,8 @@ final class Schema
                 ] + self::ATTRIBUTION + [
                     'entry' => 'str:30',
                     'sync_error' => 'text',
+                    'sms_status' => 'str:255',
+                    'sms_sent_at' => 'int',
                     'created_at' => 'int',
                     'updated_at' => 'int',
                     'anonymized_at' => 'int',

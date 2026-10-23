@@ -30,6 +30,9 @@ final class Frontend
 
     public function assets(): void
     {
+        if (!$this->p->widgetVisible()) {
+            return; // тестовий режим: звичайні відвідувачі не отримують ні віджета, ні скриптів
+        }
         wp_register_style('bpmb-widget', plugins_url('assets/widget/booking.css', BPMB_FILE), [], BPMB_VERSION);
         wp_register_script('bpmb-widget', plugins_url('assets/widget/booking.js', BPMB_FILE), [], BPMB_VERSION, true);
         $cfg = $this->p->config();
@@ -38,6 +41,12 @@ final class Frontend
             'privacyUrl' => $cfg->get('privacy_url'),
             'popupId' => (string) $cfg->get('intercept_popup_id'),
             'phone' => $cfg->get('callback_phone'),
+            'cssUrl' => plugins_url('assets/widget/booking.css', BPMB_FILE) . '?ver=' . BPMB_VERSION,
+            // Turnstile не гарантує роботу всередині Shadow DOM, тож з ним віджет рендериться без ізоляції.
+            'shadow' => !\BPMedical\Booking\Security\Turnstile::enabled((string) $cfg->get('turnstile_site_key')),
+            'testMode' => (bool) $cfg->get('test_mode'),
+            'demo' => $this->p->calendarMode() !== 'google',
+            'nonce' => $cfg->get('test_mode') ? wp_create_nonce('wp_rest') : null,
         ]) . ';', 'before');
         if ($cfg->get('load_globally')) {
             $this->enqueue();
@@ -46,7 +55,6 @@ final class Frontend
 
     public function enqueue(): void
     {
-        wp_enqueue_style('bpmb-widget');
         wp_enqueue_script('bpmb-widget');
     }
 
@@ -54,6 +62,9 @@ final class Frontend
     public function shortcode($atts): string
     {
         $a = shortcode_atts(['doctor' => '', 'specialty' => '', 'entry' => '', 'mode' => 'inline', 'label' => 'Записатися онлайн'], (array) $atts, 'bp_booking');
+        if (!$this->p->widgetVisible()) {
+            return '';
+        }
         $this->enqueue();
         $data = '';
         foreach (['doctor', 'specialty', 'entry'] as $k) {

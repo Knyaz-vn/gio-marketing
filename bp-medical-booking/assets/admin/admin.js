@@ -155,7 +155,8 @@
           if (a[0] === 'cancelled' && !confirm('Скасувати заявку ' + b.lead_id + '? Подію в календарі буде позначено як скасовану.')) return;
           e.target.disabled = true;
           api('POST', '/bookings/' + b.id + '/status', { status: a[0] }).then(function (r) {
-            notice(b.lead_id + ': ' + C.statuses[r.status] + (r.sync_error ? ' (увага: ' + r.sync_error + ')' : ''), r.sync_error ? 'warning' : 'success');
+            var smsErr = r.sms_status && r.sms_status.indexOf('помилка') === 0;
+            notice(b.lead_id + ': ' + C.statuses[r.status] + (r.sms_status ? ' · SMS: ' + r.sms_status : '') + (r.sync_error ? ' (увага: ' + r.sync_error + ')' : ''), r.sync_error || smsErr ? 'warning' : 'success');
             reload();
           }, function (err) { e.target.disabled = false; notice(err.message, 'error'); });
         }
@@ -172,7 +173,8 @@
       ]),
       h('td', null, [b.source || '—', b.click_ids.length ? h('div', { class: 'bpmb-muted', text: b.click_ids.join(', ') }) : null, b.entry ? h('div', { class: 'bpmb-muted', text: 'вхід: ' + b.entry }) : null]),
       h('td', null, [h('span', { class: 'bpmb-status bpmb-status-' + b.status, text: C.statuses[b.status] || b.status }),
-        b.sync_error ? h('div', { class: 'bpmb-warn', text: '⚠ ' + b.sync_error }) : null]),
+        b.sync_error ? h('div', { class: 'bpmb-warn', text: '⚠ ' + b.sync_error }) : null,
+        b.sms_status ? h('div', { class: b.sms_status.indexOf('помилка') === 0 ? 'bpmb-warn' : 'bpmb-muted', text: 'SMS: ' + b.sms_status }) : null]),
       h('td', null, [b.anonymized ? h('em', { text: 'анонімізовано' }) : actions])
     ]);
   }
@@ -491,7 +493,8 @@
       var secrets = h('ul', null, [
         h('li', { text: 'Google service account: ' + (sec.google_service_account ? '✓ ' + sec.google_client_email : '✗ не знайдено (BPMB_GOOGLE_SA_FILE / BPMB_GOOGLE_SA_JSON)') }),
         h('li', { text: 'Telegram bot token: ' + (sec.telegram_bot_token ? '✓' : '✗ (BPMB_TELEGRAM_BOT_TOKEN)') }),
-        h('li', { text: 'Turnstile secret: ' + (sec.turnstile_secret ? '✓' : '✗ (BPMB_TURNSTILE_SECRET, необов\'язково)') })
+        h('li', { text: 'Turnstile secret: ' + (sec.turnstile_secret ? '✓' : '✗ (BPMB_TURNSTILE_SECRET, необов\'язково)') }),
+        h('li', { text: 'TurboSMS token: ' + (sec.turbosms_token ? '✓' : '✗ (BPMB_TURBOSMS_TOKEN, для SMS пацієнтам)') })
       ]);
 
       var save = h('button', { type: 'submit', class: 'button button-primary' }, ['Зберегти налаштування']);
@@ -520,6 +523,18 @@
           row('Email адміністраторів', txt('notify_emails', 'large-text'), 'Через кому'),
           row('Заявок з IP на годину', num('rate_limit_per_hour')),
           row('Turnstile site key', txt('turnstile_site_key')),
+          row('SMS пацієнту (TurboSMS)', h('label', null, [chk('sms_enabled'), ' надсилати SMS, коли адміністратор натискає «Підтвердити» (один раз на заявку)'])),
+          row('Ім\'я відправника SMS', txt('sms_sender'), 'Alpha name, зареєстроване в кабінеті TurboSMS, наприклад BPMedical'),
+          row('Текст SMS', (function () { f.sms_confirm_template = h('textarea', { rows: '3', class: 'large-text', value: s.sms_confirm_template || '' }); return f.sms_confirm_template; })(),
+            'Підстановки: {name} {doctor} (Прізвище І.Б.) {doctor_full} {service} {date} {time} {address} {phone} {lead_id}. Кирилиця: 70 символів = 1 SMS, довший текст ділиться на частини (67 символів кожна).'),
+          row('Тестове SMS', (function () {
+            var ph = h('input', { type: 'tel', placeholder: '+380…', class: 'regular-text' });
+            var b = h('button', { type: 'button', class: 'button', onclick: function () {
+              b.disabled = true;
+              api('POST', '/sms-test', { phone: ph.value }).then(function (r) { b.disabled = false; notice(r.message + ' · ' + r.length + ' симв.: ' + r.text); }, function (e) { b.disabled = false; notice(e.message, 'error'); });
+            } }, ['Надіслати']);
+            return h('span', null, [ph, ' ', b]);
+          })(), 'Спершу збережіть налаштування. Надсилає приклад за поточним шаблоном.'),
           row('CORS (дозволені домени)', txt('cors_origins', 'large-text')),
           row('Зберігати заявки, днів', num('retention_days'), 'Після цього ім\'я, телефон і коментар анонімізуються автоматично'),
           row('Політика конфіденційності', txt('privacy_url', 'large-text')),
@@ -527,6 +542,7 @@
         ])]),
         h('h2', { text: 'Віджет і аналітика' }),
         h('table', { class: 'form-table' }, [h('tbody', null, [
+          row('Тестовий режим', h('label', null, [chk('test_mode'), ' віджет і запис доступні лише адміністраторам і реєстраторам (пацієнти його не бачать)'])),
           row('Підключати на всіх сторінках', h('label', null, [chk('load_globally'), ' модалка для .bp-booking-open і збереження UTM/click id на 90 днів'])),
           row('Перехоплювати Popup Maker ID', txt('intercept_popup_id', 'small-text'), 'Кнопки #popmake-N відкриватимуть онлайн-запис. Порожньо = не перехоплювати.'),
           row('Зберігати SHA-256 телефону', h('label', null, [chk('store_phone_hash'), ' для Enhanced Conversions for Leads'])),
@@ -543,9 +559,9 @@
         e.preventDefault();
         var out = { settings: {} };
         ['slot_step_min', 'min_lead_minutes', 'booking_horizon_days', 'hold_minutes', 'rate_limit_per_hour', 'retention_days'].forEach(function (k) { out.settings[k] = +f[k].value; });
-        ['calendar_mode', 'match_mode', 'online_color_id', 'cancel_mode', 'telegram_chat_id', 'turnstile_site_key', 'privacy_url', 'callback_phone', 'intercept_popup_id', 'ads_conversion_name'].forEach(function (k) { out.settings[k] = f[k].value; });
+        ['calendar_mode', 'match_mode', 'online_color_id', 'cancel_mode', 'telegram_chat_id', 'turnstile_site_key', 'privacy_url', 'callback_phone', 'intercept_popup_id', 'ads_conversion_name', 'sms_sender', 'sms_confirm_template'].forEach(function (k) { out.settings[k] = f[k].value; });
         ['notify_emails', 'holidays', 'cors_origins'].forEach(function (k) { out.settings[k] = f[k].value; });
-        ['load_globally', 'store_phone_hash'].forEach(function (k) { out.settings[k] = f[k].checked; });
+        ['test_mode', 'load_globally', 'store_phone_hash', 'sms_enabled'].forEach(function (k) { out.settings[k] = f[k].checked; });
         out.settings.calendars = Array.prototype.map.call(calBody.children, function (tr) {
           var i = tr.querySelectorAll('input, select');
           return { id: i[0].value.trim(), name: i[1].value.trim(), location_id: i[2].value || null };

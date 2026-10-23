@@ -35,10 +35,14 @@ final class Config
         'turnstile_site_key' => '',
         'cors_origins' => ['https://bpmedical.com.ua', 'https://www.bpmedical.com.ua'],
         'privacy_url' => 'https://bpmedical.com.ua/polityka-konfidentsiynosti/',
+        'test_mode' => true,               // віджет і публічний API лише для адміністраторів (тестування)
         'load_globally' => true,           // підключати віджет на всіх сторінках (модалка + UTM)
         'intercept_popup_id' => '13597',   // перехоплювати тригери Popup Maker #popmake-N ('' = ні)
         'store_phone_hash' => true,        // SHA-256(E.164) для Enhanced Conversions for Leads
         'ads_conversion_name' => 'Online booking visit',
+        'sms_enabled' => false,            // SMS пацієнту через TurboSMS після підтвердження (токен: BPMB_TURBOSMS_TOKEN)
+        'sms_sender' => '',                // ім'я відправника, зареєстроване в TurboSMS
+        'sms_confirm_template' => '{name}, ваш запис підтверджено: {date} о {time}, лікар {doctor}, {address}. Тел. {phone}. BP Medical',
         'calendar_mode' => 'auto',         // auto | google | mock
         'sync_interval_min' => 2,
         'callback_phone' => '+380662119922',

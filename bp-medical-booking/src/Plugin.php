@@ -245,8 +245,20 @@ final class Plugin
             $this->calendarSync(),
             $this->notifier(),
             $this->clock(),
-            $this->logger()
+            $this->logger(),
+            $this->smsSender()
         ));
+    }
+
+    /** TurboSMS, якщо задано BPMB_TURBOSMS_TOKEN і ім'я відправника в налаштуваннях. */
+    public function smsSender(): ?\BPMedical\Booking\Notify\SmsSender
+    {
+        $token = Secrets::get('BPMB_TURBOSMS_TOKEN');
+        $sender = trim((string) $this->config()->get('sms_sender'));
+        if ($token === null || $sender === '') {
+            return null;
+        }
+        return new \BPMedical\Booking\Notify\TurboSmsSender($token, $sender, new WpHttpTransport());
     }
 
     public function notifier(): Notifier
@@ -331,6 +343,15 @@ final class Plugin
         if ($n || $m) {
             $this->logger()->info('retention anonymized', ['bookings' => $n, 'callbacks' => $m]);
         }
+    }
+
+    /**
+     * Чи бачить поточний відвідувач віджет. У тестовому режимі лише адміністратор і реєстратор,
+     * для решти віджета, кнопок і перехоплення Popup Maker на сайті немає взагалі.
+     */
+    public function widgetVisible(): bool
+    {
+        return !$this->config()->get('test_mode') || current_user_can(\BPMedical\Booking\Admin\Roles::CAP_BOOKINGS);
     }
 
     /** Токен для посилання на .ics (без окремої колонки в БД). */

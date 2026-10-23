@@ -157,6 +157,44 @@ final class BookingFlowTest extends TestCase
         self::assertNull($this->s->availability->findSlot('gribanova', 'consult_primary', $newStart), 'новий час зайнятий');
     }
 
+    public function testConfirmSendsSmsOnceWhenEnabled(): void
+    {
+        $s = new TestStack(TestStack::tmpDir('sms'), null, ['sms_enabled' => true]);
+        $r = $s->bookings->submit(TestStack::patient(['doctor_id' => 'gribanova', 'service_id' => 'consult_primary', 'start' => $this->start]));
+        self::assertSame([], $s->sms->sent, 'при створенні заявки SMS не надсилається');
+
+        $b = $s->bookings->changeStatus((int) $r['booking']['id'], BookingStatus::CONFIRMED);
+        self::assertCount(1, $s->sms->sent);
+        [$phone, $text] = $s->sms->sent[0];
+        self::assertSame('+380671234567', $phone);
+        self::assertStringContainsString('Олена, ваш запис підтверджено: ' . Tz::local($this->start)->format('d.m'), $text);
+        self::assertStringContainsString('о 11:00, лікар Грибанова А.С., вул. Князів Коріатовичів, 168А. Тел. 066-211-99-22', $text);
+        self::assertSame('надіслано #msg-1', $b['sms_status']);
+
+        // Повторне підтвердження (pending → confirmed ще раз) не дублює SMS.
+        $s->bookings->changeStatus((int) $b['id'], BookingStatus::PENDING);
+        $s->bookings->changeStatus((int) $b['id'], BookingStatus::CONFIRMED);
+        self::assertCount(1, $s->sms->sent);
+    }
+
+    public function testSmsFailureDoesNotBlockConfirmation(): void
+    {
+        $s = new TestStack(TestStack::tmpDir('smsfail'), null, ['sms_enabled' => true]);
+        $s->sms->fail = 'TurboSMS: NOT_ENOUGH_CREDITS (502)';
+        $r = $s->bookings->submit(TestStack::patient(['doctor_id' => 'gribanova', 'service_id' => 'consult_primary', 'start' => $this->start]));
+        $b = $s->bookings->changeStatus((int) $r['booking']['id'], BookingStatus::CONFIRMED);
+        self::assertSame(BookingStatus::CONFIRMED, $b['status']);
+        self::assertSame('помилка: TurboSMS: NOT_ENOUGH_CREDITS (502)', $b['sms_status']);
+        self::assertEmpty($b['sms_sent_at'], 'після помилки можна спробувати ще раз');
+    }
+
+    public function testSmsDisabledByDefault(): void
+    {
+        $r = $this->s->bookings->submit(TestStack::patient(['doctor_id' => 'gribanova', 'service_id' => 'consult_primary', 'start' => $this->start]));
+        $this->s->bookings->changeStatus((int) $r['booking']['id'], BookingStatus::CONFIRMED);
+        self::assertSame([], $this->s->sms->sent);
+    }
+
     public function testDaysApiCountsAndNoLeakOfSummaries(): void
     {
         $this->s->calendar->addAllDay('mock-koriat', 'Грибанова відпустка', Tz::date($this->start), Tz::addDays(Tz::date($this->start), 1));

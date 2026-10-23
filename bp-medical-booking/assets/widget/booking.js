@@ -9,6 +9,10 @@
 
   var CFG = window.BPMB_CONFIG || {};
   var API = (CFG.api || '/wp-json/bp-booking/v1').replace(/\/$/, '');
+  var SELF = document.currentScript && document.currentScript.src;
+  var CSS_URL = CFG.cssUrl || (SELF ? SELF.replace(/booking\.js(\?.*)?$/, 'booking.css$1') : '');
+  // Shadow DOM ізолює віджет від стилів теми (кнопки, відступи, шрифти Elementor не "ламають" верстку).
+  var SHADOW = !!(document.head && document.head.attachShadow) && CFG.shadow !== false;
   var ATTR_COOKIE = 'bpmb_attr';
   var ATTR_DAYS = 90;
   var CLICK_KEYS = ['gclid', 'gbraid', 'wbraid', 'fbclid'];
@@ -79,12 +83,64 @@
     return many;
   }
 
+  function apiHeaders(body) {
+    var hd = {};
+    if (body) hd['Content-Type'] = 'application/json';
+    // Тестовий режим: API доступне лише авторизованим адміністраторам (cookie + nonce WordPress).
+    if (CFG.nonce) hd['X-WP-Nonce'] = CFG.nonce;
+    return hd;
+  }
+
+  /** Стилі поза Shadow DOM: блокування прокрутки під модалкою і кнопка шорткоду. */
+  var LIGHT_CSS = '.bpb-lock,.bpb-lock body{overflow:hidden!important}' +
+    '.bp-booking{display:block}' +
+    '.bpb-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:0;border-radius:10px;background:#0b6b83;color:#fff;font-weight:700;cursor:pointer}' +
+    '.bpb-cta:hover{background:#08566a}';
+  var lightDone = false;
+  function ensureLightCss() {
+    if (lightDone) return;
+    lightDone = true;
+    var st = document.createElement('style');
+    st.textContent = LIGHT_CSS;
+    document.head.appendChild(st);
+    if (!SHADOW && CSS_URL && !document.querySelector('link[data-bpb-css]')) {
+      var l = document.createElement('link');
+      l.rel = 'stylesheet'; l.href = CSS_URL; l.setAttribute('data-bpb-css', '1');
+      document.head.appendChild(l);
+    }
+  }
+
+  /** Повертає контейнер для віджета: усередині shadow root хоста (або сам хост без Shadow DOM). */
+  function isolate(host) {
+    ensureLightCss();
+    if (!SHADOW) return { box: host, root: document };
+    var sr = host.shadowRoot || host.attachShadow({ mode: 'open' });
+    sr.innerHTML = '';
+    var box = document.createElement('div');
+    if (CSS_URL) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = CSS_URL;
+      box.style.visibility = 'hidden';
+      var show = function () { box.style.visibility = ''; };
+      link.onload = show; link.onerror = show;
+      setTimeout(show, 3000);
+      sr.appendChild(link);
+    }
+    sr.appendChild(box);
+    return { box: box, root: sr };
+  }
+
+  function activeEl(root) {
+    return (root && root.activeElement) || document.activeElement;
+  }
+
   function api(method, path, body) {
     var ctrl = window.AbortController ? new AbortController() : null;
     var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 20000) : null;
     return fetch(API + path, {
       method: method,
-      headers: body ? { 'Content-Type': 'application/json' } : {},
+      headers: apiHeaders(body),
       body: body ? JSON.stringify(body) : undefined,
       credentials: 'same-origin',
       signal: ctrl ? ctrl.signal : undefined
@@ -219,6 +275,9 @@
     this.live = h('div', { class: 'bpb-sr', 'aria-live': 'polite', role: 'status' });
     this.view = h('div', { class: 'bpb-view' });
     root.innerHTML = '';
+    if (CFG.testMode) {
+      root.appendChild(h('div', { class: 'bpb-test' }, ['Тестовий режим: віджет бачать лише адміністратори сайту.' + (CFG.demo ? ' Календар демонстраційний.' : '')]));
+    }
     root.appendChild(this.live);
     root.appendChild(this.view);
     this.init();
@@ -981,8 +1040,11 @@
       dialog.appendChild(closeBtn);
       dialog.appendChild(content);
       var overlay = h('div', { class: 'bpb-overlay', hidden: true }, [dialog]);
-      document.body.appendChild(overlay);
-      modal = { overlay: overlay, dialog: dialog, content: content, opener: null };
+      var mhost = h('div', { class: 'bpb-modal-host' });
+      document.body.appendChild(mhost);
+      var iso = isolate(mhost);
+      iso.box.appendChild(overlay);
+      modal = { overlay: overlay, dialog: dialog, content: content, opener: null, root: iso.root };
       closeBtn.addEventListener('click', closeModal);
       overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) closeModal(); });
       overlay.addEventListener('keydown', function (e) {
@@ -991,8 +1053,9 @@
         var f = Array.prototype.filter.call(dialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), textarea, select, [tabindex="0"]'), function (el) { return el.offsetParent !== null; });
         if (!f.length) return;
         var first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        var cur = activeEl(modal.root);
+        if (e.shiftKey && cur === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && cur === last) { e.preventDefault(); first.focus(); }
       });
     }
     modal.opener = opener || document.activeElement;
@@ -1029,7 +1092,7 @@
   function mountAll() {
     Array.prototype.forEach.call(document.querySelectorAll('.bp-booking:not([data-bpb-mounted])'), function (el) {
       el.setAttribute('data-bpb-mounted', '1');
-      new Booking(el, optsFrom(el));
+      new Booking(isolate(el).box, optsFrom(el));
     });
   }
 
@@ -1052,7 +1115,7 @@
   window.BPMBooking = {
     open: function (opts) { return openModal(opts || {}); },
     close: closeModal,
-    mount: function (el, opts) { return new Booking(el, opts || optsFrom(el)); },
+    mount: function (el, opts) { return new Booking(isolate(el).box, opts || optsFrom(el)); },
     mountAll: mountAll
   };
 })();

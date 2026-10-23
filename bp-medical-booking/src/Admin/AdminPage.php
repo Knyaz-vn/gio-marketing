@@ -41,6 +41,10 @@ final class AdminPage
     public function render(): void
     {
         echo '<div class="wrap"><h1>BP Medical: онлайн-запис</h1>';
+        if ($this->p->config()->get('test_mode')) {
+            echo '<div class="notice notice-info"><p><strong>Тестовий режим:</strong> віджет запису на сайті бачать лише адміністратори й реєстратори, '
+                . 'для пацієнтів його немає (і старий попап Popup Maker працює як раніше). Щоб запустити для всіх, вимкніть у вкладці «Налаштування».</p></div>';
+        }
         if ($this->p->calendarMode() !== 'google') {
             echo '<div class="notice notice-warning"><p><strong>Демо-режим:</strong> ключ service account не знайдено, використовується mock-календар. '
                 . 'Див. README, розділ "Service account".</p></div>';

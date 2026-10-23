@@ -44,6 +44,7 @@ final class AdminController
             ['methods' => 'POST', 'callback' => [$this, 'saveDoctor'], 'permission_callback' => $admin],
         ]);
         register_rest_route($ns, '/doctors/(?P<id>[a-z0-9-]+)', ['methods' => 'DELETE', 'callback' => [$this, 'deleteDoctor'], 'permission_callback' => $admin]);
+        register_rest_route($ns, '/sms-test', ['methods' => 'POST', 'callback' => [$this, 'smsTest'], 'permission_callback' => $admin]);
         register_rest_route($ns, '/settings', [
             ['methods' => 'GET', 'callback' => [$this, 'settings'], 'permission_callback' => $admin],
             ['methods' => 'POST', 'callback' => [$this, 'saveSettings'], 'permission_callback' => $admin],
@@ -91,6 +92,7 @@ final class AdminController
                 'landing_page' => $b['landing_page'],
                 'entry' => $b['entry'],
                 'sync_error' => $b['sync_error'],
+                'sms_status' => $b['sms_status'] ?? null,
                 'created_at' => Tz::local((int) $b['created_at'])->format('Y-m-d H:i'),
                 'anonymized' => !empty($b['anonymized_at']),
             ];
@@ -108,7 +110,7 @@ final class AdminController
             return new WP_REST_Response(['message' => $e->getMessage()], 404);
         }
         Options::bumpCache();
-        return new WP_REST_Response(['id' => (int) $b['id'], 'status' => $b['status'], 'sync_error' => $b['sync_error'] ?? null]);
+        return new WP_REST_Response(['id' => (int) $b['id'], 'status' => $b['status'], 'sync_error' => $b['sync_error'] ?? null, 'sms_status' => $b['sms_status'] ?? null]);
     }
 
     public function callbacks(WP_REST_Request $r): WP_REST_Response
@@ -342,9 +344,46 @@ final class AdminController
                 'google_client_email' => \BPMedical\Booking\Security\Secrets::googleServiceAccount()['client_email'] ?? null,
                 'telegram_bot_token' => \BPMedical\Booking\Security\Secrets::get('BPMB_TELEGRAM_BOT_TOKEN') !== null,
                 'turnstile_secret' => \BPMedical\Booking\Security\Secrets::get('BPMB_TURNSTILE_SECRET') !== null,
+                'turbosms_token' => \BPMedical\Booking\Security\Secrets::get('BPMB_TURBOSMS_TOKEN') !== null,
             ],
             'calendar_mode_effective' => $this->p->calendarMode(),
         ]);
+    }
+
+    /** Тестове SMS адміністратору за поточним шаблоном (з прикладом даних). */
+    public function smsTest(WP_REST_Request $r): WP_REST_Response
+    {
+        $phone = Phone::normalizeUa((string) $r->get_param('phone'));
+        if ($phone === null) {
+            return new WP_REST_Response(['message' => 'Некоректний номер телефону'], 422);
+        }
+        $sms = $this->p->smsSender();
+        if ($sms === null) {
+            return new WP_REST_Response(['message' => 'SMS не налаштовано: потрібні BPMB_TURBOSMS_TOKEN у .env і ім\'я відправника в налаштуваннях'], 422);
+        }
+        $c = $this->p->catalog();
+        $doctor = null;
+        foreach ($c->doctors() as $d) {
+            if ($d['bookable']) {
+                $doctor = $d;
+                break;
+            }
+        }
+        $sample = [
+            'lead_id' => 'BP-TEST0000',
+            'doctor_id' => $doctor['id'] ?? '',
+            'service_id' => 'consult_primary',
+            'location_id' => 'loc_koriat',
+            'patient_name' => 'Олена',
+            'start_ts' => Tz::at(Tz::addDays(Tz::date(time()), 1), '10:30'),
+        ];
+        $text = $this->p->bookingService()->confirmSmsText($sample);
+        try {
+            $id = $sms->send($phone, $text);
+        } catch (\Throwable $e) {
+            return new WP_REST_Response(['message' => $e->getMessage(), 'text' => $text], 502);
+        }
+        return new WP_REST_Response(['message' => 'Надіслано' . ($id !== '' ? ' (#' . $id . ')' : ''), 'text' => $text, 'length' => mb_strlen($text)]);
     }
 
     public function saveSettings(WP_REST_Request $r): WP_REST_Response

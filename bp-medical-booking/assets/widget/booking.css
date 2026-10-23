@@ -1,4 +1,6 @@
 /* BP Medical: віджет онлайн-запису. Mobile-first, контраст WCAG AA. Кольори перевизначаються через CSS-змінні. */
+/* Хост у Shadow DOM: скидаємо все, що успадковується від теми, крім шрифту. */
+:host { all: initial; display: block; font-family: inherit; }
 .bpb, .bpb-overlay {
   --bpb-accent: #0b6b83;
   --bpb-accent-hover: #08566a;
@@ -16,9 +18,11 @@
   --bpb-radius: 12px;
   --bpb-focus: 0 0 0 3px rgba(11, 107, 131, .45);
 }
-.bpb { font: 16px/1.45 inherit; color: var(--bpb-text); background: var(--bpb-bg); border: 1px solid var(--bpb-line); border-radius: var(--bpb-radius); padding: 16px; max-width: 640px; margin: 0 auto; box-sizing: border-box; text-align: left; }
+.bpb { font-family: inherit; font-size: 16px; line-height: 1.45; font-weight: 400; letter-spacing: normal; text-transform: none; color: var(--bpb-text); background: var(--bpb-bg); border: 1px solid var(--bpb-line); border-radius: var(--bpb-radius); padding: 16px; max-width: 640px; margin: 0 auto; box-sizing: border-box; text-align: left; }
 .bpb *, .bpb *::before, .bpb *::after { box-sizing: border-box; }
-.bpb button, .bpb input, .bpb textarea { font: inherit; color: inherit; }
+.bpb button, .bpb input, .bpb textarea { font-family: inherit; font-size: inherit; line-height: inherit; letter-spacing: normal; text-transform: none; color: inherit; margin: 0; box-shadow: none; }
+.bpb h2, .bpb p, .bpb ul, .bpb dl, .bpb dd { margin: 0; }
+.bpb-test { margin-bottom: 12px; padding: 8px 12px; border-radius: 8px; background: #fff4d6; color: #5c4300; font-size: .88rem; font-weight: 600; }
 .bpb button { cursor: pointer; }
 .bpb :focus-visible { outline: none; box-shadow: var(--bpb-focus); }
 .bpb-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

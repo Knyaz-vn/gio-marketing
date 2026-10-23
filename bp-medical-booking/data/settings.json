@@ -28,5 +28,6 @@
     "https://www.bpmedical.com.ua",
     "https://staging.bpmedical.com.ua"
   ],
-  "calendar_mode": "auto"
+  "calendar_mode": "auto",
+  "test_mode": true
 }
