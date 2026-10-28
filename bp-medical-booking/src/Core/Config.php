@@ -40,7 +40,8 @@ final class Config
         'booking_page_slug' => 'zapys',
         'button_mode' => 'page',           // кнопки запису й Popup Maker: page (перехід на сторінку) | modal (вікно поверх сайту)
         'gtm_id' => 'GTM-KVR78MJ',         // GTM на окремій сторінці запису (тема там не підключається)
-        'logo_url' => '',                  // логотип у шапці сторінки запису ('' = логотип теми / назва сайту)
+        // логотип у шапці сторінки запису ('' = логотип теми / іконка сайту)
+        'logo_url' => 'https://bpmedical.com.ua/wp-content/uploads/2018/08/cropped-%D0%9B%D0%BE%D0%B3%D0%BE_2.png',
         'load_globally' => true,           // підключати віджет на всіх сторінках (модалка + UTM)
         'intercept_popup_id' => '13597',   // перехоплювати тригери Popup Maker #popmake-N ('' = ні)
         'store_phone_hash' => true,        // SHA-256(E.164) для Enhanced Conversions for Leads

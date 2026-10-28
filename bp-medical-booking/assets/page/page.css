@@ -1,47 +1,72 @@
-/* BP Medical: окрема сторінка запису (/zapys/). Тема сайту тут не підключається. */
-:root { --bpp-accent: #0b6b83; --bpp-accent-hover: #08566a; --bpp-soft: #e6f2f5; --bpp-text: #1b2733; --bpp-muted: #55616d; --bpp-line: #dde3e8; --bpp-bg: #f5f7f8; }
+/* BP Medical: окрема сторінка запису (/zapys/) у стилі bpmedical.com.ua. Тема сайту тут не підключається. */
+:root {
+  --bpp-red: #d10000;
+  --bpp-red-dark: #a80000;
+  --bpp-pink: #fdf3f3;
+  --bpp-text: #292c30;
+  --bpp-body: #616262;
+  --bpp-line: #e3e3e3;
+  --bpp-menu: #c5c5c5;
+}
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body.bpp { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.45; color: var(--bpp-text); background: var(--bpp-bg); }
-.bpp a { color: var(--bpp-accent-hover); }
-.bpp a:focus-visible { outline: 3px solid rgba(11, 107, 131, .45); outline-offset: 2px; border-radius: 4px; }
+body.bpp { margin: 0; font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; font-size: 16px; line-height: 1.5; color: var(--bpp-text); background: #fff; }
+.bpp a { color: var(--bpp-red); }
+.bpp a:focus-visible { outline: 3px solid rgba(209, 0, 0, .35); outline-offset: 2px; border-radius: 4px; }
+.bpp-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.bpp-ico { flex: 0 0 auto; color: var(--bpp-red); }
 
-.bpp-head { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #fff; border-bottom: 1px solid var(--bpp-line); }
-.bpp-brand { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--bpp-text) !important; text-decoration: none; }
-.bpp-brand img { height: 40px; width: auto; display: block; }
-.bpp-brand span { font-size: 1.15rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bpp-head-right { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; }
-.bpp-phone { font-weight: 700; text-decoration: none; white-space: nowrap; }
-.bpp-back { display: none; font-weight: 600; text-decoration: none; padding: 8px 14px; border: 1px solid var(--bpp-accent); border-radius: 999px; white-space: nowrap; }
-.bpp-back:hover { background: var(--bpp-soft); }
+/* Шапка: логотип-хрест, адреси й телефони червоним, як на сайті */
+.bpp-head { background: #fff; position: relative; z-index: 5; }
+.bpp-head-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 10px; padding-bottom: 10px; }
+.bpp-logo { flex: 0 0 auto; display: block; line-height: 0; color: var(--bpp-red) !important; text-decoration: none; }
+.bpp-logo img { width: 56px; height: 56px; object-fit: contain; }
+.bpp-logo span { font-size: 1.2rem; font-weight: 800; line-height: 1.2; }
+.bpp-head-info { display: none; }
+.bpp-head-item { display: flex; align-items: flex-start; gap: 8px; color: var(--bpp-red); font-size: .9rem; font-weight: 600; line-height: 1.45; }
+.bpp-head-item > div { display: flex; flex-direction: column; }
+.bpp-head-item a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-weight: 600; }
+.bpp-head-item .bpp-ico { margin-top: 3px; }
+.bpp-head-phone { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--bpp-red); border-radius: 10px; font-size: .8rem; font-weight: 800; letter-spacing: 2px; text-decoration: none; white-space: nowrap; }
+.bpp-head-phone:hover { background: var(--bpp-red); color: #fff; }
+.bpp-head-phone:hover .bpp-ico { color: #fff; }
 
-.bpp-wrap { max-width: 1320px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
-.bpp-main { min-width: 0; order: 1; }
-.bpp-side { order: 2; }
-.bpp-main h1 { margin: 4px 0 4px; font-size: 1.5rem; line-height: 1.25; }
-.bpp-lead { margin: 0 0 14px; color: var(--bpp-muted); }
+/* Сіра смуга меню */
+.bpp-menu { background: var(--bpp-menu); }
+.bpp-menu .bpp-container { display: flex; gap: 22px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+.bpp-menu a { display: inline-block; padding: 14px 0; color: var(--bpp-text); font-size: 1.05rem; font-weight: 300; text-decoration: none; border-bottom: 3px solid transparent; }
+.bpp-menu a:hover { color: var(--bpp-red); }
+.bpp-menu .bpp-menu-on { color: var(--bpp-red); font-weight: 600; border-bottom-color: var(--bpp-red); }
 
-.bpp-nav { display: none; }
-.bpp-contacts { display: grid; gap: 12px; padding: 16px; background: #fff; border: 1px solid var(--bpp-line); border-radius: 14px; }
-.bpp-loc { display: flex; flex-direction: column; gap: 2px; font-size: .95rem; }
-.bpp-loc span { color: var(--bpp-muted); }
-.bpp-loc a { font-weight: 700; text-decoration: none; }
-.bpp-hours { margin: 0; display: flex; flex-direction: column; font-size: .9rem; color: var(--bpp-muted); }
-
-.bpp-foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; padding: 20px 16px 28px; font-size: .88rem; color: var(--bpp-muted); }
-
-/* Хост віджета: картки лікарів малює booking.js у Shadow DOM */
+/* Контент */
+.bpp-main { padding: 28px 0 0; }
+.bpp-main h1 { margin: 0 0 6px; font-size: 1.6rem; line-height: 1.25; font-weight: 700; color: var(--bpp-text); }
+.bpp-lead { margin: 0; color: var(--bpp-body); font-weight: 400; }
+.bpp-lead b { color: var(--bpp-red); font-weight: 700; }
+.bpp-line { display: block; width: 115px; height: 2px; margin: 16px 0 22px; background: var(--bpp-red); }
 .bp-booking-list { display: block; }
 
-@media (min-width: 960px) {
-  .bpp-head { padding: 12px 32px; }
-  .bpp-back { display: inline-block; }
-  .bpp-wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); align-items: start; gap: 28px; padding: 24px 32px; }
-  .bpp-side { order: 0; position: sticky; top: 88px; display: flex; flex-direction: column; gap: 20px; }
-  .bpp-nav { display: flex; flex-direction: column; gap: 4px; }
-  .bpp-nav a { padding: 10px 16px; border-radius: 999px; font-weight: 600; text-decoration: none; color: var(--bpp-text); }
-  .bpp-nav a:hover { background: var(--bpp-soft); }
-  .bpp-nav .bpp-nav-on { border: 1.5px solid var(--bpp-accent); color: var(--bpp-accent-hover); }
-  .bpp-contacts { background: transparent; border: 0; padding: 0 16px; }
-  .bpp-main h1 { font-size: 1.75rem; }
+/* Блок "Графік роботи / Адреси / Зателефонуйте нам" як на головній сайту */
+.bpp-info { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 40px; padding-top: 28px; padding-bottom: 28px; background: #fff; border-bottom: 6px solid transparent; border-image: linear-gradient(90deg, #f3b5b5 0 33.3%, #e58080 33.3% 66.6%, #df5c5c 66.6% 100%) 1; box-shadow: 0 -1px 0 var(--bpp-line); }
+.bpp-info h2 { margin: 0 0 14px; color: var(--bpp-red); font-size: 1.15rem; font-weight: 600; }
+.bpp-hours { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; margin: 0; font-size: .95rem; }
+.bpp-hours dt { color: var(--bpp-text); }
+.bpp-hours dd { margin: 0; color: var(--bpp-red); text-align: right; }
+.bpp-addr { margin: 0 0 10px; color: var(--bpp-body); font-size: .95rem; }
+.bpp-addr b { color: var(--bpp-text); font-weight: 600; }
+.bpp-call { margin: 0 0 8px; font-size: .95rem; color: var(--bpp-body); }
+.bpp-call a { color: var(--bpp-text); font-size: 1.1rem; font-weight: 600; text-decoration: none; margin-right: 6px; }
+.bpp-muted { margin: 10px 0 0; color: var(--bpp-body); font-size: .95rem; }
+
+.bpp-foot { padding: 22px 0 30px; color: var(--bpp-body); font-size: .88rem; }
+.bpp-foot .bpp-container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; }
+
+@media (min-width: 1000px) {
+  .bpp-container { padding: 0 24px; }
+  .bpp-logo img { width: 84px; height: 84px; }
+  .bpp-head-info { display: flex; flex: 1 1 auto; justify-content: space-around; gap: 20px; }
+  .bpp-head-phone { display: none; }
+  .bpp-main { padding-top: 40px; }
+  .bpp-main h1 { font-size: 2rem; }
+  .bpp-info { grid-template-columns: 1fr 1fr 1fr; gap: 48px; padding: 36px 40px; }
 }

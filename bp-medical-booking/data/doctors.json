@@ -17,9 +17,9 @@
       "onkolog-mamolog"
     ],
     "position": "онкохірург, мамолог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/gribanova-anastasiya/",
+    "profile_url": "https://bpmedical.com.ua/doctors/gribanova-anastasiya/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/05/photo_2025-05-19_11-18-03-249x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -71,9 +71,9 @@
       "dityachij-gematolog"
     ],
     "position": "дитячий онкогематолог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/korol-tetyana/",
+    "profile_url": "https://bpmedical.com.ua/doctors/korol-tetyana/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2022/09/tetyana-korol-e1675192916758-242x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -130,9 +130,9 @@
       "himioterapevt"
     ],
     "position": "онколог, хіміотерапевт",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/mashevska-oksana/",
+    "profile_url": "https://bpmedical.com.ua/doctors/mashevska-oksana/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2022/10/mashevska-oksana-123-249x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -193,9 +193,9 @@
       "plastichniy-hirurg"
     ],
     "position": "онкохірург вищої категорії, мамолог, пластичний хірург",
-    "profile_url": "https://bpmedical.com.ua/biktimirov-oleksiy-volodymyrovych/",
+    "profile_url": "https://bpmedical.com.ua/doctors/biktimirov-oleksiy-volodymyrovych/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/09/img_43201-222x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -249,9 +249,9 @@
     ],
     "specialties": [],
     "position": "анестезіолог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/mashevskij-ruslan/",
+    "profile_url": "https://bpmedical.com.ua/doctors/mashevskij-ruslan/",
     "bookable": false,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2022/09/ruslan-mashevskij-e1663522392563-246x300.jpg",
     "schedule": [],
     "schedule_overrides": [],
     "default_service_ids": [],
@@ -273,9 +273,9 @@
       "dermatovenerolog"
     ],
     "position": "дерматовенеролог, косметолог",
-    "profile_url": "https://bpmedical.com.ua/chernyavska/",
+    "profile_url": "https://bpmedical.com.ua/doctors/chernyavska/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2023/09/img_9468-e1694712736911-234x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -328,9 +328,9 @@
       "terapevt"
     ],
     "position": "пульмонолог, терапевт",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/natalia-tsymbalyuk/",
+    "profile_url": "https://bpmedical.com.ua/doctors/natalia-tsymbalyuk/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2023/09/cf5bd730-c156-4e8a-8207-4932fd1b6de7-e1695384384224-234x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -387,9 +387,9 @@
       "hirurg"
     ],
     "position": "хірург",
-    "profile_url": "https://bpmedical.com.ua/denys-mihurinskyj-likar-hirurg/",
+    "profile_url": "https://bpmedical.com.ua/doctors/denys-mihurinskyj-likar-hirurg/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2023/02/img_4626-1-225x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -445,9 +445,9 @@
       "nevrolog"
     ],
     "position": "невролог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/dyda/",
+    "profile_url": "https://bpmedical.com.ua/doctors/dyda/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2023/09/photo_2023-09-19_17-19-39-240x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -500,9 +500,9 @@
       "onkolog"
     ],
     "position": "онколог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/gavrilets-kateryna/",
+    "profile_url": "https://bpmedical.com.ua/doctors/gavrilets-kateryna/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/02/dan-63-1-scaled-e1740066715172-218x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -555,9 +555,9 @@
       "ginekolog"
     ],
     "position": "гінеколог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/mysienko-olena/",
+    "profile_url": "https://bpmedical.com.ua/doctors/mysienko-olena/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/07/img_3293-211x300.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -608,9 +608,9 @@
     ],
     "specialties": [],
     "position": "анестезіолог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/yaklich-ludmila/",
+    "profile_url": "https://bpmedical.com.ua/doctors/yaklich-ludmila/",
     "bookable": false,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/02/2025.02.22-symonenko-yevhenii-xt4-22-200x300.jpg",
     "schedule": [],
     "schedule_overrides": [],
     "default_service_ids": [],
@@ -630,9 +630,9 @@
     ],
     "specialties": [],
     "position": "анестезіолог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/hrushchak-roman/",
+    "profile_url": "https://bpmedical.com.ua/doctors/hrushchak-roman/",
     "bookable": false,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/02/2025.02.22-symonenko-yevhenii-xt4-41-200x300.jpg",
     "schedule": [],
     "schedule_overrides": [],
     "default_service_ids": [],
@@ -652,9 +652,9 @@
       "ginekolog"
     ],
     "position": "гінеколог",
-    "profile_url": "https://bpmedical.com.ua/doctors-2/derevianko-irina/",
+    "profile_url": "https://bpmedical.com.ua/doctors/derevianko-irina/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/07/img_2716-370x604.jpg",
     "schedule": [
       {
         "weekday": 1,
@@ -696,7 +696,7 @@
   },
   {
     "id": "bazhenova",
-    "slug": "bazhenova-iryna",
+    "slug": "bajenova-dermatolog",
     "full_name": "Баженова Ірина Олексіївна",
     "surname": "Баженова",
     "aliases": [
@@ -710,9 +710,9 @@
       "dermatovenerolog"
     ],
     "position": "дерматовенеролог",
-    "profile_url": "",
+    "profile_url": "https://bpmedical.com.ua/doctors/bajenova-dermatolog/",
     "bookable": true,
-    "photo_url": "",
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/09/dyzajn-bez-nazvy-1-212x300.png",
     "schedule": [
       {
         "weekday": 1,
@@ -750,7 +750,459 @@
       "consult_primary",
       "consult_repeat"
     ],
-    "service_durations": {},
-    "_todo": "profile_url і slug: звірити з https://bpmedical.com.ua/doctors-2/"
+    "service_durations": {}
+  },
+  {
+    "id": "godovan",
+    "slug": "godovan-natalya-leonidivna",
+    "full_name": "Годован Наталя Леонідівна",
+    "surname": "Годован",
+    "aliases": [
+      "Годован"
+    ],
+    "specialties": [
+      "onkolog",
+      "himioterapevt"
+    ],
+    "position": "онколог-хіміотерапевт",
+    "profile_url": "https://bpmedical.com.ua/doctors/godovan-natalya-leonidivna/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2024/07/godovan-natalya-leonidivna-225x300.webp",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "nosov",
+    "slug": "nosov-dmytro",
+    "full_name": "Носов Дмитро Миколайович",
+    "surname": "Носов",
+    "aliases": [
+      "Носов",
+      "Носовим"
+    ],
+    "specialties": [
+      "ginekolog"
+    ],
+    "position": "акушер-гінеколог, онкогінеколог, оперуючий лікар",
+    "profile_url": "https://bpmedical.com.ua/doctors/nosov-dmytro/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/12/nosov-222x300.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "bahnovska",
+    "slug": "bahnovska-oleksandra-sergiyivna",
+    "full_name": "Бахновська Олександра Сергіївна",
+    "surname": "Бахновська",
+    "aliases": [
+      "Бахновська",
+      "Бахновської",
+      "Бахновській",
+      "Бахновську",
+      "Бахновською"
+    ],
+    "specialties": [
+      "proktolog",
+      "hirurg"
+    ],
+    "position": "проктолог, хірург",
+    "profile_url": "https://bpmedical.com.ua/doctors/bahnovska-oleksandra-sergiyivna/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2025/07/proktolog-24-240x300.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "korkunda",
+    "slug": "korkuda-svitlana-volodymirivna",
+    "full_name": "Коркунда Світлана Володимирівна",
+    "surname": "Коркунда",
+    "aliases": [
+      "Коркунда",
+      "Коркуда"
+    ],
+    "specialties": [
+      "dermatovenerolog"
+    ],
+    "position": "дерматовенеролог, косметолог",
+    "profile_url": "https://bpmedical.com.ua/doctors/korkuda-svitlana-volodymirivna/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2026/07/korkunda-222x300.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "palamar",
+    "slug": "palamar-viktor",
+    "full_name": "Паламар Віктор Володимирович",
+    "surname": "Паламар",
+    "aliases": [
+      "Паламар",
+      "Паламаря",
+      "Паламарю",
+      "Паламарем"
+    ],
+    "specialties": [
+      "urolog",
+      "onkourolog"
+    ],
+    "position": "уролог, онкоуролог, хірург вищої категорії",
+    "profile_url": "https://bpmedical.com.ua/doctors/palamar-viktor/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2026/08/palamar-2-222x300.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "karychkovska",
+    "slug": "endocrynolog-vinnitsia",
+    "full_name": "Каричковська Аліна Євгенівна",
+    "surname": "Каричковська",
+    "aliases": [
+      "Каричковська",
+      "Каричковської",
+      "Каричковській",
+      "Каричковську",
+      "Каричковською"
+    ],
+    "specialties": [
+      "endokrinolog"
+    ],
+    "position": "ендокринолог",
+    "profile_url": "https://bpmedical.com.ua/doctors/endocrynolog-vinnitsia/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2026/01/endokrynolog-370x588.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "kachula",
+    "slug": "kachula-oleh",
+    "full_name": "Качула Олег Олександрович",
+    "surname": "Качула",
+    "aliases": [
+      "Качула",
+      "Качули",
+      "Качулі",
+      "Качулу",
+      "Качулою"
+    ],
+    "specialties": [
+      "kardiolog"
+    ],
+    "position": "кардіолог вищої категорії",
+    "profile_url": "https://bpmedical.com.ua/doctors/kachula-oleh/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2026/07/bez-nazvy-kopiya-222x300.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
+  },
+  {
+    "id": "mheidze",
+    "slug": "mheidze-irma-dzhemaliyivna",
+    "full_name": "Мхеідзе Ірма Джемаліївна",
+    "surname": "Мхеідзе",
+    "aliases": [
+      "Мхеідзе",
+      "Мхеидзе"
+    ],
+    "specialties": [
+      "ginekolog"
+    ],
+    "position": "акушер-гінеколог, лікар УЗД",
+    "profile_url": "https://bpmedical.com.ua/doctors/mheidze-irma-dzhemaliyivna/",
+    "bookable": true,
+    "photo_url": "https://bpmedical.com.ua/wp-content/uploads/2026/10/mheidze-irma-222x300.png",
+    "schedule": [
+      {
+        "weekday": 1,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 2,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 3,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 4,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      },
+      {
+        "weekday": 5,
+        "start": "09:00",
+        "end": "18:00",
+        "location_id": "loc_koriat"
+      }
+    ],
+    "schedule_overrides": [],
+    "default_service_ids": [
+      "consult_primary",
+      "consult_repeat"
+    ],
+    "service_durations": {}
   }
 ]

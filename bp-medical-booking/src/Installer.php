@@ -30,6 +30,7 @@ final class Installer
     public static function migrate(): void
     {
         global $wpdb;
+        Options::syncSeed();
         if (get_option(Options::DB_VERSION) === Schema::VERSION) {
             return;
         }

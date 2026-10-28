@@ -166,5 +166,12 @@
     "slug": "pulmonolog",
     "parent_id": null,
     "is_child": false
+  },
+  {
+    "id": "kardiolog",
+    "name": "Кардіолог",
+    "slug": "kardiolog",
+    "parent_id": null,
+    "is_child": false
   }
 ]

@@ -94,8 +94,8 @@
   /** Стилі поза Shadow DOM: блокування прокрутки під модалкою і кнопка шорткоду. */
   var LIGHT_CSS = '.bpb-lock,.bpb-lock body{overflow:hidden!important}' +
     '.bp-booking{display:block}' +
-    '.bpb-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 20px;border:0;border-radius:10px;background:#0b6b83;color:#fff;font-weight:700;cursor:pointer}' +
-    '.bpb-cta:hover{background:#08566a}';
+    '.bpb-cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;border:2px solid #d10000;border-radius:10px;background:#d10000;color:#fff;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:2px;text-decoration:none;cursor:pointer}' +
+    '.bpb-cta:hover{background:#a80000;border-color:#a80000;color:#fff}';
   var lightDone = false;
   function ensureLightCss() {
     if (lightDone) return;
