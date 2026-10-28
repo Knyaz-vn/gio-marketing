@@ -70,3 +70,4 @@ body.bpp { margin: 0; font-family: "Open Sans", -apple-system, BlinkMacSystemFon
   .bpp-main h1 { font-size: 2rem; }
   .bpp-info { grid-template-columns: 1fr 1fr 1fr; gap: 48px; padding: 36px 40px; }
 }
+.bpp-fallback { margin: 8px 0 0; padding: 16px; border: 1px dashed var(--bpp-line); border-radius: 10px; color: var(--bpp-body); }

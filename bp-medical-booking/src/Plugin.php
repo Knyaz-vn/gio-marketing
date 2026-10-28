@@ -354,6 +354,22 @@ final class Plugin
         return !$this->config()->get('test_mode') || current_user_can(\BPMedical\Booking\Admin\Roles::CAP_BOOKINGS);
     }
 
+    /**
+     * Версія файлу для ?ver=: версія плагіна + час зміни файлу. Сервер віддає JS/CSS з кешем на 180 днів,
+     * тож без цього браузери тримали б старий скрипт після оновлення плагіна.
+     */
+    public static function assetVersion(string $path): string
+    {
+        $file = BPMB_DIR . '/' . ltrim($path, '/');
+        return BPMB_VERSION . (is_file($file) ? '.' . filemtime($file) : '');
+    }
+
+    /** Повна адреса файлу плагіна з версією. */
+    public static function assetUrl(string $path): string
+    {
+        return plugins_url($path, BPMB_FILE) . '?ver=' . self::assetVersion($path);
+    }
+
     /** Адреса окремої сторінки запису з параметрами (doctor, specialty, entry). @param array<string, string> $args */
     public function bookingPageUrl(array $args = []): string
     {

@@ -25,8 +25,8 @@ final class AdminPage
             if ($hook !== 'toplevel_page_bp-booking') {
                 return;
             }
-            wp_enqueue_style('bpmb-admin', plugins_url('assets/admin/admin.css', BPMB_FILE), [], BPMB_VERSION);
-            wp_enqueue_script('bpmb-admin', plugins_url('assets/admin/admin.js', BPMB_FILE), [], BPMB_VERSION, true);
+            wp_enqueue_style('bpmb-admin', plugins_url('assets/admin/admin.css', BPMB_FILE), [], Plugin::assetVersion('assets/admin/admin.css'));
+            wp_enqueue_script('bpmb-admin', plugins_url('assets/admin/admin.js', BPMB_FILE), [], Plugin::assetVersion('assets/admin/admin.js'), true);
             wp_localize_script('bpmb-admin', 'BPMB_ADMIN', [
                 'api' => esc_url_raw(rest_url(Plugin::REST_NS . '/admin')),
                 'nonce' => wp_create_nonce('wp_rest'),

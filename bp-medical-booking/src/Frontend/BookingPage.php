@@ -35,8 +35,7 @@ final class BookingPage
         $mainPhone = $locations[0]['phone'] ?? (string) $cfg->get('callback_phone');
         $mainPhoneText = $locations[0]['phone_display'] ?? $mainPhone;
         $icon = function_exists('get_site_icon_url') ? get_site_icon_url(64) : '';
-        $ver = BPMB_VERSION;
-        $asset = static fn(string $path) => esc_url(plugins_url($path, BPMB_FILE) . '?ver=' . $ver);
+        $asset = static fn(string $path) => esc_url(Plugin::assetUrl($path));
 
         nocache_headers();
         status_header(200);
@@ -105,7 +104,7 @@ final class BookingPage
     <h1>Онлайн-запис до лікаря</h1>
     <p class="bpp-lead">Оберіть лікаря та вільний час. Адміністратор клініки <b>BP MEDICAL</b> зателефонує вам, щоб підтвердити запис.</p>
     <span class="bpp-line" aria-hidden="true"></span>
-    <div class="bp-booking-list"></div>
+    <div class="bp-booking-list"><p class="bpp-fallback">Завантажуємо вільний час лікарів… Якщо список не з’явився за кілька секунд, оновіть сторінку (Ctrl+Shift+R) або зателефонуйте <a href="tel:<?php echo esc_attr(self::tel((string) $mainPhone)); ?>"><?php echo esc_html((string) $mainPhoneText); ?></a>.</p></div>
     <noscript><p>Для онлайн-запису увімкніть JavaScript або зателефонуйте: <a href="tel:<?php echo esc_attr(self::tel((string) $mainPhone)); ?>"><?php echo esc_html((string) $mainPhoneText); ?></a>.</p></noscript>
   </div>
   <section class="bpp-container bpp-info" aria-label="Контакти клініки">

@@ -84,7 +84,7 @@ final class Frontend
             'privacyUrl' => $cfg->get('privacy_url'),
             'popupId' => (string) $cfg->get('intercept_popup_id'),
             'phone' => $cfg->get('callback_phone'),
-            'cssUrl' => plugins_url('assets/widget/booking.css', BPMB_FILE) . '?ver=' . BPMB_VERSION,
+            'cssUrl' => Plugin::assetUrl('assets/widget/booking.css'),
             // Turnstile не гарантує роботу всередині Shadow DOM, тож з ним віджет рендериться без ізоляції.
             'shadow' => !Turnstile::enabled((string) $cfg->get('turnstile_site_key')),
             'testMode' => (bool) $cfg->get('test_mode'),
@@ -100,7 +100,7 @@ final class Frontend
         if (!$this->p->widgetVisible()) {
             return; // тестовий режим: звичайні відвідувачі не отримують ні віджета, ні скриптів
         }
-        wp_register_script('bpmb-widget', plugins_url('assets/widget/booking.js', BPMB_FILE), [], BPMB_VERSION, true);
+        wp_register_script('bpmb-widget', plugins_url('assets/widget/booking.js', BPMB_FILE), [], Plugin::assetVersion('assets/widget/booking.js'), true);
         wp_add_inline_script('bpmb-widget', 'window.BPMB_CONFIG=' . wp_json_encode($this->widgetConfig()) . ';', 'before');
         if ($this->p->config()->get('load_globally')) {
             $this->enqueue();
@@ -165,7 +165,7 @@ final class Frontend
         if (!function_exists('register_block_type')) {
             return;
         }
-        wp_register_script('bpmb-block', plugins_url('assets/widget/block.js', BPMB_FILE), ['wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components'], BPMB_VERSION, true);
+        wp_register_script('bpmb-block', plugins_url('assets/widget/block.js', BPMB_FILE), ['wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components'], Plugin::assetVersion('assets/widget/block.js'), true);
         register_block_type('bp/booking', [
             'editor_script' => 'bpmb-block',
             'attributes' => [
