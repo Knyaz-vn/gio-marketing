@@ -4,16 +4,20 @@ declare(strict_types=1);
 namespace BPMedical\Booking\Frontend;
 
 use BPMedical\Booking\Plugin;
+use BPMedical\Booking\Security\Turnstile;
 
 /**
- * Підключення віджета:
+ * Підключення запису на сайті:
+ *  - окрема сторінка /zapys/ без теми сайту (BookingPage), діплінки ?doctor=slug, ?specialty=slug, ?entry=header;
  *  - шорткод [bp_booking doctor="slug" specialty="slug" entry="doctor_page" mode="inline|button" label="..."];
  *  - блок "bp/booking" (Gutenberg);
- *  - глобально (load_globally): модалка для будь-якої кнопки .bp-booking-open, перехоплення
- *    тригерів Popup Maker #popmake-13597, збереження UTM/click id на 90 днів.
+ *  - глобально (load_globally): кнопки .bp-booking-open і тригери Popup Maker #popmake-13597 ведуть на
+ *    сторінку запису (button_mode=page) або відкривають модалку (button_mode=modal); збереження UTM/click id на 90 днів.
  */
 final class Frontend
 {
+    public const QUERY_VAR = 'bpmb_booking_page';
+
     private Plugin $p;
 
     public function __construct(Plugin $p)
@@ -26,6 +30,69 @@ final class Frontend
         add_action('wp_enqueue_scripts', [$this, 'assets']);
         add_shortcode('bp_booking', [$this, 'shortcode']);
         add_action('init', [$this, 'block']);
+        add_action('init', [$this, 'rewrite']);
+        add_filter('query_vars', static function (array $vars): array {
+            $vars[] = self::QUERY_VAR;
+            return $vars;
+        });
+        add_action('template_redirect', [$this, 'maybeRenderPage'], 0);
+    }
+
+    /** Правило /zapys/ → окрема сторінка запису. Правила перебудовуються, лише коли змінився slug. */
+    public function rewrite(): void
+    {
+        $cfg = $this->p->config();
+        if (!$cfg->get('booking_page_enabled')) {
+            return;
+        }
+        $slug = (string) $cfg->get('booking_page_slug');
+        add_rewrite_rule('^' . preg_quote($slug, '#') . '/?$', 'index.php?' . self::QUERY_VAR . '=1', 'top');
+        $key = $slug . '|' . BPMB_VERSION;
+        if (get_option('bpmb_rewrite_key') !== $key) {
+            // Після init інших плагінів, щоб не загубити їхні правила.
+            add_action('wp_loaded', static function () use ($key): void {
+                flush_rewrite_rules(false);
+                update_option('bpmb_rewrite_key', $key, true);
+            });
+        }
+    }
+
+    public function maybeRenderPage(): void
+    {
+        if (!get_query_var(self::QUERY_VAR) || !$this->p->config()->get('booking_page_enabled')) {
+            return;
+        }
+        if (!$this->p->widgetVisible()) {
+            // Тестовий режим: для відвідувачів сторінки не існує.
+            global $wp_query;
+            $wp_query->set_404();
+            status_header(404);
+            nocache_headers();
+            return;
+        }
+        (new BookingPage($this->p, $this))->render();
+        exit;
+    }
+
+    /** @return array<string, mixed> window.BPMB_CONFIG */
+    public function widgetConfig(): array
+    {
+        $cfg = $this->p->config();
+        $page = (bool) $cfg->get('booking_page_enabled');
+        return [
+            'api' => esc_url_raw(rest_url(Plugin::REST_NS)),
+            'privacyUrl' => $cfg->get('privacy_url'),
+            'popupId' => (string) $cfg->get('intercept_popup_id'),
+            'phone' => $cfg->get('callback_phone'),
+            'cssUrl' => plugins_url('assets/widget/booking.css', BPMB_FILE) . '?ver=' . BPMB_VERSION,
+            // Turnstile не гарантує роботу всередині Shadow DOM, тож з ним віджет рендериться без ізоляції.
+            'shadow' => !Turnstile::enabled((string) $cfg->get('turnstile_site_key')),
+            'testMode' => (bool) $cfg->get('test_mode'),
+            'demo' => $this->p->calendarMode() !== 'google',
+            'nonce' => $cfg->get('test_mode') ? wp_create_nonce('wp_rest') : null,
+            'buttonMode' => $page && $cfg->get('button_mode') === 'page' ? 'page' : 'modal',
+            'pageUrl' => $page ? $this->p->bookingPageUrl() : null,
+        ];
     }
 
     public function assets(): void
@@ -33,22 +100,9 @@ final class Frontend
         if (!$this->p->widgetVisible()) {
             return; // тестовий режим: звичайні відвідувачі не отримують ні віджета, ні скриптів
         }
-        wp_register_style('bpmb-widget', plugins_url('assets/widget/booking.css', BPMB_FILE), [], BPMB_VERSION);
         wp_register_script('bpmb-widget', plugins_url('assets/widget/booking.js', BPMB_FILE), [], BPMB_VERSION, true);
-        $cfg = $this->p->config();
-        wp_add_inline_script('bpmb-widget', 'window.BPMB_CONFIG=' . wp_json_encode([
-            'api' => esc_url_raw(rest_url(Plugin::REST_NS)),
-            'privacyUrl' => $cfg->get('privacy_url'),
-            'popupId' => (string) $cfg->get('intercept_popup_id'),
-            'phone' => $cfg->get('callback_phone'),
-            'cssUrl' => plugins_url('assets/widget/booking.css', BPMB_FILE) . '?ver=' . BPMB_VERSION,
-            // Turnstile не гарантує роботу всередині Shadow DOM, тож з ним віджет рендериться без ізоляції.
-            'shadow' => !\BPMedical\Booking\Security\Turnstile::enabled((string) $cfg->get('turnstile_site_key')),
-            'testMode' => (bool) $cfg->get('test_mode'),
-            'demo' => $this->p->calendarMode() !== 'google',
-            'nonce' => $cfg->get('test_mode') ? wp_create_nonce('wp_rest') : null,
-        ]) . ';', 'before');
-        if ($cfg->get('load_globally')) {
+        wp_add_inline_script('bpmb-widget', 'window.BPMB_CONFIG=' . wp_json_encode($this->widgetConfig()) . ';', 'before');
+        if ($this->p->config()->get('load_globally')) {
             $this->enqueue();
         }
     }
@@ -73,7 +127,11 @@ final class Frontend
             }
         }
         if ($a['mode'] === 'button') {
-            return '<button type="button" class="bp-booking-open bpb-cta"' . $data . '>' . esc_html($a['label']) . '</button>';
+            // Звичайне посилання на сторінку запису: працює навіть без JS; у режимі modal JS відкриє вікно.
+            $href = $this->p->config()->get('booking_page_enabled')
+                ? $this->p->bookingPageUrl(['doctor' => $a['doctor'], 'specialty' => $a['specialty'], 'entry' => $a['entry']])
+                : '#';
+            return '<a href="' . esc_url($href) . '" class="bp-booking-open bpb-cta"' . $data . '>' . esc_html($a['label']) . '</a>';
         }
         return '<div class="bp-booking"' . $data . '></div>';
     }

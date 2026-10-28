@@ -354,6 +354,14 @@ final class Plugin
         return !$this->config()->get('test_mode') || current_user_can(\BPMedical\Booking\Admin\Roles::CAP_BOOKINGS);
     }
 
+    /** Адреса окремої сторінки запису з параметрами (doctor, specialty, entry). @param array<string, string> $args */
+    public function bookingPageUrl(array $args = []): string
+    {
+        $url = home_url('/' . $this->config()->get('booking_page_slug') . '/');
+        $args = array_filter($args, static fn($v) => $v !== '' && $v !== null);
+        return $args ? add_query_arg(array_map('rawurlencode', $args), $url) : $url;
+    }
+
     /** Токен для посилання на .ics (без окремої колонки в БД). */
     public function icsToken(string $leadId): string
     {

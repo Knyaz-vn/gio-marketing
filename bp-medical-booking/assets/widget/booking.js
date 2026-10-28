@@ -275,7 +275,7 @@
     this.live = h('div', { class: 'bpb-sr', 'aria-live': 'polite', role: 'status' });
     this.view = h('div', { class: 'bpb-view' });
     root.innerHTML = '';
-    if (CFG.testMode) {
+    if (CFG.testMode && !this.opts.preset) {
       root.appendChild(h('div', { class: 'bpb-test' }, ['Тестовий режим: віджет бачать лише адміністратори сайту.' + (CFG.demo ? ' Календар демонстраційний.' : '')]));
     }
     root.appendChild(this.live);
@@ -332,10 +332,11 @@
 
   Booking.prototype.applyPreselect = function () {
     var o = this.opts;
+    if (o.preset) return this.applyPreset(o.preset);
     var doctor = this.findDoctor(o.doctor || qs('doctor')) || (o.autodetect !== false && !o.specialty ? this.doctorByPath() : null);
     var spec = this.findSpec(o.specialty || qs('specialty'));
     var s = this.state;
-    s.entry = o.entry || (doctor ? 'doctor_page' : spec ? 'specialty_page' : 'promo');
+    s.entry = o.entry || qs('entry') || (doctor ? 'doctor_page' : spec ? 'specialty_page' : 'promo');
     if (doctor) {
       s.specialty = spec && doctor.specialties.indexOf(spec.id) >= 0 ? spec : this.specs[doctor.specialties[0]] || null;
       s.doctor = doctor;
@@ -351,6 +352,22 @@
       this.go('specialty', true);
     }
     if (!o.modal) this.trackOpenWhenVisible();
+  };
+
+  /** Відкриття одразу на потрібному кроці (зі сторінки-списку лікарів: обраний слот → контакти; або дзвінок). */
+  Booking.prototype.applyPreset = function (pr) {
+    var s = this.state;
+    var d = pr.doctorId ? this.doctors[pr.doctorId] : null;
+    s.entry = this.opts.entry || 'promo';
+    s.doctor = d;
+    s.specialty = (pr.specialtyId && this.specs[pr.specialtyId]) || (d ? this.specs[d.specialties[0]] : null) || null;
+    s.service = d ? (d.services.filter(function (x) { return x.id === pr.serviceId; })[0] || d.services[0]) : null;
+    s.slot = pr.slot || null;
+    s.hold = pr.hold || null;
+    s.today = pr.today || null;
+    s.lockedDoctor = true;
+    if (pr.callbackNote) s.callbackNote = pr.callbackNote;
+    this.go(pr.step || 'contacts', true);
   };
 
   Booking.prototype.trackOpenWhenVisible = function () {
@@ -1028,11 +1045,333 @@
     s.callbackNote = null;
   };
 
+
+  // ---------------------------------------------------------------- сторінка запису: список лікарів з вільним часом
+
+  function BookingList(root, opts) {
+    this.root = root;
+    this.opts = opts || {};
+    this.f = { specialty: '', q: '', date: '', doctor: '' };
+    this.ui = {};          // стан карток: doctorId -> { day, offset, more, service }
+    this.touched = {};     // для booking_doctor_select (один раз на лікаря)
+    this.noSlotsSent = {};
+    root.classList.add('bpl');
+    root.innerHTML = '';
+    if (CFG.testMode) root.appendChild(h('div', { class: 'bpb-test' }, ['Тестовий режим: сторінку бачать лише адміністратори сайту.' + (CFG.demo ? ' Календар демонстраційний.' : '')]));
+    this.live = h('div', { class: 'bpb-sr', 'aria-live': 'polite', role: 'status' });
+    this.bar = h('div', { class: 'bpl-bar' });
+    this.list = h('div', { class: 'bpl-list' });
+    this.foot = h('p', { class: 'bpl-foot' });
+    [this.live, this.bar, this.list, this.foot].forEach(function (n) { root.appendChild(n); });
+    this.list.appendChild(h('div', { class: 'bpb-loading', 'aria-busy': 'true' }, [h('span', { class: 'bpb-spin', 'aria-hidden': 'true' }), 'Завантажуємо вільний час лікарів…']));
+    var self = this;
+    var timer;
+    window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(function () { if (self.sched) self.renderList(); }, 200); });
+    this.init();
+  }
+
+  BookingList.prototype.init = function () {
+    var self = this;
+    Promise.all([loadCatalog(), this.loadSchedule()]).then(function (res) {
+      self.cat = res[0];
+      Booking.prototype.index.call(self);
+      var d = Booking.prototype.findDoctor.call(self, self.opts.doctor || qs('doctor'));
+      var sp = Booking.prototype.findSpec.call(self, self.opts.specialty || qs('specialty'));
+      if (d) self.f.doctor = d.id;
+      if (sp) self.f.specialty = sp.id;
+      self.entry = self.opts.entry || qs('entry') || (d ? 'doctor_page' : sp ? 'specialty_page' : 'promo');
+      dl('booking_open', { entry: self.entry });
+      self.renderBar();
+      self.renderList();
+    }, function () {
+      self.list.innerHTML = '';
+      self.list.appendChild(h('div', { class: 'bpb-msg bpb-msg-err', role: 'alert' }, ['Онлайн-запис тимчасово недоступний. ', CFG.phone ? h('a', { href: 'tel:' + CFG.phone }, ['Зателефонуйте нам']) : 'Зателефонуйте нам', '.']));
+    });
+  };
+
+  BookingList.prototype.loadSchedule = function () {
+    var self = this;
+    return api('GET', '/schedule').then(function (r) {
+      if (!r.ok) throw new Error(r.data.message || 'schedule');
+      self.sched = r.data;
+      return r.data;
+    });
+  };
+
+  BookingList.prototype.reload = function () {
+    var self = this;
+    var keep = {};
+    for (var id in this.ui) if (this.ui[id].service) keep[id] = this.ui[id].service;
+    this.loadSchedule().then(function () {
+      var jobs = Object.keys(keep).map(function (id) { return self.loadDoctorService(id, keep[id]); });
+      return Promise.all(jobs);
+    }).then(function () { self.renderList(); }, function () { self.renderList(); });
+  };
+
+  BookingList.prototype.loadDoctorService = function (id, serviceId) {
+    var self = this;
+    return api('GET', '/schedule?doctors=' + encodeURIComponent(id) + '&service=' + encodeURIComponent(serviceId)).then(function (r) {
+      if (r.ok && r.data.doctors && r.data.doctors[id]) self.sched.doctors[id] = r.data.doctors[id];
+    });
+  };
+
+  BookingList.prototype.dates = function () {
+    var out = [];
+    var sc = this.sched;
+    for (var d = sc.today; d <= sc.last_date; d = addDays(d, 1)) {
+      if (sc.closed_weekdays.indexOf(weekdayIdx(d) + 1) >= 0 || sc.holidays.indexOf(d) >= 0) continue;
+      out.push(d);
+    }
+    return out;
+  };
+
+  BookingList.prototype.renderBar = function () {
+    var self = this;
+    var specs = this.cat.specialties.slice().sort(function (a, b) {
+      return (b.doctor_ids.length ? 1 : 0) - (a.doctor_ids.length ? 1 : 0) || a.name.localeCompare(b.name, 'uk');
+    });
+    var specId = nextId('spec'), qId = nextId('q'), dId = nextId('date');
+    var sel = h('select', { id: specId, class: 'bpb-input' }, [h('option', { value: '' }, ['Усі спеціальності'])].concat(specs.map(function (sp) {
+      return h('option', { value: sp.id, selected: self.f.specialty === sp.id ? true : null }, [sp.name + (sp.doctor_ids.length ? '' : ' (через адміністратора)')]);
+    })));
+    sel.addEventListener('change', function () {
+      self.f.specialty = sel.value;
+      self.f.doctor = '';
+      var sp = self.specs[sel.value];
+      if (sp) dl('booking_specialty_select', { specialty: sp.slug });
+      self.renderList();
+    });
+    var q = h('input', { id: qId, class: 'bpb-input', type: 'search', placeholder: 'Прізвище лікаря', autocomplete: 'off' });
+    var t;
+    q.addEventListener('input', function () { clearTimeout(t); t = setTimeout(function () { self.f.q = q.value.trim().toLowerCase(); self.f.doctor = ''; self.renderList(); }, 200); });
+    var date = h('input', { id: dId, class: 'bpb-input', type: 'date', min: this.sched.today, max: this.sched.last_date });
+    date.addEventListener('change', function () {
+      self.f.date = date.value;
+      for (var id in self.ui) { self.ui[id].day = null; self.ui[id].offset = null; }
+      self.renderList();
+    });
+    var range = this.sched.today.slice(8, 10) + '.' + this.sched.today.slice(5, 7) + ' – ' + this.sched.last_date.slice(8, 10) + '.' + this.sched.last_date.slice(5, 7);
+    this.bar.innerHTML = '';
+    this.bar.appendChild(h('div', { class: 'bpl-field' }, [h('label', { for: specId }, ['Спеціальність']), sel]));
+    this.bar.appendChild(h('div', { class: 'bpl-field' }, [h('label', { for: qId }, ['Лікар']), q]));
+    this.bar.appendChild(h('div', { class: 'bpl-field bpl-field-date' }, [h('label', { for: dId }, ['Дата (' + range + ')']), date]));
+  };
+
+  BookingList.prototype.visibleDoctors = function () {
+    var self = this;
+    var f = this.f;
+    var ids;
+    if (f.doctor) ids = [f.doctor];
+    else if (f.specialty && this.specs[f.specialty]) ids = this.specs[f.specialty].doctor_ids.slice();
+    else ids = this.cat.doctors.map(function (d) { return d.id; });
+    var docs = ids.map(function (id) { return self.doctors[id]; }).filter(function (d) {
+      return d && (!f.q || d.full_name.toLowerCase().indexOf(f.q) >= 0);
+    });
+    var nearest = function (d) {
+      var sd = self.sched.doctors[d.id];
+      if (!sd) return '9999';
+      var days = Object.keys(sd.days).filter(function (x) { return !f.date || x >= f.date; }).sort();
+      return days[0] || '9999';
+    };
+    docs.sort(function (a, b) { return nearest(a).localeCompare(nearest(b)) || a.full_name.localeCompare(b.full_name, 'uk'); });
+    return docs;
+  };
+
+  BookingList.prototype.renderList = function () {
+    var self = this;
+    var f = this.f;
+    this.list.innerHTML = '';
+    var docs = this.visibleDoctors();
+    var sp = f.specialty ? this.specs[f.specialty] : null;
+    if (f.doctor) {
+      this.list.appendChild(h('p', { class: 'bpl-note' }, [
+        h('button', { type: 'button', class: 'bpb-link', onclick: function () { self.f.doctor = ''; self.renderList(); } }, ['← Показати всіх лікарів'])
+      ]));
+    }
+    if (sp && !sp.doctor_ids.length) {
+      this.list.appendChild(this.callbackBox('Для спеціальності «' + sp.name + '» запис проводить адміністратор. Залиште номер, і ми передзвонимо.', { specialtyId: sp.id }));
+    } else if (!docs.length) {
+      this.list.appendChild(h('p', { class: 'bpl-empty' }, ['Лікарів за цими умовами не знайдено.']));
+    }
+    var anySlots = false;
+    docs.forEach(function (d) {
+      var card = self.card(d);
+      if (card.hasSlots) anySlots = true;
+      self.list.appendChild(card.el);
+    });
+    var key = f.doctor || f.specialty;
+    if (key && docs.length && !anySlots && !this.noSlotsSent[key]) {
+      this.noSlotsSent[key] = true;
+      dl('booking_no_slots', { specialty: sp ? sp.slug : undefined, doctor: f.doctor ? this.doctors[f.doctor].slug : undefined });
+    }
+    this.foot.innerHTML = '';
+    this.foot.appendChild(h('span', null, ['Не знайшли зручний час? ']));
+    this.foot.appendChild(h('button', { type: 'button', class: 'bpb-link', onclick: function (e) { self.openCallback({ specialtyId: f.specialty || null, doctorId: f.doctor || null }, e.currentTarget); } }, ['Замовте дзвінок']));
+    this.live.textContent = docs.length + ' ' + plural(docs.length, 'лікар', 'лікарі', 'лікарів');
+  };
+
+  BookingList.prototype.callbackBox = function (text, preset) {
+    var self = this;
+    return h('div', { class: 'bpl-callback' }, [
+      h('p', null, [text]),
+      h('button', { type: 'button', class: 'bpb-btn', onclick: function (e) { self.openCallback(preset, e.currentTarget, text); } }, ['Замовити дзвінок'])
+    ]);
+  };
+
+  BookingList.prototype.openCallback = function (preset, opener, note) {
+    openModal({ entry: this.entry, preset: { step: 'callback', doctorId: preset.doctorId || null, specialtyId: preset.specialtyId || null, callbackNote: note || null } }, opener);
+  };
+
+  BookingList.prototype.touch = function (d) {
+    if (this.touched[d.id]) return;
+    this.touched[d.id] = true;
+    dl('booking_doctor_select', { specialty: this.specSlug(d), doctor: d.slug });
+  };
+
+  BookingList.prototype.specSlug = function (d) {
+    var sp = (this.f.specialty && this.specs[this.f.specialty]) || this.specs[d.specialties[0]];
+    return sp ? sp.slug : undefined;
+  };
+
+  BookingList.prototype.card = function (d) {
+    var self = this;
+    var sd = this.sched.doctors[d.id] || { days: {}, duration_min: 30, service_id: d.services[0] && d.services[0].id };
+    var ui = this.ui[d.id] || (this.ui[d.id] = { day: null, offset: null, more: false, service: null });
+    var days = sd.days || {};
+    var free = Object.keys(days).sort();
+    var hasSlots = free.length > 0;
+
+    var info = h('div', { class: 'bpl-doc' }, [
+      Booking.prototype.avatar.call(this, d),
+      h('div', { class: 'bpl-doc-info' }, [
+        h('h3', { class: 'bpl-name' }, [d.full_name]),
+        h('p', { class: 'bpl-pos' }, [d.position]),
+        d.profile_url ? h('a', { class: 'bpl-more', href: d.profile_url, target: '_blank', rel: 'noopener' }, ['Детальніше про лікаря']) : null
+      ])
+    ]);
+    if (d.services.length > 1) {
+      var sid = nextId('svc');
+      var svc = h('select', { id: sid, class: 'bpb-input bpl-svc' }, d.services.map(function (x) {
+        return h('option', { value: x.id, selected: x.id === sd.service_id ? true : null }, [x.name]);
+      }));
+      svc.addEventListener('change', function () {
+        self.touch(d);
+        ui.service = svc.value; ui.day = null; ui.offset = null;
+        self.loadDoctorService(d.id, svc.value).then(function () { self.renderList(); });
+      });
+      info.querySelector('.bpl-doc-info').appendChild(h('label', { class: 'bpb-sr', for: sid }, ['Послуга']));
+      info.querySelector('.bpl-doc-info').appendChild(svc);
+    } else if (d.services[0]) {
+      info.querySelector('.bpl-doc-info').appendChild(h('p', { class: 'bpl-svc-text' }, [d.services[0].name + ' · ' + d.services[0].duration_min + ' хв']));
+    }
+
+    var side = h('div', { class: 'bpl-side' });
+    var el = h('article', { class: 'bpl-card', 'aria-label': d.full_name }, [info, side]);
+    if (!hasSlots) {
+      side.appendChild(this.callbackBox('Найближчим часом немає вільного часу для онлайн-запису.', { doctorId: d.id }));
+      return { el: el, hasSlots: false };
+    }
+
+    var dates = this.dates();
+    if (!ui.day || !days[ui.day]) {
+      var want = this.f.date;
+      ui.day = (want && days[want]) ? want : (free.filter(function (x) { return !want || x >= want; })[0] || free[0]);
+    }
+    var perView = Math.max(3, Math.min(5, Math.floor(((this.list.clientWidth || 600) > 760 ? (this.list.clientWidth - 330) : (this.list.clientWidth - 70)) / 86)));
+    var idx = dates.indexOf(ui.day);
+    if (ui.offset == null || idx < ui.offset || idx >= ui.offset + perView) ui.offset = Math.max(0, Math.min(idx, dates.length - perView));
+    var shown = dates.slice(ui.offset, ui.offset + perView);
+
+    var tabs = h('div', { class: 'bpl-tabs', role: 'group', 'aria-label': 'Дні прийому' });
+    tabs.appendChild(h('button', { type: 'button', class: 'bpl-arrow', 'aria-label': 'Попередні дні', disabled: ui.offset <= 0 ? true : null, onclick: function () { ui.offset = Math.max(0, ui.offset - 1); self.rerenderCard(d, el); } }, ['‹']));
+    shown.forEach(function (date) {
+      var n = 0;
+      var byLoc = days[date] || {};
+      for (var l in byLoc) n += byLoc[l].length;
+      var label = WD_SHORT[weekdayIdx(date)].toLowerCase() + ' ' + date.slice(8, 10) + '.' + date.slice(5, 7);
+      tabs.appendChild(h('button', {
+        type: 'button', class: 'bpl-tab' + (date === ui.day ? ' bpl-tab-on' : '') + (n ? '' : ' bpl-tab-off'),
+        disabled: n ? null : true, 'aria-pressed': date === ui.day ? 'true' : 'false',
+        'aria-label': humanDateLong(date) + (n ? ', ' + n + ' ' + plural(n, 'вільний час', 'вільні часи', 'вільних часів') : ', немає вільного часу'),
+        onclick: function () { self.touch(d); ui.day = date; ui.more = false; self.rerenderCard(d, el); }
+      }, [label]));
+    });
+    tabs.appendChild(h('button', { type: 'button', class: 'bpl-arrow', 'aria-label': 'Наступні дні', disabled: ui.offset + perView >= dates.length ? true : null, onclick: function () { ui.offset = Math.min(dates.length - perView, ui.offset + 1); self.rerenderCard(d, el); } }, ['›']));
+    side.appendChild(tabs);
+
+    if (this.f.date && ui.day !== this.f.date) {
+      side.appendChild(h('p', { class: 'bpl-hint' }, [humanDate(this.f.date) + ' вільного часу немає. Найближчий: ' + humanDateLong(ui.day) + '.']));
+    }
+
+    var byLoc = days[ui.day] || {};
+    var locs = Object.keys(byLoc);
+    var LIMIT = 12;
+    var total = 0;
+    locs.forEach(function (loc) {
+      var l = self.locs[loc];
+      if (l) side.appendChild(h('p', { class: 'bpl-loc' }, [(l.address || l.name).replace(/^м\.\s*Вінниця,\s*/, '')]));
+      var grid = h('div', { class: 'bpl-slots', role: 'group', 'aria-label': 'Вільний час ' + humanDate(ui.day) });
+      byLoc[loc].forEach(function (time) {
+        total++;
+        if (!ui.more && total > LIMIT) return;
+        var end = addMinutes(time, sd.duration_min);
+        grid.appendChild(h('button', {
+          type: 'button', class: 'bpl-slot', 'aria-label': humanDateLong(ui.day) + ', ' + time + '–' + end + ', ' + d.full_name,
+          onclick: function (e) { self.pick(d, sd, ui.day, time, e.currentTarget, el); }
+        }, [time + '–' + end]));
+      });
+      side.appendChild(grid);
+    });
+    if (!ui.more && total > LIMIT) {
+      side.appendChild(h('button', { type: 'button', class: 'bpb-link bpl-showmore', onclick: function () { ui.more = true; self.rerenderCard(d, el); } }, ['Показати ще ' + (total - LIMIT)]));
+    }
+    return { el: el, hasSlots: true };
+  };
+
+  BookingList.prototype.rerenderCard = function (d, el) {
+    var fresh = this.card(d).el;
+    el.parentNode.replaceChild(fresh, el);
+    var on = fresh.querySelector('.bpl-tab-on') || fresh.querySelector('.bpl-arrow:not([disabled])');
+    if (on) on.focus();
+  };
+
+  BookingList.prototype.pick = function (d, sd, date, time, btn, cardEl) {
+    var self = this;
+    this.touch(d);
+    btn.disabled = true;
+    btn.classList.add('bpb-busy');
+    api('POST', '/holds', { doctor: d.id, service: sd.service_id, date: date, time: time }).then(function (r) {
+      btn.disabled = false;
+      btn.classList.remove('bpb-busy');
+      if (r.status === 201) {
+        dl('booking_slot_select', { specialty: self.specSlug(d), doctor: d.slug, location: r.data.slot.location_id, days_ahead: daysBetween(self.sched.today, r.data.slot.date) });
+        var spId = (self.f.specialty && d.specialties.indexOf(self.f.specialty) >= 0) ? self.f.specialty : null;
+        if (!spId && self.f.specialty && self.specs[self.f.specialty] && self.specs[self.f.specialty].doctor_ids.indexOf(d.id) >= 0) spId = self.f.specialty;
+        openModal({ entry: self.entry, preset: {
+          step: 'contacts', doctorId: d.id, specialtyId: spId, serviceId: sd.service_id,
+          slot: r.data.slot, hold: { token: r.data.hold_token, expires: r.data.expires_at }, today: self.sched.today
+        } }, btn, function () { self.reload(); });
+        return;
+      }
+      var side = cardEl.querySelector('.bpl-side');
+      var msg = h('div', { class: 'bpb-msg bpb-msg-err', role: 'alert', tabindex: '-1' }, [r.status === 409 ? 'Цей час щойно зайняли. Оновлюємо вільний час…' : (r.data.message || 'Не вдалося забронювати час. Спробуйте ще раз.')]);
+      side.insertBefore(msg, side.firstChild);
+      msg.focus();
+      if (r.status === 409) setTimeout(function () { self.reload(); }, 1500);
+    });
+  };
+
+  function addMinutes(hm, min) {
+    var t = (+hm.slice(0, 2)) * 60 + (+hm.slice(3, 5)) + min;
+    var hh = Math.floor(t / 60) % 24, mm = t % 60;
+    return (hh < 10 ? '0' : '') + hh + ':' + (mm < 10 ? '0' : '') + mm;
+  }
+
   // ---------------------------------------------------------------- модалка
 
   var modal = null;
 
-  function openModal(opts, opener) {
+  function openModal(opts, opener, onClose) {
     if (!modal) {
       var dialog = h('div', { class: 'bpb-dialog', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Онлайн-запис до лікаря' });
       var closeBtn = h('button', { type: 'button', class: 'bpb-close', 'aria-label': 'Закрити' }, ['×']);
@@ -1059,6 +1398,7 @@
       });
     }
     modal.opener = opener || document.activeElement;
+    modal.onClose = onClose || null;
     modal.content.innerHTML = '';
     var host = h('div');
     modal.content.appendChild(host);
@@ -1067,7 +1407,7 @@
     opts.modal = true;
     var w = new Booking(host, opts);
     modal.widget = w;
-    dl('booking_open', { entry: opts.entry || (opts.doctor ? 'doctor_page' : opts.specialty ? 'specialty_page' : 'promo') });
+    if (!opts.preset) dl('booking_open', { entry: opts.entry || (opts.doctor ? 'doctor_page' : opts.specialty ? 'specialty_page' : 'promo') });
     setTimeout(function () { modal.dialog.querySelector('.bpb-close').focus(); }, 30);
     return w;
   }
@@ -1077,7 +1417,10 @@
     if (modal.widget) modal.widget.stopHoldTimer();
     modal.overlay.hidden = true;
     document.documentElement.classList.remove('bpb-lock');
-    if (modal.opener && modal.opener.focus) modal.opener.focus();
+    if (modal.opener && modal.opener.focus && modal.opener.isConnected !== false) modal.opener.focus();
+    var cb = modal.onClose;
+    modal.onClose = null;
+    if (cb) cb();
   }
 
   function optsFrom(el) {
@@ -1094,6 +1437,10 @@
       el.setAttribute('data-bpb-mounted', '1');
       new Booking(isolate(el).box, optsFrom(el));
     });
+    Array.prototype.forEach.call(document.querySelectorAll('.bp-booking-list:not([data-bpb-mounted])'), function (el) {
+      el.setAttribute('data-bpb-mounted', '1');
+      new BookingList(isolate(el).box, optsFrom(el));
+    });
   }
 
   document.addEventListener('click', function (e) {
@@ -1105,7 +1452,15 @@
     if (!trigger) return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    openModal(optsFrom(trigger), trigger);
+    var o = optsFrom(trigger);
+    if (CFG.buttonMode === 'page' && CFG.pageUrl) {
+      // Як на altamedica: кнопки ведуть на окрему сторінку запису зі списком лікарів.
+      var u = new URL(CFG.pageUrl, location.href);
+      ['doctor', 'specialty', 'entry'].forEach(function (k) { if (o[k]) u.searchParams.set(k, o[k]); });
+      location.href = u.toString();
+      return;
+    }
+    openModal(o, trigger);
   }, true);
 
   captureAttribution();

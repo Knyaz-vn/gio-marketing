@@ -1,0 +1,47 @@
+/* BP Medical: окрема сторінка запису (/zapys/). Тема сайту тут не підключається. */
+:root { --bpp-accent: #0b6b83; --bpp-accent-hover: #08566a; --bpp-soft: #e6f2f5; --bpp-text: #1b2733; --bpp-muted: #55616d; --bpp-line: #dde3e8; --bpp-bg: #f5f7f8; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body.bpp { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.45; color: var(--bpp-text); background: var(--bpp-bg); }
+.bpp a { color: var(--bpp-accent-hover); }
+.bpp a:focus-visible { outline: 3px solid rgba(11, 107, 131, .45); outline-offset: 2px; border-radius: 4px; }
+
+.bpp-head { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #fff; border-bottom: 1px solid var(--bpp-line); }
+.bpp-brand { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--bpp-text) !important; text-decoration: none; }
+.bpp-brand img { height: 40px; width: auto; display: block; }
+.bpp-brand span { font-size: 1.15rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bpp-head-right { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; }
+.bpp-phone { font-weight: 700; text-decoration: none; white-space: nowrap; }
+.bpp-back { display: none; font-weight: 600; text-decoration: none; padding: 8px 14px; border: 1px solid var(--bpp-accent); border-radius: 999px; white-space: nowrap; }
+.bpp-back:hover { background: var(--bpp-soft); }
+
+.bpp-wrap { max-width: 1320px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.bpp-main { min-width: 0; order: 1; }
+.bpp-side { order: 2; }
+.bpp-main h1 { margin: 4px 0 4px; font-size: 1.5rem; line-height: 1.25; }
+.bpp-lead { margin: 0 0 14px; color: var(--bpp-muted); }
+
+.bpp-nav { display: none; }
+.bpp-contacts { display: grid; gap: 12px; padding: 16px; background: #fff; border: 1px solid var(--bpp-line); border-radius: 14px; }
+.bpp-loc { display: flex; flex-direction: column; gap: 2px; font-size: .95rem; }
+.bpp-loc span { color: var(--bpp-muted); }
+.bpp-loc a { font-weight: 700; text-decoration: none; }
+.bpp-hours { margin: 0; display: flex; flex-direction: column; font-size: .9rem; color: var(--bpp-muted); }
+
+.bpp-foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; padding: 20px 16px 28px; font-size: .88rem; color: var(--bpp-muted); }
+
+/* Хост віджета: картки лікарів малює booking.js у Shadow DOM */
+.bp-booking-list { display: block; }
+
+@media (min-width: 960px) {
+  .bpp-head { padding: 12px 32px; }
+  .bpp-back { display: inline-block; }
+  .bpp-wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); align-items: start; gap: 28px; padding: 24px 32px; }
+  .bpp-side { order: 0; position: sticky; top: 88px; display: flex; flex-direction: column; gap: 20px; }
+  .bpp-nav { display: flex; flex-direction: column; gap: 4px; }
+  .bpp-nav a { padding: 10px 16px; border-radius: 999px; font-weight: 600; text-decoration: none; color: var(--bpp-text); }
+  .bpp-nav a:hover { background: var(--bpp-soft); }
+  .bpp-nav .bpp-nav-on { border: 1.5px solid var(--bpp-accent); color: var(--bpp-accent-hover); }
+  .bpp-contacts { background: transparent; border: 0; padding: 0 16px; }
+  .bpp-main h1 { font-size: 1.75rem; }
+}

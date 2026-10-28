@@ -25,3 +25,5 @@
   .bpmb-table tr { display: block; border-bottom: 1px solid #dcdcde; }
   .bpmb-table td { display: block; }
 }
+.bpmb-copy a { word-break: break-all; }
+.bpmb-pagelink { font-size: 14px; }

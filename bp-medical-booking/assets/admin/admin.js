@@ -255,13 +255,32 @@
           h('td', { text: [d.surname].concat(d.aliases || []).filter(function (v, i, a) { return a.indexOf(v) === i; }).join(', ') }),
           h('td', null, [d.bookable ? h('span', { class: 'bpmb-status bpmb-status-confirmed', text: 'так' }) : h('span', { class: 'bpmb-status', text: 'ні (лише блокує час)' })]),
           h('td', { text: sched || '—' }),
-          h('td', { text: (d.schedule_overrides || []).length ? d.schedule_overrides.length + ' винятк.' : '' })
+          h('td', { text: (d.schedule_overrides || []).length ? d.schedule_overrides.length + ' винятк.' : '' }),
+          h('td', null, [d.bookable && C.pageUrl ? copyLink(C.pageUrl + '?doctor=' + encodeURIComponent(d.slug)) : '—'])
         ]));
       });
       p.appendChild(h('table', { class: 'widefat striped bpmb-table' }, [
-        h('thead', null, [h('tr', null, ['Лікар', 'Посада', 'Прізвище та aliases (тригер у календарі)', 'Онлайн-запис', 'Графік', 'Винятки'].map(function (t) { return h('th', { text: t }); }))]), tb
+        h('thead', null, [h('tr', null, ['Лікар', 'Посада', 'Прізвище та aliases (тригер у календарі)', 'Онлайн-запис', 'Графік', 'Винятки', 'Посилання для кнопки «Записатися»'].map(function (t) { return h('th', { text: t }); }))]), tb
       ]));
+      if (C.pageUrl) {
+        var specRows = h('tbody');
+        cat.specialties.forEach(function (s) {
+          specRows.appendChild(h('tr', null, [h('td', { text: s.name }), h('td', null, [copyLink(C.pageUrl + '?specialty=' + encodeURIComponent(s.slug || s.id))])]));
+        });
+        p.appendChild(h('h2', { text: 'Посилання для сторінок спеціальностей' }));
+        p.appendChild(h('p', { class: 'description', text: 'Сторінка запису відкриється з уже обраною спеціальністю. Для кнопки в шапці сайту: ' + C.pageUrl + '?entry=header' }));
+        p.appendChild(h('table', { class: 'widefat striped bpmb-table bpmb-sub' }, [specRows]));
+      }
     }, fail(p));
+  }
+
+  function copyLink(url) {
+    var b = h('button', { type: 'button', class: 'button button-small', onclick: function () {
+      var done = function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Копіювати'; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { window.prompt('Скопіюйте посилання:', url); });
+      else window.prompt('Скопіюйте посилання:', url);
+    } }, ['Копіювати']);
+    return h('span', { class: 'bpmb-copy' }, [h('a', { href: url, target: '_blank', rel: 'noopener', text: url.replace(/^https?:\/\/[^/]+/, '') }), ' ', b]);
   }
 
   function timeInput(v) { return h('input', { type: 'time', step: '300', value: v || '' }); }
@@ -542,7 +561,12 @@
         ])]),
         h('h2', { text: 'Віджет і аналітика' }),
         h('table', { class: 'form-table' }, [h('tbody', null, [
-          row('Тестовий режим', h('label', null, [chk('test_mode'), ' віджет і запис доступні лише адміністраторам і реєстраторам (пацієнти його не бачать)'])),
+          row('Тестовий режим', h('label', null, [chk('test_mode'), ' сторінка й віджет запису доступні лише адміністраторам і реєстраторам (пацієнти їх не бачать)'])),
+          row('Окрема сторінка запису', h('label', null, [chk('booking_page_enabled'), ' сторінка зі списком лікарів і вільним часом, без теми сайту']), C.pageUrl ? 'Зараз: ' + C.pageUrl : null),
+          row('Адреса сторінки', h('span', null, [location.origin + '/', txt('booking_page_slug', 'small-text'), '/']), 'Латиниця, цифри, дефіс. Якщо на сайті вже є сторінка WordPress з такою адресою, відкриватиметься сторінка запису.'),
+          row('Кнопки «Записатися» на сайті', sel('button_mode', [['page', 'ведуть на сторінку запису (як на altamedica)'], ['modal', 'відкривають вікно запису поверх сторінки']]), 'Стосується кнопок з класом bp-booking-open і старого попапу Popup Maker.'),
+          row('GTM на сторінці запису', txt('gtm_id', 'small-text'), 'Тема на сторінці запису не підключається, тому GTM вставляється окремо. Порожньо = без GTM.'),
+          row('Логотип (URL)', txt('logo_url', 'large-text'), 'Порожньо = логотип теми сайту.'),
           row('Підключати на всіх сторінках', h('label', null, [chk('load_globally'), ' модалка для .bp-booking-open і збереження UTM/click id на 90 днів'])),
           row('Перехоплювати Popup Maker ID', txt('intercept_popup_id', 'small-text'), 'Кнопки #popmake-N відкриватимуть онлайн-запис. Порожньо = не перехоплювати.'),
           row('Зберігати SHA-256 телефону', h('label', null, [chk('store_phone_hash'), ' для Enhanced Conversions for Leads'])),
@@ -559,9 +583,9 @@
         e.preventDefault();
         var out = { settings: {} };
         ['slot_step_min', 'min_lead_minutes', 'booking_horizon_days', 'hold_minutes', 'rate_limit_per_hour', 'retention_days'].forEach(function (k) { out.settings[k] = +f[k].value; });
-        ['calendar_mode', 'match_mode', 'online_color_id', 'cancel_mode', 'telegram_chat_id', 'turnstile_site_key', 'privacy_url', 'callback_phone', 'intercept_popup_id', 'ads_conversion_name', 'sms_sender', 'sms_confirm_template'].forEach(function (k) { out.settings[k] = f[k].value; });
+        ['calendar_mode', 'match_mode', 'online_color_id', 'cancel_mode', 'telegram_chat_id', 'turnstile_site_key', 'privacy_url', 'callback_phone', 'intercept_popup_id', 'ads_conversion_name', 'sms_sender', 'sms_confirm_template', 'booking_page_slug', 'button_mode', 'gtm_id', 'logo_url'].forEach(function (k) { out.settings[k] = f[k].value; });
         ['notify_emails', 'holidays', 'cors_origins'].forEach(function (k) { out.settings[k] = f[k].value; });
-        ['test_mode', 'load_globally', 'store_phone_hash', 'sms_enabled'].forEach(function (k) { out.settings[k] = f[k].checked; });
+        ['test_mode', 'booking_page_enabled', 'load_globally', 'store_phone_hash', 'sms_enabled'].forEach(function (k) { out.settings[k] = f[k].checked; });
         out.settings.calendars = Array.prototype.map.call(calBody.children, function (tr) {
           var i = tr.querySelectorAll('input, select');
           return { id: i[0].value.trim(), name: i[1].value.trim(), location_id: i[2].value || null };

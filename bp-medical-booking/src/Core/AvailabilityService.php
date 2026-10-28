@@ -75,6 +75,34 @@ final class AvailabilityService
         return null;
     }
 
+    /**
+     * Вільні слоти на діапазон дат одним читанням зайнятості (для сторінки зі списком лікарів).
+     *
+     * @return array<string, Slot[]> дата => слоти (лише дні з вільним часом)
+     */
+    public function slotsRange(string $doctorId, string $serviceId, string $fromYmd, string $toYmd): array
+    {
+        $doctor = $this->catalog->doctor($doctorId);
+        if ($doctor === null) {
+            return [];
+        }
+        $from = max($fromYmd, $this->generator->today());
+        $to = min($toYmd, $this->generator->lastBookableDate());
+        if ($from > $to) {
+            return [];
+        }
+        [$dur, $buf] = $this->catalog->duration($doctorId, $serviceId);
+        $busy = $this->busy->busy($doctorId, Tz::dayStart($from), Tz::dayStart(Tz::addDays($to, 1)));
+        $out = [];
+        for ($d = $from; $d <= $to; $d = Tz::addDays($d, 1)) {
+            $slots = $this->generator->slotsForDate($doctor, $dur, $buf, $d, $busy);
+            if ($slots) {
+                $out[$d] = $slots;
+            }
+        }
+        return $out;
+    }
+
     public function nearestDate(string $doctorId, string $serviceId): ?string
     {
         foreach ($this->days($doctorId, $serviceId, $this->generator->today(), $this->generator->lastBookableDate()) as $d) {

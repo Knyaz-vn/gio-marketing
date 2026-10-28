@@ -195,6 +195,24 @@ final class BookingFlowTest extends TestCase
         self::assertSame([], $this->s->sms->sent);
     }
 
+    public function testSlotsRangeMatchesPerDaySlots(): void
+    {
+        $this->s->calendar->addTimed('mock-koriat', 'Грибанова | огляд | Петренко', $this->start, $this->start + 3600);
+        $this->s->sync->syncAll();
+        $from = Tz::date($this->start);
+        $to = Tz::addDays($from, 6);
+        $range = $this->s->availability->slotsRange('gribanova', 'consult_primary', $from, $to);
+        self::assertNotEmpty($range);
+        for ($d = $from; $d <= $to; $d = Tz::addDays($d, 1)) {
+            $perDay = array_map(static fn($x) => $x->start, $this->s->availability->slots('gribanova', 'consult_primary', $d));
+            $inRange = array_map(static fn($x) => $x->start, $range[$d] ?? []);
+            self::assertSame($perDay, $inRange, "день $d");
+        }
+        $times = array_map(static fn($x) => Tz::time($x->start), $range[$from]);
+        self::assertNotContains('11:00', $times, 'подія з прізвищем блокує час і в діапазоні');
+        self::assertNotContains('11:30', $times);
+    }
+
     public function testDaysApiCountsAndNoLeakOfSummaries(): void
     {
         $this->s->calendar->addAllDay('mock-koriat', 'Грибанова відпустка', Tz::date($this->start), Tz::addDays(Tz::date($this->start), 1));

@@ -36,6 +36,11 @@ final class Config
         'cors_origins' => ['https://bpmedical.com.ua', 'https://www.bpmedical.com.ua'],
         'privacy_url' => 'https://bpmedical.com.ua/polityka-konfidentsiynosti/',
         'test_mode' => true,               // віджет і публічний API лише для адміністраторів (тестування)
+        'booking_page_enabled' => true,    // окрема сторінка запису без теми сайту: /zapys/
+        'booking_page_slug' => 'zapys',
+        'button_mode' => 'page',           // кнопки запису й Popup Maker: page (перехід на сторінку) | modal (вікно поверх сайту)
+        'gtm_id' => 'GTM-KVR78MJ',         // GTM на окремій сторінці запису (тема там не підключається)
+        'logo_url' => '',                  // логотип у шапці сторінки запису ('' = логотип теми / назва сайту)
         'load_globally' => true,           // підключати віджет на всіх сторінках (модалка + UTM)
         'intercept_popup_id' => '13597',   // перехоплювати тригери Popup Maker #popmake-N ('' = ні)
         'store_phone_hash' => true,        // SHA-256(E.164) для Enhanced Conversions for Leads
@@ -162,6 +167,15 @@ final class Config
         }
         if (isset($out['calendar_mode']) && !in_array($out['calendar_mode'], ['auto', 'google', 'mock'], true)) {
             $errors[] = 'calendar_mode: auto, google або mock';
+        }
+        if (isset($out['booking_page_slug']) && !preg_match('/^[a-z0-9-]{2,40}$/', (string) $out['booking_page_slug'])) {
+            $errors[] = 'booking_page_slug: латиниця, цифри, дефіс';
+        }
+        if (isset($out['button_mode']) && !in_array($out['button_mode'], ['page', 'modal'], true)) {
+            $errors[] = 'button_mode: page або modal';
+        }
+        if (isset($out['gtm_id']) && !preg_match('/^(GTM-[A-Z0-9]{4,12})?$/', (string) $out['gtm_id'])) {
+            $errors[] = 'gtm_id: формат GTM-XXXXXXX';
         }
         if (isset($out['slot_step_min']) && ($out['slot_step_min'] < 5 || $out['slot_step_min'] > 120)) {
             $errors[] = 'slot_step_min: від 5 до 120';

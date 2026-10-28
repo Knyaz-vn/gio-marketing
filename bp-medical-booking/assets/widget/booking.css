@@ -1,7 +1,7 @@
 /* BP Medical: віджет онлайн-запису. Mobile-first, контраст WCAG AA. Кольори перевизначаються через CSS-змінні. */
 /* Хост у Shadow DOM: скидаємо все, що успадковується від теми, крім шрифту. */
 :host { all: initial; display: block; font-family: inherit; }
-.bpb, .bpb-overlay {
+.bpb, .bpl, .bpb-overlay {
   --bpb-accent: #0b6b83;
   --bpb-accent-hover: #08566a;
   --bpb-accent-soft: #e6f2f5;
@@ -121,4 +121,53 @@ textarea.bpb-input { min-height: 72px; resize: vertical; }
   .bpb-dialog { max-height: calc(100vh - 48px); border-radius: var(--bpb-radius); }
   .bpb-dialog .bpb { padding: 24px; }
   .bpb-actions { flex-direction: row; flex-wrap: wrap; }
+}
+
+/* Сторінка запису: список лікарів з вільним часом (як кабінет запису) */
+.bpl { font-family: inherit; font-size: 16px; line-height: 1.45; color: var(--bpb-text); text-align: left; }
+.bpl *, .bpl *::before, .bpl *::after { box-sizing: border-box; }
+.bpl button, .bpl input, .bpl select { font-family: inherit; font-size: inherit; color: inherit; margin: 0; }
+.bpl button { cursor: pointer; }
+.bpl :focus-visible { outline: none; box-shadow: var(--bpb-focus); }
+.bpl h3, .bpl p { margin: 0; }
+.bpl a { color: var(--bpb-accent-hover); }
+.bpl .bpb-test { margin-bottom: 12px; }
+.bpl-bar { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 14px; margin-bottom: 14px; background: var(--bpb-bg); border: 1px solid var(--bpb-line); border-radius: 14px; box-shadow: 0 1px 3px rgba(16, 32, 48, .06); }
+.bpl-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.bpl-field label { font-size: .85rem; font-weight: 600; color: var(--bpb-muted); }
+.bpl select.bpb-input { appearance: auto; background: #fff; }
+.bpl-list { display: flex; flex-direction: column; gap: 14px; }
+.bpl-card { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 16px; background: var(--bpb-bg); border: 1px solid var(--bpb-line); border-radius: 14px; box-shadow: 0 1px 3px rgba(16, 32, 48, .06); }
+.bpl-doc { display: flex; gap: 14px; align-items: flex-start; min-width: 0; }
+.bpl-doc .bpb-avatar { width: 84px; height: 84px; flex: 0 0 84px; font-size: 1.4rem; }
+.bpl-doc-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1 1 0; }
+.bpl-name { font-size: 1.15rem; line-height: 1.25; font-weight: 700; }
+.bpl-pos { font-size: .9rem; color: var(--bpb-muted); }
+.bpl-more { font-size: .88rem; }
+.bpl-svc { margin-top: 6px; min-height: 40px; padding: 6px 8px; font-size: .9rem; }
+.bpl-svc-text { margin-top: 4px; font-size: .85rem; color: var(--bpb-muted); }
+.bpl-side { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.bpl-tabs { display: flex; align-items: stretch; gap: 4px; border-bottom: 1px solid var(--bpb-line); }
+.bpl-tab { flex: 1 1 0; min-width: 0; padding: 10px 2px 8px; border: 0; border-bottom: 3px solid transparent; background: none; font-size: .88rem; font-weight: 600; white-space: nowrap; color: var(--bpb-text); }
+.bpl-tab:hover { color: var(--bpb-accent-hover); }
+.bpl-tab-on { border-bottom-color: var(--bpb-accent); color: var(--bpb-accent-hover); }
+.bpl-tab-off, .bpl-tab-off:hover { color: var(--bpb-off-text); font-weight: 400; cursor: default; }
+.bpl-arrow { flex: 0 0 32px; border: 0; background: none; font-size: 1.5rem; line-height: 1; color: var(--bpb-text); }
+.bpl-arrow:disabled { opacity: .25; cursor: default; }
+.bpl-loc { font-size: .85rem; color: var(--bpb-muted); }
+.bpl-hint { font-size: .88rem; color: var(--bpb-muted); }
+.bpl-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+.bpl-slot { min-height: 40px; padding: 6px 4px; border: 1.5px solid var(--bpb-accent); border-radius: 999px; background: #fff; color: var(--bpb-accent-hover); font-weight: 600; font-size: .92rem; white-space: nowrap; }
+.bpl-slot:hover { background: var(--bpb-accent); color: #fff; }
+.bpl-showmore { align-self: flex-start; padding-left: 0; }
+.bpl-callback { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; background: var(--bpb-off); border-radius: 10px; }
+.bpl-empty, .bpl-note { color: var(--bpb-muted); }
+.bpl-foot { margin: 18px 0 4px; text-align: center; color: var(--bpb-muted); }
+.bpl .bpb-loading { justify-content: center; }
+@media (min-width: 700px) {
+  .bpl-bar { grid-template-columns: 1.3fr 1fr 0.9fr; padding: 14px 18px; }
+}
+@media (min-width: 900px) {
+  .bpl-card { grid-template-columns: minmax(240px, 0.9fr) minmax(0, 1.4fr); gap: 24px; padding: 20px 24px; }
+  .bpl-doc .bpb-avatar { width: 100px; height: 100px; flex-basis: 100px; }
 }

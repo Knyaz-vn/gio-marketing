@@ -43,6 +43,7 @@ final class PublicController
         // Тестовий режим: API запису доступне лише адміністраторам (ics і webhook лишаються публічними).
         $widget = ['permission_callback' => fn() => $this->p->widgetVisible()];
         register_rest_route($ns, '/catalog', $widget + ['methods' => 'GET', 'callback' => [$this, 'catalog']]);
+        register_rest_route($ns, '/schedule', $widget + ['methods' => 'GET', 'callback' => [$this, 'schedule']]);
         register_rest_route($ns, '/nearest', $widget + ['methods' => 'GET', 'callback' => [$this, 'nearest']]);
         register_rest_route($ns, '/availability', $widget + ['methods' => 'GET', 'callback' => [$this, 'availability']]);
         register_rest_route($ns, '/slots', $widget + ['methods' => 'GET', 'callback' => [$this, 'slots']]);
@@ -113,6 +114,64 @@ final class PublicController
                     'turnstile_site_key' => Turnstile::enabled((string) $cfg->get('turnstile_site_key')) ? $cfg->get('turnstile_site_key') : '',
                     'today' => Tz::date(time()),
                 ],
+            ];
+        });
+    }
+
+    /**
+     * Вільний час усіх (або вибраних) лікарів на весь горизонт одним запитом: для сторінки запису зі списком лікарів.
+     * Компактний формат: days[дата][локація] = ["09:00", "09:15", ...]. Назви подій календаря не віддаються.
+     */
+    public function schedule(WP_REST_Request $r): WP_REST_Response
+    {
+        $c = $this->p->catalog();
+        $ids = array_values(array_filter(explode(',', (string) $r->get_param('doctors'))));
+        $service = (string) $r->get_param('service');
+        if (!$ids) {
+            foreach ($c->doctors() as $d) {
+                if ($d['bookable']) {
+                    $ids[] = (string) $d['id'];
+                }
+            }
+        }
+        $ids = array_slice($ids, 0, 40);
+        sort($ids);
+        return $this->cached('schedule_' . md5(implode(',', $ids) . '|' . $service), 60, function () use ($c, $ids, $service) {
+            $gen = $this->p->availability()->generator();
+            $today = $gen->today();
+            $last = $gen->lastBookableDate();
+            $doctors = [];
+            foreach ($ids as $id) {
+                $d = $c->doctor($id);
+                if ($d === null || !$d['bookable']) {
+                    continue;
+                }
+                $services = $c->servicesForDoctor($id);
+                $sid = $service !== '' && count($ids) === 1 && $c->doctorOffersService($id, $service) ? $service : (string) ($services[0]['id'] ?? '');
+                if ($sid === '') {
+                    continue;
+                }
+                [$dur] = $c->duration($id, $sid);
+                $days = [];
+                foreach ($this->p->availability()->slotsRange($id, $sid, $today, $last) as $date => $slots) {
+                    foreach ($slots as $s) {
+                        $days[$date][$s->locationId][] = Tz::time($s->start);
+                    }
+                }
+                $doctors[$id] = ['service_id' => $sid, 'duration_min' => $dur, 'days' => (object) $days];
+            }
+            $closed = [];
+            for ($wd = 1; $wd <= 7; $wd++) {
+                if ($this->p->config()->clinicHours($wd) === null) {
+                    $closed[] = $wd;
+                }
+            }
+            return [
+                'today' => $today,
+                'last_date' => $last,
+                'closed_weekdays' => $closed,
+                'holidays' => array_values((array) $this->p->config()->get('holidays')),
+                'doctors' => (object) $doctors,
             ];
         });
     }
@@ -189,6 +248,12 @@ final class PublicController
             return $err;
         }
         $start = self::parseStart($r->get_param('start'));
+        // Сторінка-список передає дату й час окремо (київський час).
+        $date = (string) $r->get_param('date');
+        $time = (string) $r->get_param('time');
+        if ($start === null && Tz::isValidDate($date) && Tz::isValidTime($time)) {
+            $start = Tz::at($date, $time);
+        }
         if ($start === null) {
             return $this->error('bad_request', 'Некоректний час', 400);
         }

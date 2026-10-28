@@ -34,6 +34,7 @@ final class AdminPage
                 'statuses' => BookingStatus::LABELS,
                 'exportUrl' => wp_nonce_url(admin_url('admin-post.php?action=bpmb_export'), 'bpmb_export'),
                 'mode' => $this->p->calendarMode(),
+                'pageUrl' => $this->p->config()->get('booking_page_enabled') ? $this->p->bookingPageUrl() : null,
             ]);
         });
     }
@@ -41,9 +42,14 @@ final class AdminPage
     public function render(): void
     {
         echo '<div class="wrap"><h1>BP Medical: онлайн-запис</h1>';
+        if ($this->p->config()->get('booking_page_enabled')) {
+            $url = $this->p->bookingPageUrl();
+            echo '<p class="bpmb-pagelink">Сторінка запису: <a href="' . esc_url($url) . '" target="_blank" rel="noopener"><strong>' . esc_html($url) . '</strong></a>'
+                . ' · посилання для кнопок на сторінках лікарів: вкладка «Лікарі та графіки».</p>';
+        }
         if ($this->p->config()->get('test_mode')) {
-            echo '<div class="notice notice-info"><p><strong>Тестовий режим:</strong> віджет запису на сайті бачать лише адміністратори й реєстратори, '
-                . 'для пацієнтів його немає (і старий попап Popup Maker працює як раніше). Щоб запустити для всіх, вимкніть у вкладці «Налаштування».</p></div>';
+            echo '<div class="notice notice-info"><p><strong>Тестовий режим:</strong> сторінку й віджет запису бачать лише адміністратори й реєстратори, '
+                . 'для пацієнтів їх немає (і старий попап Popup Maker працює як раніше). Щоб запустити для всіх, вимкніть у вкладці «Налаштування».</p></div>';
         }
         if ($this->p->calendarMode() !== 'google') {
             echo '<div class="notice notice-warning"><p><strong>Демо-режим:</strong> ключ service account не знайдено, використовується mock-календар. '
