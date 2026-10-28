@@ -564,11 +564,11 @@
           row('Тестовий режим', h('label', null, [chk('test_mode'), ' сторінка й віджет запису доступні лише адміністраторам і реєстраторам (пацієнти їх не бачать)'])),
           row('Окрема сторінка запису', h('label', null, [chk('booking_page_enabled'), ' сторінка зі списком лікарів і вільним часом, без теми сайту']), C.pageUrl ? 'Зараз: ' + C.pageUrl : null),
           row('Адреса сторінки', h('span', null, [location.origin + '/', txt('booking_page_slug', 'small-text'), '/']), 'Латиниця, цифри, дефіс. Якщо на сайті вже є сторінка WordPress з такою адресою, відкриватиметься сторінка запису.'),
-          row('Кнопки «Записатися» на сайті', sel('button_mode', [['page', 'ведуть на сторінку запису (як на altamedica)'], ['modal', 'відкривають вікно запису поверх сторінки']]), 'Стосується кнопок з класом bp-booking-open і старого попапу Popup Maker.'),
+          row('Кнопки «Записатися» на сайті', sel('button_mode', [['page', 'ведуть на сторінку запису /zapys/'], ['modal', 'відкривають вікно запису поверх сторінки']]), 'Стосується кнопок з класом bp-booking-open і старого попапу Popup Maker.'),
           row('GTM на сторінці запису', txt('gtm_id', 'small-text'), 'Тема на сторінці запису не підключається, тому GTM вставляється окремо. Порожньо = без GTM.'),
           row('Логотип (URL)', txt('logo_url', 'large-text'), 'Порожньо = логотип теми сайту.'),
           row('Підключати на всіх сторінках', h('label', null, [chk('load_globally'), ' модалка для .bp-booking-open і збереження UTM/click id на 90 днів'])),
-          row('Перехоплювати Popup Maker ID', txt('intercept_popup_id', 'small-text'), 'Кнопки #popmake-N відкриватимуть онлайн-запис. Порожньо = не перехоплювати.'),
+          row('Перехоплювати Popup Maker ID', txt('intercept_popup_id', 'small-text'), 'Порожньо (рекомендовано) = попап і форми працюють як раніше. Якщо вказати ID, кнопки #popmake-N вестимуть на запис.'),
           row('Зберігати SHA-256 телефону', h('label', null, [chk('store_phone_hash'), ' для Enhanced Conversions for Leads'])),
           row('Назва конверсії Google Ads', txt('ads_conversion_name'))
         ])]),

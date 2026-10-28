@@ -43,7 +43,7 @@ final class Config
         // логотип у шапці сторінки запису ('' = логотип теми / іконка сайту)
         'logo_url' => 'https://bpmedical.com.ua/wp-content/uploads/2018/08/cropped-%D0%9B%D0%BE%D0%B3%D0%BE_2.png',
         'load_globally' => true,           // підключати віджет на всіх сторінках (модалка + UTM)
-        'intercept_popup_id' => '13597',   // перехоплювати тригери Popup Maker #popmake-N ('' = ні)
+        'intercept_popup_id' => '',        // перехоплювати тригери Popup Maker #popmake-N ('' = ні, попапи працюють як раніше)
         'store_phone_hash' => true,        // SHA-256(E.164) для Enhanced Conversions for Leads
         'ads_conversion_name' => 'Online booking visit',
         'sms_enabled' => false,            // SMS пацієнту через TurboSMS після підтвердження (токен: BPMB_TURBOSMS_TOKEN)

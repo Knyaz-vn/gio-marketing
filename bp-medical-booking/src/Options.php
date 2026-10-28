@@ -20,7 +20,7 @@ final class Options
     public const DB_VERSION = 'bpmb_db_version';
     public const SEED_VERSION_OPTION = 'bpmb_seed_version';
     /** Збільшується, коли в data/*.json з'являються нові лікарі / фото / спеціальності. */
-    public const SEED_VERSION = 2;
+    public const SEED_VERSION = 3;
 
     private const SEED = [
         self::SETTINGS => 'settings.json',
@@ -92,6 +92,12 @@ final class Options
                 }
             }
             update_option(self::SPECIALTIES, $specs, true);
+        }
+        if ((int) get_option(self::SEED_VERSION_OPTION, 0) < 3 && is_array(get_option(self::SETTINGS, null))) {
+            // v3: старі форми й попап Popup Maker лишаються як були; запис лише через окремі кнопки.
+            $settings = self::get(self::SETTINGS);
+            $settings['intercept_popup_id'] = '';
+            update_option(self::SETTINGS, $settings, true);
         }
         update_option(self::SEED_VERSION_OPTION, self::SEED_VERSION, true);
         self::bumpCache();

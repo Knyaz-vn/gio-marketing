@@ -49,7 +49,7 @@ final class AdminPage
         }
         if ($this->p->config()->get('test_mode')) {
             echo '<div class="notice notice-info"><p><strong>Тестовий режим:</strong> сторінку й віджет запису бачать лише адміністратори й реєстратори, '
-                . 'для пацієнтів їх немає (і старий попап Popup Maker працює як раніше). Щоб запустити для всіх, вимкніть у вкладці «Налаштування».</p></div>';
+                . 'для пацієнтів їх немає. Щоб запустити для всіх, вимкніть у вкладці «Налаштування».</p></div>';
         }
         if ($this->p->calendarMode() !== 'google') {
             echo '<div class="notice notice-warning"><p><strong>Демо-режим:</strong> ключ service account не знайдено, використовується mock-календар. '
