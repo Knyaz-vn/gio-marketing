@@ -158,10 +158,19 @@ final class Frontend
             return '';
         }
         $done = true;
-        return '<style>.bpb-cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border:2px solid #d10000;border-radius:10px;'
-            . 'background:#d10000;color:#fff!important;font-weight:700;font-size:12px;line-height:1.3;text-transform:uppercase;letter-spacing:2px;text-decoration:none!important;cursor:pointer;transition:background .2s}'
-            . '.bpb-cta:hover{background:#a80000;border-color:#a80000;color:#fff!important}'
-            . '.bpb-cta-outline{background:transparent;color:#d10000!important;border-width:1px}.bpb-cta-outline:hover{background:#d10000;color:#fff!important}</style>';
+        // Подвоєний клас (a.bpb-cta.bpb-cta) і !important на ключових властивостях: стилі теми/Elementor для посилань
+        // у шапці й контенті мають вищу специфічність, ніж один клас.
+        $b = 'a.bpb-cta.bpb-cta';
+        return '<style id="bpmb-cta-css">'
+            . $b . '{display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;min-height:44px;padding:10px 22px!important;margin:0;'
+            . 'border:2px solid #d10000!important;border-radius:10px!important;background:#d10000!important;color:#fff!important;box-shadow:none!important;'
+            . 'font-family:inherit;font-weight:700!important;font-size:12px!important;line-height:1.3!important;text-transform:uppercase!important;letter-spacing:2px!important;'
+            . 'text-decoration:none!important;white-space:nowrap;cursor:pointer;transition:background-color .2s,color .2s}'
+            . $b . ':hover,' . $b . ':focus-visible{background:#a80000!important;border-color:#a80000!important;color:#fff!important}'
+            . $b . '.bpb-cta-outline{background:transparent!important;color:#d10000!important;border-width:1px!important}'
+            . $b . '.bpb-cta-outline:hover,' . $b . '.bpb-cta-outline:focus-visible{background:#d10000!important;border-color:#d10000!important;color:#fff!important}'
+            . $b . ':focus-visible{outline:3px solid rgba(209,0,0,.35);outline-offset:2px}'
+            . '</style>';
     }
 
     /**

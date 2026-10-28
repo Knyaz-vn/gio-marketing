@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       BP Medical: онлайн-запис до лікарів
  * Description:       Онлайн-запис на основі Google Calendar: вільні слоти за прізвищем лікаря в назві події, віджет запису, адмінка заявок.
- * Version:           1.3.0
+ * Version:           1.3.1
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            BP Medical
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('BPMB_VERSION', '1.3.0');
+define('BPMB_VERSION', '1.3.1');
 define('BPMB_FILE', __FILE__);
 define('BPMB_DIR', __DIR__);
 
