@@ -119,6 +119,13 @@ final class Frontend
         if (!$this->p->widgetVisible()) {
             return '';
         }
+        if ($a['doctor'] === '' && $a['specialty'] === '') {
+            // Один шорткод для спільного шаблону сторінок лікарів: лікаря визначаємо за адресою сторінки.
+            $a['doctor'] = $this->doctorForCurrentPage();
+            if ($a['doctor'] !== '' && $a['entry'] === '') {
+                $a['entry'] = 'doctor_page';
+            }
+        }
         $this->enqueue();
         $data = '';
         foreach (['doctor', 'specialty', 'entry'] as $k) {
@@ -134,6 +141,23 @@ final class Frontend
             return '<a href="' . esc_url($href) . '" class="bp-booking-open bpb-cta"' . $data . '>' . esc_html($a['label']) . '</a>';
         }
         return '<div class="bp-booking"' . $data . '></div>';
+    }
+
+    /** Slug лікаря, якщо поточна сторінка є його профілем (profile_url), інакше ''. */
+    private function doctorForCurrentPage(): string
+    {
+        $path = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+        $path = '/' . trim(rawurldecode($path), '/') . '/';
+        foreach ($this->p->catalog()->doctors() as $d) {
+            if (!$d['bookable'] || empty($d['profile_url'])) {
+                continue;
+            }
+            $own = '/' . trim(rawurldecode((string) parse_url((string) $d['profile_url'], PHP_URL_PATH)), '/') . '/';
+            if ($own !== '//' && $own === $path) {
+                return (string) $d['slug'];
+            }
+        }
+        return '';
     }
 
     public function block(): void
